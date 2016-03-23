@@ -38,6 +38,8 @@ public class NewLessonActivity extends ActionBarActivity {
         ButterKnife.unbind(this);
     }
 
+
+    //работа с базой
     @OnClick(R.id.button_save)
     public void onClickButtonSave() {
 

@@ -26,13 +26,6 @@ public class AddNewSchedule extends ActionBarActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-//    private final static String TIME_KEY = "time";
-//    private final static String TYPELESSON_KEY = "typeLesson";
-//    private final static String NAME_KEY = "name";
-//    private final static String FIO_KEY = "fio";
-//    private final static String NUNMBER_AUDITORY_KEY = "auditory";
-//    private final static String TYPEWEEK_KEY = "week";
-
     private final static String RETURN_RECORD_KEY = "week";
 
 
@@ -76,6 +69,7 @@ public class AddNewSchedule extends ActionBarActivity {
     }
 
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -90,6 +84,7 @@ public class AddNewSchedule extends ActionBarActivity {
                 });
     }
 
+//    получить все данные с базы
     private ArrayList<Data> getDataSet() {
         ArrayList results = new ArrayList<Data>();
         for (int index = 0; index < 10; index++) {
