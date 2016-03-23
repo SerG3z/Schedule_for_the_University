@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Расписание</string>
+
+    <!-- Navigation Drawer-->
+    <string name="info_schedule">Расписание</string>
+    <string name="info_tasks">Задания</string>
+    <string name="info_news">Новости</string>
+
+    <!-- Array for type lesson-->
+    <string-array name="type_lesson_list">
+        <item>Лекция</item>
+        <item>Практика</item>
+        <item>Лабораторная</item>
+        <item>Экзамен</item>
+    </string-array>
+
+    <!-- Array for type week-->
+    <string-array name="type_week_list">
+        <item>Каждую</item>
+        <item>Чётная</item>
+        <item>Нечётная</item>
+    </string-array>
+
+    <!-- Array for day week-->
+    <string-array name="day_week_list">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+        <item>воскресенье</item>
+    </string-array>
+
+    <!-- add new lesson-->
+    <string name="time_lesson">Время</string>
+    <string name="name_lesson">Название предмета</string>
+    <string name="fio_teacher">ФИО Преподавателя</string>
+    <string name="number_auditory">Аудитория</string>
+    <string name="type_lesson">Тип занятия</string>
+    <string name="type_week">Тип недели</string>
+    <string name="button_save">Сохранить</string>
+
+    <string name="edit_schedule">Изменить расписание</string>
+
+</resources>

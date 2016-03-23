@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_dark"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/time_lesson"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:singleLine="true"
+        android:hint="@string/time_lesson"
+
+        />
+
+    <EditText
+        android:id="@+id/name_lesson"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:singleLine="true"
+        android:hint="@string/name_lesson"
+        />
+
+    <EditText
+        android:id="@+id/fio_teacher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:singleLine="true"
+        android:hint="@string/fio_teacher"
+        />
+
+    <EditText
+        android:id="@+id/number_auditory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:singleLine="true"
+        android:hint="@string/number_auditory"
+        />
+
+    <Spinner
+        android:id="@+id/type_lesson"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:entries="@array/type_lesson_list"
+        />
+
+    <Spinner
+        android:id="@+id/type_week"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:entries="@array/type_week_list"
+        />
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="right"
+        android:background="@android:color/holo_orange_dark"
+        android:text="@string/button_save"
+        />
+
+
+
+
+
+</LinearLayout>
