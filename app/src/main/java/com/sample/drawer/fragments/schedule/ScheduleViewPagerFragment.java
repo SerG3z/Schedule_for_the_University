@@ -39,4 +39,10 @@ public class ScheduleViewPagerFragment extends Fragment {
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         return view;
     }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
 }
