@@ -68,13 +68,10 @@ public class AddNewSchedule extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TabLayout tabs = (TabLayout) findViewById(R.id.tabsWeek);
-        tabs.addTab(tabs.newTab().setText("Tab 1"));
-        tabs.addTab(tabs.newTab().setText("Tab 2"));
-        tabs.addTab(tabs.newTab().setText("Tab 3"));
-        tabs.addTab(tabs.newTab().setText("Tab 4"));
-        tabs.addTab(tabs.newTab().setText("Tab 5"));
-        tabs.addTab(tabs.newTab().setText("Tab 6"));
-        tabs.addTab(tabs.newTab().setText("Tab 7"));
+        String[] arrayWeek = getResources().getStringArray(R.array.day_week_list);
+        for (int i = 0; i < arrayWeek.length; i++) {
+            tabs.addTab(tabs.newTab().setText(arrayWeek[i]));
+        }
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
