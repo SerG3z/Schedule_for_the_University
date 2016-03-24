@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class TeacherDAO extends BaseDaoImpl<Teacher, String> {
 
-    protected TeacherDAO(ConnectionSource connectionSource,
+    public TeacherDAO(ConnectionSource connectionSource,
                          Class<Teacher> dataClass) throws SQLException {
         super(connectionSource, dataClass);
     }

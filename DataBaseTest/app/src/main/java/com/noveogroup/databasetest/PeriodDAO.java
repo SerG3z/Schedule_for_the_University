@@ -10,7 +10,7 @@ import java.sql.SQLException;
  */
 public class PeriodDAO extends BaseDaoImpl<Period, Integer> {
 
-    protected PeriodDAO(ConnectionSource connectionSource,
+    public PeriodDAO(ConnectionSource connectionSource,
                         Class<Period> dataClass) throws SQLException {
         super(connectionSource, dataClass);
     }

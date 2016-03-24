@@ -12,14 +12,14 @@ import java.sql.SQLException;
 /**
  * Schedule data base open helper
  */
-public class ScheduleDataBaseHelper extends OrmLiteSqliteOpenHelper {
+public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "schedule";
     private static final int DATABASE_VERSION = 1;
     private PeriodDAO periodDAO = null;
     private TeacherDAO teacherDAO = null;
 
-    public ScheduleDataBaseHelper(Context context) {
+    public ScheduleDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
     }

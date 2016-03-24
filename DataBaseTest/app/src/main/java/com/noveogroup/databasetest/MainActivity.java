@@ -11,6 +11,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.j256.ormlite.android.apptools.OrmLiteQueryForAllLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.noveogroup.databasetest.ScheduleDBHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     static final int LOADER_PERIOD_ALL_ID = 1;
     static final int LOADER_TEACHER_QUERY_ID = 2;
     static final String ARG_TEACHER = "teacher";
-    private ScheduleDataBaseHelper helper;
+    private ScheduleDBHelper helper;
     TeacherDAO teacherDao;
     PeriodDAO periodDAO;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         helper = OpenHelperManager
-                .getHelper(getApplicationContext(), ScheduleDataBaseHelper.class);
+                .getHelper(getApplicationContext(), ScheduleDBHelper.class);
 
         try {
             teacherDao = helper.getTeacherDAO();
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             bundle.putString(ARG_TEACHER, "Fuss O.");
             getLoaderManager().initLoader(LOADER_TEACHER_QUERY_ID, bundle, this);
             bundle.putString(ARG_TEACHER, "Poor G.");
-            getLoaderManager().initLoader(LOADER_TEACHER_QUERY_ID, bundle, this)
+            getLoaderManager().initLoader(LOADER_TEACHER_QUERY_ID, bundle, this);
 
         } catch (SQLException e) {
             e.printStackTrace();
