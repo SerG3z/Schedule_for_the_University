@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
@@ -26,6 +26,8 @@ public class ItemDayFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerViewHeader headerVeek;
+
 
     int backColor;
 
@@ -49,6 +51,8 @@ public class ItemDayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.show_day_schedule, null);
 
+        headerVeek = (RecyclerViewHeader) view.findViewById(R.id.headerItemWeek);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         //        mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
@@ -61,6 +65,8 @@ public class ItemDayFragment extends Fragment {
                 new DividerItemDecoration(this.getActivity(), LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
         mRecyclerView.setBackgroundColor(backColor);
+
+        headerVeek.attachTo(mRecyclerView, true);
         return view;
     }
 
