@@ -33,4 +33,10 @@ captures/
 
 /local.properties
 
-/.idea/libraries
+idea/
+gradle/
+
+.idea/
+.gradle/
+
+*.iml
