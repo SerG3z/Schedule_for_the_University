@@ -2,10 +2,8 @@ package com.sample.drawer.fragments.schedule;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +17,8 @@ import com.sample.drawer.fragments.animation.ZoomOutPageTransformer;
  */
 public class ScheduleViewPagerFragment extends Fragment {
 
-    private ViewPager mPager;
-    private ScreenSlidePagerAdapter mPagerAdapter;
+    private ViewPager viewPager;
+    private ScreenSlidePagerAdapter slidePagerAdapter;
 
     public ScheduleViewPagerFragment() {
     }
@@ -34,12 +32,12 @@ public class ScheduleViewPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_screen_slide, null);
-        mPager = (ViewPager) view.findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), mPager);
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        mPager.addOnPageChangeListener(mPagerAdapter);
-        mPager.setCurrentItem(1, false);
+        viewPager = (ViewPager) view.findViewById(R.id.pager);
+        slidePagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), viewPager);
+        viewPager.setAdapter(slidePagerAdapter);
+        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        viewPager.addOnPageChangeListener(slidePagerAdapter);
+        viewPager.setCurrentItem(1, false);
         return view;
     }
 

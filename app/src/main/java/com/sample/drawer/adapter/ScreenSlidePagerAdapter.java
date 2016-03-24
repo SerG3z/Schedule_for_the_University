@@ -18,9 +18,9 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
     FragmentManager manager;
     ViewPager viewPager;
 
-    public ScreenSlidePagerAdapter(FragmentManager fm, ViewPager pager) {
-        super(fm);
-        manager = fm;
+    public ScreenSlidePagerAdapter(FragmentManager fragmentManager, ViewPager pager) {
+        super(fragmentManager);
+        manager = fragmentManager;
         viewPager = pager;
 
     }
@@ -41,14 +41,14 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
 
     @Override
     public void onPageSelected(int position) {
-        Log.d(LOG_TAG, "PageSelector");
         if (position == 0) {
-            viewPager.setCurrentItem(NUM_PAGES, false);
             Log.d(LOG_TAG, "Swiped before first page, looping and resetting to last page.");
+            viewPager.setCurrentItem(NUM_PAGES, false);
         } else if (position == NUM_PAGES + 1) {
-            viewPager.setCurrentItem(1, false);
             Log.d(LOG_TAG, "Swiped beyond last page, looping and resetting to first page.");
+            viewPager.setCurrentItem(1, false);
         }
+        Log.d(LOG_TAG, "PageSelector");
     }
 
     @Override

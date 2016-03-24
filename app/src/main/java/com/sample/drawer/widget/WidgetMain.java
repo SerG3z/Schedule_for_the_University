@@ -3,6 +3,7 @@ package com.sample.drawer.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -13,10 +14,11 @@ import java.util.Arrays;
 public class WidgetMain extends AppWidgetProvider {
 
     final String LOG_TAG = "myLogs";
-
+    RecyclerView recyclerView;
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
+        recyclerView = (RecyclerView) context.g
         Log.d(LOG_TAG, "onEnabled");
     }
 
@@ -25,6 +27,8 @@ public class WidgetMain extends AppWidgetProvider {
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         Log.d(LOG_TAG, "onUpdate " + Arrays.toString(appWidgetIds));
+
+
     }
 
     @Override
@@ -38,6 +42,8 @@ public class WidgetMain extends AppWidgetProvider {
         super.onDisabled(context);
         Log.d(LOG_TAG, "onDisabled");
     }
+
+
 
 
 }
