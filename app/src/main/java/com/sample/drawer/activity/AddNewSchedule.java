@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +28,8 @@ public class AddNewSchedule extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    TabLayout tabs;
 
     public static Intent newIntent(Context context, Data item) {
         Intent intent = new Intent(context, AddNewSchedule.class);
@@ -67,11 +68,8 @@ public class AddNewSchedule extends AppCompatActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabsWeek);
-        String[] arrayWeek = getResources().getStringArray(R.array.day_week_list);
-        for (int i = 0; i < arrayWeek.length; i++) {
-            tabs.addTab(tabs.newTab().setText(arrayWeek[i]));
-        }
+        tabs = (TabLayout) findViewById(R.id.tabsWeek);
+        fillTabLayout();
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -89,6 +87,13 @@ public class AddNewSchedule extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void fillTabLayout() {
+        String[] arrayWeek = getResources().getStringArray(R.array.day_week_list);
+        for (int i = 0; i < arrayWeek.length; i++) {
+            tabs.addTab(tabs.newTab().setText(arrayWeek[i]));
+        }
     }
 
     private Data initializateIntent() {
