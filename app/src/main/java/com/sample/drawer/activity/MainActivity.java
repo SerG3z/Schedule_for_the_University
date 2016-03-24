@@ -1,4 +1,4 @@
-package com.sample.drawer;
+package com.sample.drawer.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
+import com.sample.drawer.R;
 import com.sample.drawer.fragments.schedule.ScheduleViewPagerFragment;
 import com.sample.drawer.utils.Utils;
 
@@ -58,9 +59,6 @@ public class MainActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-
 
     @Override
     protected void onDestroy() {

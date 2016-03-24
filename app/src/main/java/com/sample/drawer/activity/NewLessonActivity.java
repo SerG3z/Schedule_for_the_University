@@ -1,11 +1,11 @@
-package com.sample.drawer;
+package com.sample.drawer.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.sample.drawer.R;
 import com.sample.drawer.model.Data;
 
 import butterknife.Bind;
