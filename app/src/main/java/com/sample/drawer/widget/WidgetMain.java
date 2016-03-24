@@ -1,24 +1,29 @@
 package com.sample.drawer.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.RemoteViews;
+
+import com.sample.drawer.R;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Created by admin on 3/23/2016.
  */
 public class WidgetMain extends AppWidgetProvider {
 
-    final String LOG_TAG = "myLogs";
-    RecyclerView recyclerView;
+    final String LOG_TAG = "widgetLogs";
+
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        recyclerView = (RecyclerView) context.g
         Log.d(LOG_TAG, "onEnabled");
     }
 
@@ -27,9 +32,22 @@ public class WidgetMain extends AppWidgetProvider {
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         Log.d(LOG_TAG, "onUpdate " + Arrays.toString(appWidgetIds));
-
+        for (int i : appWidgetIds) {
+            updateWidget(context, appWidgetManager, i);
+        }
 
     }
+
+    private void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+        Intent intent = new Intent(context, WidgetService.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        remoteViews.setRemoteAdapter(R.id.widget_recycler, intent);
+
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+    }
+
+
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
@@ -42,8 +60,6 @@ public class WidgetMain extends AppWidgetProvider {
         super.onDisabled(context);
         Log.d(LOG_TAG, "onDisabled");
     }
-
-
 
 
 }

@@ -31,7 +31,10 @@
             android:theme="@style/AppThemeNonDrawer">
         </activity>
 
-
+        <service
+            android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS">
+        </service>
         <receiver
             android:name=".widget.WidgetMain"
             android:label="@string/app_name">

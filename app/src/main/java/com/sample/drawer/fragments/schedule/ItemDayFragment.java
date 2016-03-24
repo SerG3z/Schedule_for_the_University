@@ -70,7 +70,7 @@ public class ItemDayFragment extends Fragment {
         return view;
     }
 
-    private ArrayList<Data> getDataSet() {
+    public static ArrayList<Data> getDataSet() {
         ArrayList results = new ArrayList<Data>();
         for (int index = 0; index < 10; index++) {
             Data obj = new Data("time ", "type ", "nameLesson", "fioTeacher", "numberAuditory", "typeWeek");
