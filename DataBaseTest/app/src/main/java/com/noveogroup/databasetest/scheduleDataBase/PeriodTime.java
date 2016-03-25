@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
+import com.noveogroup.databasetest.util.TimeHelper;
 
 import java.sql.SQLException;
 
@@ -15,8 +16,10 @@ public class PeriodTime {
 
     @DatabaseField(id = true, canBeNull = false)
     private int number;
+    //format: "%2d:%2d"
     @DatabaseField(canBeNull = false)
     private String beginTime;
+    //format: "%2d:%2d"
     @DatabaseField(canBeNull = false)
     private String endTime;
 
@@ -51,6 +54,10 @@ public class PeriodTime {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public int getDuration(){
+        return TimeHelper.getDeltaTimeMinutes(beginTime,endTime);
     }
 
     public class DAO extends BaseDaoImpl<PeriodTime, Integer> {

@@ -15,7 +15,6 @@ public class Teacher {
     @DatabaseField(id = true, canBeNull = false)
     private String teacher;
 
-
     public Teacher(String teacher) {
         this.teacher = teacher;
     }

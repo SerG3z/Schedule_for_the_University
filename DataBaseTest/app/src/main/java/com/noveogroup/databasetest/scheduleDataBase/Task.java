@@ -2,8 +2,12 @@ package com.noveogroup.databasetest.scheduleDataBase;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.stmt.ColumnArg;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
+import com.noveogroup.databasetest.*;
 
 import java.sql.SQLException;
 
@@ -64,6 +68,24 @@ public class Task {
 
         protected DAO(ConnectionSource connectionSource, Class<Task> dataClass) throws SQLException {
             super(connectionSource, dataClass);
+        }
+
+        public PreparedQuery<Task> getTasksOrderedByDate(Period.DAO periodDao, Day.DAO dayDao) throws SQLException {
+            QueryBuilder<Day, Integer> dayQb = dayDao.queryBuilder();
+            dayQb.orderBy(Day.FIELD_DATE_NAME, true);
+
+            QueryBuilder<Period, Integer> periodQb = periodDao.queryBuilder();
+            periodQb.join(dayQb);
+
+            QueryBuilder<Task, Integer> taskQb = queryBuilder();
+            return taskQb.join(periodQb).prepare();
+        }
+
+        public PreparedQuery<Task> getTasksOrderedBySubject(Period.DAO periodDao) throws SQLException {
+            QueryBuilder<Period, Integer> periodQb = periodDao.queryBuilder();
+            periodQb.orderBy(Period.FIELD_SUBJECT_NAME,true);
+            QueryBuilder<Task, Integer> taskQb = queryBuilder();
+            return taskQb.join(periodQb).prepare();
         }
     }
 }

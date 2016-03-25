@@ -19,8 +19,6 @@ public class ScheduleDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private BaseDaoImpl[] daos = {null, null, null, null, null, null, null, null, null};
 
-    ;
-
     public ScheduleDataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
@@ -50,31 +48,43 @@ public class ScheduleDataBaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public BaseDaoImpl getDao(DaoType dao) {
-        try {
-            switch (dao) {
-                case CLASSROOM:
-                    return (new Classroom()).new DAO(getConnectionSource(), Classroom.class);
-                case TEACHER:
-                    return (new Teacher()).new DAO(getConnectionSource(), Teacher.class);
-                case PERIOD:
-                    return (new Period()).new DAO(getConnectionSource(), Period.class);
-                case DAY:
-                    return (new Day()).new DAO(getConnectionSource(), Day.class);
-                case PERIOD_TIME:
-                    return (new PeriodTime()).new DAO(getConnectionSource(), PeriodTime.class);
-                case PERIOD_TYPE:
-                    return (new PeriodType()).new DAO(getConnectionSource(), PeriodType.class);
-                case SUBJECT:
-                    return (new Subject()).new DAO(getConnectionSource(), Subject.class);
-                case TASK:
-                    return (new Task()).new DAO(getConnectionSource(), Task.class);
-                case WEEK:
-                    return (new Week()).new DAO(getConnectionSource(), Week.class);
+        if (daos[dao.ordinal()] == null)
+        {
+            try {
+                switch (dao) {
+                    case CLASSROOM:
+                        daos[DaoType.CLASSROOM.ordinal()] = (new Classroom()).new DAO(getConnectionSource(), Classroom.class);
+                        break;
+                    case TEACHER:
+                        daos[DaoType.TEACHER.ordinal()] = (new Teacher()).new DAO(getConnectionSource(), Teacher.class);
+                        break;
+                    case PERIOD:
+                        daos[DaoType.PERIOD.ordinal()] =  (new Period()).new DAO(getConnectionSource(), Period.class);
+                        break;
+                    case DAY:
+                        daos[DaoType.DAY.ordinal()] = (new Day()).new DAO(getConnectionSource(), Day.class);
+                        break;
+                    case PERIOD_TIME:
+                        daos[DaoType.PERIOD_TIME.ordinal()] = (new PeriodTime()).new DAO(getConnectionSource(), PeriodTime.class);
+                        break;
+                    case PERIOD_TYPE:
+                        daos[DaoType.PERIOD_TYPE.ordinal()] = (new PeriodType()).new DAO(getConnectionSource(), PeriodType.class);
+                        break;
+                    case SUBJECT:
+                        daos[DaoType.SUBJECT.ordinal()] = (new Subject()).new DAO(getConnectionSource(), Subject.class);
+                        break;
+                    case TASK:
+                        daos[DaoType.TASK.ordinal()] = (new Task()).new DAO(getConnectionSource(), Task.class);
+                        break;
+                    case WEEK:
+                        daos[DaoType.WEEK.ordinal()] = (new Week()).new DAO(getConnectionSource(), Week.class);
+                        break;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
+        return daos[dao.ordinal()];
     }
 
     @Override

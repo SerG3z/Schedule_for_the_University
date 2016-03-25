@@ -12,6 +12,9 @@ import java.sql.SQLException;
  */
 @DatabaseTable
 public class Period {
+
+    public static final String FIELD_SUBJECT_NAME = "subject";
+
     @DatabaseField(generatedId = true)
     private int id;
     @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)

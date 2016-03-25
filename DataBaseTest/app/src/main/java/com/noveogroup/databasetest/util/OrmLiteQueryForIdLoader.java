@@ -1,4 +1,4 @@
-package com.noveogroup.databasetest.scheduleDataBase;
+package com.noveogroup.databasetest.util;
 
 import android.content.Context;
 
