@@ -17,25 +17,21 @@ import com.sample.drawer.fragments.animation.ZoomOutPageTransformer;
  */
 public class ScheduleViewPagerFragment extends Fragment {
 
-    private ViewPager viewPager;
-    private ScreenSlidePagerAdapter slidePagerAdapter;
-
     public ScheduleViewPagerFragment() {
     }
 
     public static ScheduleViewPagerFragment newIntent() {
-        ScheduleViewPagerFragment viewPagerFragment = new ScheduleViewPagerFragment();
-        return viewPagerFragment;
+        return new ScheduleViewPagerFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_screen_slide, null);
-        viewPager = (ViewPager) view.findViewById(R.id.pager);
-        slidePagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), viewPager);
+        final ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
+        final ScreenSlidePagerAdapter slidePagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), viewPager);
         viewPager.setAdapter(slidePagerAdapter);
-        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+//        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         viewPager.addOnPageChangeListener(slidePagerAdapter);
         viewPager.setCurrentItem(1, false);
         return view;

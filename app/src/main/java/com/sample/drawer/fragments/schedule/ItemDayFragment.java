@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.sample.drawer.R;
@@ -22,13 +23,6 @@ import java.util.Random;
 public class ItemDayFragment extends Fragment {
 
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
-
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerViewHeader headerVeek;
-
-
     int backColor;
 
     public static ItemDayFragment newInstance(int page) {
@@ -51,27 +45,34 @@ public class ItemDayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.show_day_schedule, null);
 
-        headerVeek = (RecyclerViewHeader) view.findViewById(R.id.headerItemWeek);
+        final RecyclerViewHeader headerWeek = (RecyclerViewHeader) view.findViewById(R.id.headerItemWeek);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        final RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         //        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this.getActivity());
+        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
-        mAdapter = new MyRecyclerViewAdapter(getDataSet());
+        final RecyclerView.Adapter mAdapter = new MyRecyclerViewAdapter(getDataSet());
+
         mRecyclerView.setAdapter(mAdapter);
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this.getActivity(), LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
         mRecyclerView.setBackgroundColor(backColor);
 
-        headerVeek.attachTo(mRecyclerView, true);
+        // Code to Add an item with default animation
+        //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
+
+        // Code to remove an item with default animation
+        //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
+
+        headerWeek.attachTo(mRecyclerView, true);
         return view;
     }
 
     public static ArrayList<Data> getDataSet() {
-        ArrayList results = new ArrayList<Data>();
+        ArrayList<Data> results = new ArrayList<>();
         for (int index = 0; index < 10; index++) {
             Data obj = new Data("time ", "type ", "nameLesson", "fioTeacher", "numberAuditory", "typeWeek");
             results.add(index, obj);

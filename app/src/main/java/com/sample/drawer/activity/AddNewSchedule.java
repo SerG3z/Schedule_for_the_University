@@ -25,9 +25,7 @@ import java.util.ArrayList;
 public class AddNewSchedule extends AppCompatActivity {
     private final static String RETURN_RECORD_KEY = "week";
     private static String LOG_TAG = "RecyclerViewActivity";
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     TabLayout tabs;
 
@@ -42,9 +40,9 @@ public class AddNewSchedule extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_day);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
+        final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
 //        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
+        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
@@ -91,12 +89,12 @@ public class AddNewSchedule extends AppCompatActivity {
 
     private void fillTabLayout() {
         String[] arrayWeek = getResources().getStringArray(R.array.day_week_list);
-        for (int i = 0; i < arrayWeek.length; i++) {
-            tabs.addTab(tabs.newTab().setText(arrayWeek[i]));
+        for (final String anArrayWeek : arrayWeek) {
+            tabs.addTab(tabs.newTab().setText(anArrayWeek));
         }
     }
 
-    private Data initializateIntent() {
+    private Data initializeIntent() {
         Data item = null;
         Intent intent = getIntent();
         if (intent != null) {
@@ -122,11 +120,11 @@ public class AddNewSchedule extends AppCompatActivity {
 
     //    получить все данные с базы
     private ArrayList<Data> getDataSet() {
-        ArrayList results = new ArrayList<Data>();
+        ArrayList<Data> results = new ArrayList<>();
         for (int index = 0; index < 10; index++) {
             Data obj = new Data("time ", "type ", "nameLesson", "fioTeacher", "numberAuditory", "typeWeek");
-            if (initializateIntent() != null) {
-                results.add(index, initializateIntent());
+            if (initializeIntent() != null) {
+                results.add(index, initializeIntent());
             } else {
                 results.add(index, obj);
             }
