@@ -2,6 +2,7 @@ package com.noveogroup.databasetest.scheduleDataBase;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
@@ -29,7 +30,6 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
 
     public ScheduleDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
     }
 
     public Classroom.DAO getClassroomDAO() {

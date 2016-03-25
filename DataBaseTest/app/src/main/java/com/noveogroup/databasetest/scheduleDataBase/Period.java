@@ -173,6 +173,11 @@ public class Period {
         }
     }
 
+    @Override
+    public String toString() {
+        return subject.getSubject() + ", " + teacher.getTeacher() + ", " + type.getPeriodType() + ", " + classroom.getClassroom();
+    }
+
     public class DAO extends BaseDaoImpl<Period, Integer> {
 
         protected DAO(ConnectionSource connectionSource, Class<Period> dataClass) throws SQLException {

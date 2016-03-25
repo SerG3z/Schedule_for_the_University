@@ -1,6 +1,7 @@
 package com.noveogroup.databasetest.scheduleDataBase;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
+import com.j256.ormlite.dao.EagerForeignCollection;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -15,11 +16,14 @@ import java.util.ArrayList;
  */
 @DatabaseTable
 public class Week {
+
+    public static final String FIELD_DAYS_NAME = "days";
+
     @DatabaseField(id = true, canBeNull = false)
     private int number;
     @DatabaseField(canBeNull = false)
     private boolean isFirst;
-    @ForeignCollectionField(eager = true)
+    @ForeignCollectionField(eager = true, foreignFieldName = FIELD_DAYS_NAME)
     private ForeignCollection<Day> days;
 
     public Week(int number, boolean isFirst, ForeignCollection<Day> days) {
@@ -28,9 +32,14 @@ public class Week {
         this.days = days;
     }
 
-    public Week(int number, boolean isFirst) {
+    public Week(int number, boolean isFirst, Week.DAO weekDAO) {
         this.number = number;
         this.isFirst = isFirst;
+        try {
+            days = weekDAO.getEmptyForeignCollection(FIELD_DAYS_NAME);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public Week() {
@@ -38,7 +47,7 @@ public class Week {
 
     public ArrayList<Day> getDays() {
         ArrayList<Day> daysList = new ArrayList<Day>();
-        for (Day item : daysList) {
+        for (Day item : days) {
             daysList.add(item);
         }
         return daysList;
@@ -62,6 +71,10 @@ public class Week {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public void addDay(Day day){
+        days.add(day);
     }
 
     public class DAO extends BaseDaoImpl<Week, Integer> {
