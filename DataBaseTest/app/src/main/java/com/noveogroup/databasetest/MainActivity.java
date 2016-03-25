@@ -11,7 +11,8 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.j256.ormlite.android.apptools.OrmLiteQueryForAllLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
-import com.noveogroup.databasetest.ScheduleDBHelper;
+import com.noveogroup.databasetest.scheduleDataBase.ScheduleDBHelper;
+import com.noveogroup.databasetest.scheduleDataBase.Subject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,18 +23,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     static final int LOADER_PERIOD_ALL_ID = 1;
     static final int LOADER_TEACHER_QUERY_ID = 2;
     static final String ARG_TEACHER = "teacher";
+
     private ScheduleDBHelper helper;
-    TeacherDAO teacherDao;
-    PeriodDAO periodDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         helper = OpenHelperManager
                 .getHelper(getApplicationContext(), ScheduleDBHelper.class);
 
         try {
+            Subject.DAO subjectDAO = helper.getDao(ScheduleDBHelper.DaoType.SUBJECT);
+
+
             teacherDao = helper.getTeacherDAO();
             periodDAO = helper.getPeriodDAO();
             teacherDao.create(new Teacher("Smoke W."));
