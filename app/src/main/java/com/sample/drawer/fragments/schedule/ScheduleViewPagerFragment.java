@@ -2,15 +2,15 @@ package com.sample.drawer.fragments.schedule;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.ScreenSlidePagerAdapter;
-import com.sample.drawer.fragments.animation.ZoomOutPageTransformer;
+import com.sample.drawer.fragments.animation.ReaderViewPagerTransformer;
 
 /**
  * Created by admin on 3/18/2016.
@@ -31,7 +31,7 @@ public class ScheduleViewPagerFragment extends Fragment {
         final ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
         final ScreenSlidePagerAdapter slidePagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), viewPager);
         viewPager.setAdapter(slidePagerAdapter);
-//        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        viewPager.setPageTransformer(true, new ReaderViewPagerTransformer(ReaderViewPagerTransformer.TransformType.FLOW));
         viewPager.addOnPageChangeListener(slidePagerAdapter);
         viewPager.setCurrentItem(1, false);
         return view;
@@ -40,7 +40,6 @@ public class ScheduleViewPagerFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
 }

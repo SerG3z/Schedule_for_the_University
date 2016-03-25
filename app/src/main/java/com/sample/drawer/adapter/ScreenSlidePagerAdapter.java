@@ -14,7 +14,7 @@ import com.sample.drawer.fragments.schedule.ItemDayFragment;
 public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implements ViewPager.OnPageChangeListener {
 
     private static final String LOG_TAG = "ViewPagerLoop";
-    private static final int NUM_PAGES = 7;
+    private static final int NUM_PAGES = 14;
     FragmentManager manager;
     ViewPager viewPager;
 

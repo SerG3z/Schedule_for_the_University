@@ -17,6 +17,7 @@ import com.sample.drawer.decoration.DividerItemDecoration;
 import com.sample.drawer.model.Data;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 
 
@@ -33,18 +34,28 @@ public class ItemDayFragment extends Fragment {
         return scheduleFragment;
     }
 
+    public static ArrayList<Data> getDataSet() {
+        ArrayList<Data> results = new ArrayList<>();
+        for (int index = 0; index < 10; index++) {
+            Data obj = new Data("time ", "type ", "nameLesson", "fioTeacher", "numberAuditory", "typeWeek");
+            results.add(index, obj);
+        }
+        return results;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Random random = new Random();
-        backColor = Color.argb(150, random.nextInt(256), random.nextInt(256), random.nextInt(256));
+        backColor = Color.argb(50, random.nextInt(256), random.nextInt(256), random.nextInt(256));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.show_day_schedule, null);
 
+        final TextView headerTextView = (TextView) view.findViewById(R.id.headerTextView);
         final RecyclerViewHeader headerWeek = (RecyclerViewHeader) view.findViewById(R.id.headerItemWeek);
 
         final RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
@@ -67,19 +78,17 @@ public class ItemDayFragment extends Fragment {
         // Code to remove an item with default animation
         //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
 
+        headerTextView.setText(setCalendarTextView());
         headerWeek.attachTo(mRecyclerView, true);
         return view;
     }
 
-    public static ArrayList<Data> getDataSet() {
-        ArrayList<Data> results = new ArrayList<>();
-        for (int index = 0; index < 10; index++) {
-            Data obj = new Data("time ", "type ", "nameLesson", "fioTeacher", "numberAuditory", "typeWeek");
-            results.add(index, obj);
-        }
-        return results;
+    private String setCalendarTextView() {
+        Calendar calendar = Calendar.getInstance();
+        String[] dayWeek = getResources().getStringArray(R.array.day_week_list);
+        String date = dayWeek[calendar.get(calendar.DAY_OF_WEEK) - 2];
+        return date;
     }
-
 
 
 }
