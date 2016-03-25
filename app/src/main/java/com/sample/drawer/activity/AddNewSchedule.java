@@ -1,7 +1,9 @@
 package com.sample.drawer.activity;
 
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
@@ -12,26 +14,35 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
 import com.sample.drawer.model.Data;
+import com.sample.drawer.scheduleDataBase.Period;
+import com.sample.drawer.scheduleDataBase.ScheduleDBHelper;
+import com.sample.drawer.utils.LoaderIdManager;
+import com.sample.drawer.utils.OrmLiteQueryForIdLoader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by admin on 3/23/2016.
  */
 public class AddNewSchedule extends AppCompatActivity {
     private final static String RETURN_RECORD_KEY = "week";
+    private final static String PERIOD_ID_KEY = "week";
     private static String LOG_TAG = "RecyclerViewActivity";
     private RecyclerView.Adapter mAdapter;
 
     TabLayout tabs;
 
-    public static Intent newIntent(Context context, Data item) {
+    private LoaderIdManager idManager;
+
+    public static Intent newIntent(Context context, int newPeriodId) {
         Intent intent = new Intent(context, AddNewSchedule.class);
-        intent.putExtra(RETURN_RECORD_KEY, (Parcelable) item);
+        intent.putExtra(RETURN_RECORD_KEY, newPeriodId);
         return intent;
     }
 
@@ -85,6 +96,8 @@ public class AddNewSchedule extends AppCompatActivity {
 
             }
         });
+
+        idManager = new LoaderIdManager();
     }
 
     private void fillTabLayout() {
@@ -94,13 +107,34 @@ public class AddNewSchedule extends AppCompatActivity {
         }
     }
 
-    private Data initializeIntent() {
-        Data item = null;
+    private Period initializeIntent() {
+        final Period[] period = {null};
         Intent intent = getIntent();
+        int id = -1;
         if (intent != null) {
-            item = intent.getParcelableExtra(RETURN_RECORD_KEY);
+            id = intent.getIntExtra(RETURN_RECORD_KEY, -1);
         }
-        return item;
+        if (id != -1){
+            Bundle bundle = new Bundle();
+            bundle.putInt(PERIOD_ID_KEY, id);
+            getLoaderManager().initLoader(idManager.grabId(), null, new LoaderManager.LoaderCallbacks<List<Period>>() {
+                @Override
+                public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
+                    ScheduleDBHelper helper = OpenHelperManager
+                            .getHelper(getApplicationContext(), ScheduleDBHelper.class);
+                    return new OrmLiteQueryForIdLoader<Period, Integer>(getBaseContext(),
+                            helper.getPeriodDAO(), args.getInt(PERIOD_ID_KEY));
+                }
+                @Override
+                public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
+                    if (!data.isEmpty())
+                        period[0] = data.get(0);
+                }
+                @Override
+                public void onLoaderReset(Loader<List<Period>> loader) {}
+            });
+        }
+        return period[0];
     }
 
 
@@ -123,11 +157,12 @@ public class AddNewSchedule extends AppCompatActivity {
         ArrayList<Data> results = new ArrayList<>();
         for (int index = 0; index < 10; index++) {
             Data obj = new Data("time ", "type ", "nameLesson", "fioTeacher", "numberAuditory", "typeWeek");
-            if (initializeIntent() != null) {
-                results.add(index, initializeIntent());
+            /*if (initializeIntent() != null) {
+                //results.add(index, initializeIntent());
             } else {
                 results.add(index, obj);
-            }
+            }*/
+            results.add(index, obj);
         }
         return results;
     }
