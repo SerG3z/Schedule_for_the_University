@@ -41,6 +41,13 @@
     <string name="type_week">Тип недели</string>
     <string name="button_save">Сохранить</string>
 
+    <!-- button edit_schedule-->
     <string name="edit_schedule">Изменить расписание</string>
+
+    <!-- cardView item task show info-->
+    <string name="lesson">Предмет</string>
+    <string name="info">Задание</string>
+    <string name="time">Срок выполнения</string>
+
 
 </resources>

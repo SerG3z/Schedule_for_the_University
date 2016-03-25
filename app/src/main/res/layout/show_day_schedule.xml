@@ -13,7 +13,7 @@
     <com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader
         android:id="@+id/headerItemWeek"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/heightHeaderWeek"
         android:background="@android:color/holo_blue_dark"
         android:layout_gravity="center_horizontal|top">
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_add_new_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        />
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar_add_new_task"
+        android:layout_margin="@dimen/margin10">
+
+        <EditText
+            android:id="@+id/add_task_lesson"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin30"
+            android:hint="@string/name_lesson"/>
+
+        <TextView
+            android:id="@+id/add_task_deadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/add_task_lesson"
+            android:layout_marginTop="@dimen/margin30"
+            android:hint="@string/time"
+            android:paddingBottom="@dimen/textViewTopBottom"
+            android:paddingTop="@dimen/textViewTopBottom"
+            android:textSize="@dimen/textSizeTextView"
+            />
+
+        <EditText
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/add_task_deadline"
+            android:layout_marginTop="@dimen/margin30"
+            android:hint="@string/info"
+            />
+
+        <Button
+            android:id="@+id/button_save_new_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/margin20"
+            android:layout_marginEnd="@dimen/margin20"
+            android:layout_marginRight="@dimen/margin20"
+            android:text="@string/button_save"/>
+
+    </RelativeLayout>
+</RelativeLayout>

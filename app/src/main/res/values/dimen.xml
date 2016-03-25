@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin5">5dp</dimen>
+    <dimen name="margin10">10dp</dimen>
+    <dimen name="margin16">16dp</dimen>
+    <dimen name="margin20">20dp</dimen>
+    <dimen name="margin30">30dp</dimen>
+    <dimen name="textSizeTextView">18dp</dimen>
+    <dimen name="textViewTopBottom">8dp</dimen>
+    <dimen name="cardRadius">4dp</dimen>
+    <dimen name="padding25">25dp</dimen>
+    <dimen name="heightHeaderWeek">40dp</dimen>
+
+
+</resources>
