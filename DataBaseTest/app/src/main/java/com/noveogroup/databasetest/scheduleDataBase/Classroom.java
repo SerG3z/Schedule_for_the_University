@@ -2,8 +2,11 @@ package com.noveogroup.databasetest.scheduleDataBase;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
+import com.noveogroup.databasetest.*;
 
 import java.sql.SQLException;
 
