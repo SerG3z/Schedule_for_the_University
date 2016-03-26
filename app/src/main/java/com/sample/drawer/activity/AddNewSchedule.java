@@ -31,14 +31,13 @@ import java.util.List;
  * Created by admin on 3/23/2016.
  */
 public class AddNewSchedule extends AppCompatActivity {
-    private final static String RETURN_RECORD_KEY = "week";
-    private final static String PERIOD_ID_KEY = "week";
+    private static final  String RETURN_RECORD_KEY = "week";
+    private static final  String PERIOD_ID_KEY = "periodId";
+    private static final  int LOADER_PERIOD_BY_ID = 1;
     private static String LOG_TAG = "RecyclerViewActivity";
     private RecyclerView.Adapter mAdapter;
 
     TabLayout tabs;
-
-    private LoaderIdManager idManager;
 
     public static Intent newIntent(Context context, int newPeriodId) {
         Intent intent = new Intent(context, AddNewSchedule.class);
@@ -97,7 +96,6 @@ public class AddNewSchedule extends AppCompatActivity {
             }
         });
 
-        idManager = new LoaderIdManager();
     }
 
     private void fillTabLayout() {
@@ -117,12 +115,12 @@ public class AddNewSchedule extends AppCompatActivity {
         if (id != -1){
             Bundle bundle = new Bundle();
             bundle.putInt(PERIOD_ID_KEY, id);
-            getLoaderManager().initLoader(idManager.grabId(), null, new LoaderManager.LoaderCallbacks<List<Period>>() {
+            getLoaderManager().initLoader(LOADER_PERIOD_BY_ID, null, new LoaderManager.LoaderCallbacks<List<Period>>() {
                 @Override
                 public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
                     ScheduleDBHelper helper = OpenHelperManager
                             .getHelper(getApplicationContext(), ScheduleDBHelper.class);
-                    return new OrmLiteQueryForIdLoader<Period, Integer>(getBaseContext(),
+                    return new OrmLiteQueryForIdLoader<>(getBaseContext(),
                             helper.getPeriodDAO(), args.getInt(PERIOD_ID_KEY));
                 }
                 @Override

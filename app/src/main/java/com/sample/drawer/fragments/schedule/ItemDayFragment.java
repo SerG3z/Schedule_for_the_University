@@ -1,23 +1,31 @@
 package com.sample.drawer.fragments.schedule;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
 import com.sample.drawer.model.Data;
+import com.sample.drawer.scheduleDataBase.Period;
+import com.sample.drawer.scheduleDataBase.ScheduleDBHelper;
+import com.sample.drawer.utils.OrmLiteQueryForIdLoader;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
 
@@ -42,6 +50,8 @@ public class ItemDayFragment extends Fragment {
         }
         return results;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
