@@ -48,6 +48,8 @@
     <string name="lesson">Предмет</string>
     <string name="info">Задание</string>
     <string name="time">Срок выполнения</string>
+    <string name="toast_choose_subject">Выберите предмет!</string>
+    <string name="toast_choose_time">Выберите время!</string>
 
 
 </resources>

@@ -59,6 +59,11 @@ public class PeriodTime {
         return TimeHelper.getDeltaTimeMinutes(beginTime, endTime);
     }
 
+    @Override
+    public String toString() {
+        return beginTime + " - " + endTime;
+    }
+
     public class DAO extends BaseDaoImpl<PeriodTime, Integer> {
 
         protected DAO(ConnectionSource connectionSource, Class<PeriodTime> dataClass) throws SQLException {

@@ -30,6 +30,11 @@ public class PeriodType {
         this.periodType = periodType;
     }
 
+    @Override
+    public String toString() {
+        return periodType;
+    }
+
     public class DAO extends BaseDaoImpl<PeriodType, String> {
 
         protected DAO(ConnectionSource connectionSource, Class<PeriodType> dataClass) throws SQLException {

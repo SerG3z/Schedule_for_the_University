@@ -96,7 +96,7 @@ public class ItemDayFragment extends Fragment {
     private String setCalendarTextView() {
         Calendar calendar = Calendar.getInstance();
         String[] dayWeek = getResources().getStringArray(R.array.day_week_list);
-        String date = dayWeek[calendar.get(calendar.DAY_OF_WEEK) - 2];
+        String date = dayWeek[calendar.get(calendar.DAY_OF_WEEK) - 1];
         return date;
     }
 

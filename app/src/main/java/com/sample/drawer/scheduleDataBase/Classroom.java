@@ -30,10 +30,17 @@ public class Classroom {
         this.classroom = classroom;
     }
 
+
+    @Override
+    public String toString() {
+        return classroom;
+    }
+
     public class DAO extends BaseDaoImpl<Classroom, String> {
 
         protected DAO(ConnectionSource connectionSource, Class<Classroom> dataClass) throws SQLException {
             super(connectionSource, dataClass);
         }
     }
+
 }
