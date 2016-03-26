@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.sample.drawer.R;
-import com.sample.drawer.adapter.MyRecyclerViewAdapter;
+import com.sample.drawer.adapter.ScheduleRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
 import com.sample.drawer.model.Data;
 
@@ -58,28 +58,28 @@ public class ItemDayFragment extends Fragment {
         final TextView headerTextView = (TextView) view.findViewById(R.id.headerTextView);
         final RecyclerViewHeader headerWeek = (RecyclerViewHeader) view.findViewById(R.id.headerItemWeek);
 
-        final RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         //        mRecyclerView.setHasFixedSize(true);
-        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+        recyclerView.setLayoutManager(layoutManager);
 
 
-        final RecyclerView.Adapter mAdapter = new MyRecyclerViewAdapter(getDataSet());
+        final RecyclerView.Adapter recyclerViewAdapter = new ScheduleRecyclerViewAdapter(getDataSet());
 
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(recyclerViewAdapter);
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this.getActivity(), LinearLayoutManager.VERTICAL);
-        mRecyclerView.addItemDecoration(itemDecoration);
-        mRecyclerView.setBackgroundColor(backColor);
+        recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.setBackgroundColor(backColor);
 
         // Code to Add an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
+        //(() mAdapter).addItem(obj, index);
 
         // Code to remove an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
+        //(() mAdapter).deleteItem(index);
 
         headerTextView.setText(setCalendarTextView());
-        headerWeek.attachTo(mRecyclerView, true);
+        headerWeek.attachTo(recyclerView, true);
         return view;
     }
 

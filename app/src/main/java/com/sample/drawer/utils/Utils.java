@@ -41,7 +41,7 @@ public class Utils {
                     if (drawerItem.getIdentifier() == 1) {
                         activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, ScheduleViewPagerFragment.newIntent()).commit();
                     } else if (drawerItem.getIdentifier() == 2) {
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new TaskFragment()).commit();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, TaskFragment.newIntent()).commit();
                     } else if (drawerItem.getIdentifier() == 3) {
                         activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new NewsFragment()).commit();
                     } else if (drawerItem.getIdentifier() == 70) {

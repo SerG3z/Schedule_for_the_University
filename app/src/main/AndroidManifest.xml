@@ -32,6 +32,14 @@
             android:theme="@style/AppThemeNonDrawer">
         </activity>
 
+        <activity
+            android:name=".activity.ShowTaskActivity"
+            android:label="@string/info_tasks"
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNonDrawer">
+        </activity>
+
         <service
             android:name=".widget.WidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS">

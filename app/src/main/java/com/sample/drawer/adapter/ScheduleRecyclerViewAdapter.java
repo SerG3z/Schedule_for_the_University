@@ -16,20 +16,20 @@ import java.util.List;
 /**
  * Created by admin on 3/23/2016.
  */
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.BaseHolder> {
-    private final static String LOG_TAG = "MyRecyclerViewAdapter";
+public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRecyclerViewAdapter.BaseHolder> {
+    private final static String LOG_TAG = "Schedule Adapter";
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_EMPTY = 1;
     private final ArrayList<Data> dataList = new ArrayList<>();
-    private MyClickListener myClickListener;
+    private ScheduleClickListener scheduleClickListener;
 
-    public MyRecyclerViewAdapter(ArrayList<Data> myDataset) {
+    public ScheduleRecyclerViewAdapter(ArrayList<Data> myDataset) {
         dataList.addAll(myDataset);
     }
 
-    public void setOnItemClickListener(MyClickListener myClickListener) {
-        this.myClickListener = myClickListener;
+    public void setOnItemClickListener(ScheduleClickListener myClickListener) {
+        this.scheduleClickListener = myClickListener;
     }
 
     @Override
@@ -38,10 +38,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         if (viewType == TYPE_NORMAL) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_lesson, parent, false);
-            holder = new DataObjectHolder(view, myClickListener);
+            holder = new DataObjectHolder(view, scheduleClickListener);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empty_lesson, parent, false);
-            holder = new EmptyObjectHolder(view, myClickListener);
+            holder = new EmptyObjectHolder(view, scheduleClickListener);
         }
         return holder;
     }
@@ -87,7 +87,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
 
-    public interface MyClickListener {
+    public interface ScheduleClickListener {
         public void onItemClick(int position, View v);
     }
 
@@ -109,9 +109,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         //        @Bind(R.id.item_number_auditory)
         TextView numberAuditory;
 
-        private MyClickListener clickListener;
+        private ScheduleClickListener clickListener;
 
-        public DataObjectHolder(View itemView, MyClickListener myClickListener) {
+        public DataObjectHolder(View itemView, ScheduleClickListener myClickListener) {
             super(itemView);
             clickListener = myClickListener;
 //            ButterKnife.bind(itemView);
@@ -133,9 +133,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     public class EmptyObjectHolder extends BaseHolder implements View.OnClickListener {
         TextView time;
-        private MyClickListener clickListener;
+        private ScheduleClickListener clickListener;
 
-        public EmptyObjectHolder(final View itemView, MyClickListener myClickListener) {
+        public EmptyObjectHolder(final View itemView, ScheduleClickListener myClickListener) {
             super(itemView);
             clickListener = myClickListener;
             time = (TextView) itemView.findViewById(R.id.item_time_empty);

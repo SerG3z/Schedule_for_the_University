@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,7 @@ import android.view.View;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.sample.drawer.R;
-import com.sample.drawer.adapter.MyRecyclerViewAdapter;
+import com.sample.drawer.adapter.ScheduleRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
 import com.sample.drawer.model.Data;
 import com.sample.drawer.scheduleDataBase.Period;
@@ -34,7 +33,7 @@ public class AddNewSchedule extends AppCompatActivity {
     private final static String RETURN_RECORD_KEY = "week";
     private final static String PERIOD_ID_KEY = "week";
     private static String LOG_TAG = "RecyclerViewActivity";
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.Adapter adapter;
 
     TabLayout tabs;
 
@@ -57,18 +56,18 @@ public class AddNewSchedule extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
-        mAdapter = new MyRecyclerViewAdapter(getDataSet());
-        mRecyclerView.setAdapter(mAdapter);
+        adapter = new ScheduleRecyclerViewAdapter(getDataSet());
+        mRecyclerView.setAdapter(adapter);
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
 
 
         // Code to Add an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
+        //(() ).addItem(obj, index);
 
         // Code to remove an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
+        //(() ).deleteItem(index);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarForTabs);
@@ -141,8 +140,8 @@ public class AddNewSchedule extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(
-                new MyRecyclerViewAdapter.MyClickListener() {
+        ((ScheduleRecyclerViewAdapter) adapter).setOnItemClickListener(
+                new ScheduleRecyclerViewAdapter.ScheduleClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
                         Intent intent = new Intent(getBaseContext(), NewLessonActivity.class);
