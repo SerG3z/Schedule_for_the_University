@@ -13,6 +13,9 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        //TODO: не забыть убрать
+        deleteDatabase("schedule.db");
+
         // Create an InitializerBuilder
         Stetho.InitializerBuilder initializerBuilder =
                 Stetho.newInitializerBuilder(this);

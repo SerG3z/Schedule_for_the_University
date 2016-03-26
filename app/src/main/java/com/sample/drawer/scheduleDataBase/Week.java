@@ -23,7 +23,7 @@ public class Week {
     private int number;
     @DatabaseField(canBeNull = false)
     private boolean isFirst;
-    @ForeignCollectionField(eager = true, foreignFieldName = FIELD_DAYS_NAME)
+    @ForeignCollectionField(eager = true, columnName = FIELD_DAYS_NAME)
     private ForeignCollection<Day> days;
 
     public Week(int number, boolean isFirst, ForeignCollection<Day> days) {

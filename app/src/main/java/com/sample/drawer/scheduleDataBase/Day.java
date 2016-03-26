@@ -29,7 +29,7 @@ public class Day {
     private Date date;
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Period> periods;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true, canBeNull = false)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Week week;
 
     public Day(Date date, ForeignCollection<Period> periods) {
