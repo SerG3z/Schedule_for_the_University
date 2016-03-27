@@ -45,20 +45,6 @@ public class MyApplication extends Application {
 
         HelperFactory.setHelper(getApplicationContext());
 
-        try {
-            HelperFactory.getHelper().getSubjectDAO().create(new Subject("Предмет 1"));
-            HelperFactory.getHelper().getSubjectDAO().create(new Subject("Предмет 2"));
-            HelperFactory.getHelper().getPeriodTypeDAO().create(new PeriodType("Тип 1"));
-            HelperFactory.getHelper().getPeriodTypeDAO().create(new PeriodType("Тип 2"));
-            HelperFactory.getHelper().getClassroomDAO().create(new Classroom("Аудитория 1"));
-            HelperFactory.getHelper().getClassroomDAO().create(new Classroom("Аудитория 2"));
-            HelperFactory.getHelper().getPeriodTimeDAO().create(new PeriodTime("12:34","56:78"));
-            HelperFactory.getHelper().getPeriodTimeDAO().create(new PeriodTime("87:65","43:21"));
-            HelperFactory.getHelper().getTeacherDAO().create(new Teacher("Препод 1"));
-            HelperFactory.getHelper().getTeacherDAO().create(new Teacher("Препод 2"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

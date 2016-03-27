@@ -41,6 +41,16 @@
     <string name="type_week">Тип недели</string>
     <string name="button_save">Сохранить</string>
 
+    <!-- default lesson time-->
+    <string-array name="type_lesson_time">
+        <item>08:00</item>
+        <item>09:50</item>
+        <item>11:40</item>
+        <item>13:45</item>
+        <item>15:35</item>
+        <item>17:25</item>
+    </string-array>
+
     <!-- button edit_schedule-->
     <string name="edit_schedule">Изменить расписание</string>
 
