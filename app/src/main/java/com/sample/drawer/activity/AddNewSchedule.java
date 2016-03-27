@@ -1,5 +1,6 @@
 package com.sample.drawer.activity;
 
+import android.animation.Animator;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
@@ -7,17 +8,22 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
+import com.sample.drawer.decoration.FloatingActionButton;
 import com.sample.drawer.scheduleDataBase.Day;
 import com.sample.drawer.scheduleDataBase.Period;
 import com.sample.drawer.scheduleDataBase.ScheduleDBHelper;
@@ -88,7 +94,7 @@ public class AddNewSchedule extends AppCompatActivity {
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                fillTabWithLessons(tab.getPosition()+1);
+                fillTabWithLessons(tab.getPosition() + 1);
             }
 
             @Override
@@ -99,6 +105,20 @@ public class AddNewSchedule extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+
+        FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
+                .withDrawable(ContextCompat.getDrawable(getBaseContext(),R.drawable.ic_add_black_18dp))
+                .withButtonColor(ContextCompat.getColor(getBaseContext(), R.color.accent))
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 16)
+                .create();
+        fabButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                //TODO: вызвать добавление пары
+                return false;
             }
         });
 
