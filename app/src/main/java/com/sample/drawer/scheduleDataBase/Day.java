@@ -64,7 +64,7 @@ public class Day {
 
     public List<Period> getPeriods() {
         ArrayList<Period> periodsList = new ArrayList<Period>();
-        for (Period item : periodsList) {
+        for (Period item : periods) {
             periodsList.add(item);
         }
         return periodsList;

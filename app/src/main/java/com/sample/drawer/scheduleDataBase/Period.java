@@ -130,9 +130,9 @@ public class Period {
         private final boolean firstWeek;
         private final boolean secondWeek;
         //optional parameters
-        private PeriodType type = null;
-        private Classroom classroom = null;
-        private Teacher teacher = null;
+        private PeriodType type = new PeriodType("");
+        private Classroom classroom = new Classroom("");
+        private Teacher teacher = new Teacher("");
         private Task task = null;
         private Day day = null;
 

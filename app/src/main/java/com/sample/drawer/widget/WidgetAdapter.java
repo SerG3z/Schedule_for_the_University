@@ -9,7 +9,7 @@ import android.widget.RemoteViewsService;
 
 import com.sample.drawer.R;
 import com.sample.drawer.fragments.schedule.ItemDayFragment;
-import com.sample.drawer.model.Data;
+import com.sample.drawer.scheduleDataBase.Period;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class WidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
 
-    List<Data> dataList;
+    List<Period> periodList;
     Context context;
     int widgetId;
 
@@ -31,8 +31,8 @@ public class WidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onCreate() {
-        dataList = new ArrayList<Data>();
-        dataList = ItemDayFragment.getDataSet();
+        periodList = new ArrayList<Period>();
+        periodList = ItemDayFragment.getLessons();
         Log.d("widgetLogs", "onCreateWidgetAdapter");
     }
 
@@ -40,7 +40,7 @@ public class WidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return dataList.size();
+        return periodList.size();
     }
 
     @Override
@@ -56,11 +56,12 @@ public class WidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public RemoteViews getViewAt(final int position) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.item_lesson);
-        remoteViews.setTextViewText(R.id.item_time, dataList.get(position).getTime());
-        remoteViews.setTextViewText(R.id.item_type_lesson, dataList.get(position).getTypeLesson());
-        remoteViews.setTextViewText(R.id.item_name_lesson, dataList.get(position).getNameLesson());
-        remoteViews.setTextViewText(R.id.item_fio_teacher, dataList.get(position).getFioTeacher());
-        remoteViews.setTextViewText(R.id.item_number_auditory, dataList.get(position).getNumberAuditory());
+
+        remoteViews.setTextViewText(R.id.item_time, periodList.get(position).getTime().toString());
+        remoteViews.setTextViewText(R.id.item_type_lesson, periodList.get(position).getType().toString());
+        remoteViews.setTextViewText(R.id.item_name_lesson, periodList.get(position).getSubject().toString());
+        remoteViews.setTextViewText(R.id.item_fio_teacher, periodList.get(position).getTeacher().toString());
+        remoteViews.setTextViewText(R.id.item_number_auditory, periodList.get(position).getClassroom().toString());
         return remoteViews;
     }
 
@@ -76,7 +77,7 @@ public class WidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onDataSetChanged() {
-        dataList = ItemDayFragment.getDataSet();
+        periodList = ItemDayFragment.getLessons();
     }
 
     @Override

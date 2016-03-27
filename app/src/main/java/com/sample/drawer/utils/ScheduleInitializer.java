@@ -54,11 +54,13 @@ public class ScheduleInitializer {
             for (String s : lessonTypes){
                 helper.getPeriodTypeDAO().create(new PeriodType(s));
             }
+            helper.getSubjectDAO().create(new Subject("Предмет 1"));
+            helper.getSubjectDAO().create(new Subject("Предмет 2"));
             helper.getClassroomDAO().create(new Classroom("Аудитория 1"));
             helper.getClassroomDAO().create(new Classroom("Аудитория 2"));
             String[] lessonTimes= res.getStringArray(R.array.type_lesson_time);
             for (String begin : lessonTimes){
-                String end = TimeHelper.addDeltaTimeMinutes(begin,res.getInteger(R.integer.default_lesson_duration));
+                String end = TimeHelper.addDeltaTimeMinutes(begin, res.getInteger(R.integer.default_lesson_duration));
                 helper.getPeriodTimeDAO().create(new PeriodTime(begin,end));
             }
             helper.getTeacherDAO().create(new Teacher("Препод 1"));

@@ -18,14 +18,19 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
-import com.sample.drawer.model.Data;
+import com.sample.drawer.scheduleDataBase.Day;
 import com.sample.drawer.scheduleDataBase.Period;
 import com.sample.drawer.scheduleDataBase.ScheduleDBHelper;
 import com.sample.drawer.utils.LoaderIdManager;
+import com.sample.drawer.utils.OrmLiteQueryForFirstLoader;
 import com.sample.drawer.utils.OrmLiteQueryForIdLoader;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by admin on 3/23/2016.
@@ -33,9 +38,13 @@ import java.util.List;
 public class AddNewSchedule extends AppCompatActivity {
     private static final  String RETURN_RECORD_KEY = "week";
     private static final  String PERIOD_ID_KEY = "periodId";
+    private static final  String DAY_OF_WEEK_KEY = "dayOfWeek";
     private static final  int LOADER_PERIOD_BY_ID = 1;
+    private static final  int LOADER_DAY_BY_DAY_OF_WEEK = 1;
     private static String LOG_TAG = "RecyclerViewActivity";
     private RecyclerView.Adapter mAdapter;
+
+    @Bind(R.id.recycler) RecyclerView mRecyclerView;
 
     TabLayout tabs;
 
@@ -49,15 +58,12 @@ public class AddNewSchedule extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_day);
+        ButterKnife.bind(this);
 
-        final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
 //        mRecyclerView.setHasFixedSize(true);
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-
-        mAdapter = new MyRecyclerViewAdapter(getDataSet());
-        mRecyclerView.setAdapter(mAdapter);
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
@@ -82,7 +88,7 @@ public class AddNewSchedule extends AppCompatActivity {
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                fillTabWithLessons(tab.getPosition()+1);
             }
 
             @Override
@@ -135,10 +141,7 @@ public class AddNewSchedule extends AppCompatActivity {
         return period[0];
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void setAdapterOnClickListener(){
         ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(
                 new MyRecyclerViewAdapter.MyClickListener() {
                     @Override
@@ -150,18 +153,45 @@ public class AddNewSchedule extends AppCompatActivity {
                 });
     }
 
-    //    получить расписание дня (абстрактное)
-    private ArrayList<Data> getDataSet() {
-        ArrayList<Data> results = new ArrayList<>();
-        for (int index = 0; index < 10; index++) {
-            Data obj = new Data("time ", "type ", "nameLesson", "fioTeacher", "numberAuditory", "typeWeek");
-            /*if (initializeIntent() != null) {
-                //results.add(index, initializeIntent());
-            } else {
-                results.add(index, obj);
-            }*/
-            results.add(index, obj);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdapter != null){
+            setAdapterOnClickListener();
         }
-        return results;
+    }
+
+    //    заполнить вкладку расписанием выбранного дня
+    private void fillTabWithLessons(int dayOfWeek) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(DAY_OF_WEEK_KEY, dayOfWeek);
+        getLoaderManager().initLoader(LOADER_DAY_BY_DAY_OF_WEEK, bundle, new LoaderManager.LoaderCallbacks<List<Day>>() {
+            @Override
+            public Loader<List<Day>> onCreateLoader(int id, Bundle args) {
+                ScheduleDBHelper helper = OpenHelperManager
+                        .getHelper(getApplicationContext(), ScheduleDBHelper.class);
+                int day = args.getInt(DAY_OF_WEEK_KEY);
+                try {
+                    return new OrmLiteQueryForFirstLoader<Day, Integer>(getBaseContext(),
+                            helper.getDayDAO(), helper.getDayDAO().getDayByDayOfWeek(day));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
+                if (!data.isEmpty()) {
+                    Day day = data.get(0);
+                    mAdapter = new MyRecyclerViewAdapter(day.getPeriods());
+                    mRecyclerView.setAdapter(mAdapter);
+                    setAdapterOnClickListener();
+                }
+            }
+            @Override
+            public void onLoaderReset(Loader<List<Day>> loader) {
+            }
+        });
     }
 }
