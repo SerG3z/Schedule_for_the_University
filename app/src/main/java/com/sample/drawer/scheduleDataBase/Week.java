@@ -23,18 +23,22 @@ public class Week {
     private int number;
     @DatabaseField(canBeNull = false)
     private boolean isFirst;
+    @DatabaseField(canBeNull = false)
+    private boolean isControlPoint;
     @ForeignCollectionField(eager = true, columnName = FIELD_DAYS_NAME)
     private ForeignCollection<Day> days;
 
-    public Week(int number, boolean isFirst, ForeignCollection<Day> days) {
+    public Week(int number, boolean isFirst,boolean isControlPoint, ForeignCollection<Day> days) {
         this.number = number;
         this.isFirst = isFirst;
         this.days = days;
+        this.isControlPoint = isControlPoint;
     }
 
-    public Week(int number, boolean isFirst, Week.DAO weekDAO) {
+    public Week(int number, boolean isFirst, boolean isControlPoint, Week.DAO weekDAO) {
         this.number = number;
         this.isFirst = isFirst;
+        this.isControlPoint = isControlPoint;
         try {
             days = weekDAO.getEmptyForeignCollection(FIELD_DAYS_NAME);
         } catch (SQLException e) {

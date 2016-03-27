@@ -27,21 +27,30 @@ public class Day {
     private int id;
     @DatabaseField(canBeNull = false, dataType = DataType.DATE, columnName = FIELD_DATE_NAME)
     private Date date;
+    @DatabaseField(canBeNull = false)
+    private int dayOfWeek;
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Period> periods;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Week week;
-
     public Day(Date date, ForeignCollection<Period> periods) {
         this.date = date;
         this.periods = periods;
     }
-
-    public Day(Date date) {
+    public Day(Date date, int dayOfWeek) {
         this.date = date;
+        this.dayOfWeek = dayOfWeek;
     }
 
     public Day() {
+    }
+
+    public int getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public Date getDate() {
@@ -80,7 +89,7 @@ public class Day {
 
         public PreparedQuery<Day> getDayByDate(Date date) throws SQLException {
             QueryBuilder<Day, Integer> dayQb = queryBuilder();
-            dayQb.where().eq(Day.FIELD_DATE_NAME,date);
+            dayQb.where().eq(Day.FIELD_DATE_NAME, date);
             return dayQb.prepare();
         }
     }

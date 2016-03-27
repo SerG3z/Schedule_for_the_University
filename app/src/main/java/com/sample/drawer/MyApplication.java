@@ -9,8 +9,11 @@ import com.sample.drawer.scheduleDataBase.PeriodTime;
 import com.sample.drawer.scheduleDataBase.PeriodType;
 import com.sample.drawer.scheduleDataBase.Subject;
 import com.sample.drawer.scheduleDataBase.Teacher;
+import com.sample.drawer.utils.ScheduleInitializer;
 
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * An application class (to provide work with Stetho)
@@ -21,7 +24,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         //TODO: не забыть убрать
-        //deleteDatabase("schedule.db");
+        deleteDatabase("schedule.db");
 
         // Create an InitializerBuilder
         Stetho.InitializerBuilder initializerBuilder =
@@ -45,6 +48,12 @@ public class MyApplication extends Application {
 
         HelperFactory.setHelper(getApplicationContext());
 
+        ScheduleInitializer.insertDefaultData(getResources());
+        try {
+            ScheduleInitializer.initializeSchedule(new GregorianCalendar(2016,1,8), true, 17, new int[]{7, 14});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
