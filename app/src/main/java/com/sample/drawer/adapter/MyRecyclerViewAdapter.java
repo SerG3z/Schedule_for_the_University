@@ -51,14 +51,22 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     @Override
     public void onBindViewHolder(BaseHolder holder, int position) {
+        Period period = periodList.get(position);
+        if (period == null){
+            return;
+        }
+        //TODO: устранить проблемы с null
+        if (period.getTime() == null || period.getType() == null || period.getSubject() == null ||
+                period.getTeacher() == null || period.getClassroom() == null)
+                    return;
         if (getItemViewType(position) == TYPE_NORMAL) {
-            ((PeriodHolder) holder).time.setText(periodList.get(position).getTime().toString());
-            ((PeriodHolder) holder).typeLesson.setText(periodList.get(position).getType().toString());
-            ((PeriodHolder) holder).nameLesson.setText(periodList.get(position).getSubject().toString());
-            ((PeriodHolder) holder).fioTeacher.setText(periodList.get(position).getTeacher().toString());
-            ((PeriodHolder) holder).numberAuditory.setText(periodList.get(position).getClassroom().toString());
+            ((PeriodHolder) holder).time.setText(period.getTime().toString());
+            ((PeriodHolder) holder).typeLesson.setText(period.getType().toString());
+            ((PeriodHolder) holder).nameLesson.setText(period.getSubject().toString());
+            ((PeriodHolder) holder).fioTeacher.setText(period.getTeacher().toString());
+            ((PeriodHolder) holder).numberAuditory.setText(period.getClassroom().toString());
         } else {
-            ((EmptyObjectHolder) holder).time.setText(periodList.get(position).getTime().toString());
+            ((EmptyObjectHolder) holder).time.setText(period.getTime().toString());
         }
     }
 

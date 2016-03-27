@@ -36,8 +36,6 @@ public class WidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
         Log.d("widgetLogs", "onCreateWidgetAdapter");
     }
 
-
-
     @Override
     public int getCount() {
         return periodList.size();

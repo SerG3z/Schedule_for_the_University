@@ -61,5 +61,8 @@
     <string name="toast_choose_subject">Выберите предмет!</string>
     <string name="toast_choose_time">Выберите время!</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

@@ -6,6 +6,7 @@ import com.sample.drawer.R;
 import com.sample.drawer.scheduleDataBase.Classroom;
 import com.sample.drawer.scheduleDataBase.Day;
 import com.sample.drawer.scheduleDataBase.HelperFactory;
+import com.sample.drawer.scheduleDataBase.Period;
 import com.sample.drawer.scheduleDataBase.PeriodTime;
 import com.sample.drawer.scheduleDataBase.PeriodType;
 import com.sample.drawer.scheduleDataBase.ScheduleDBHelper;
@@ -38,7 +39,7 @@ public class ScheduleInitializer {
             }
             Week week = new Week(weekN, !isEven, isControl, helper.getWeekDAO());
             for (int dayN = 1; dayN <= daysInWeek; dayN++ ){
-                Day day = new Day(new Date(calDay.getTimeInMillis()), dayN);
+                Day day = new Day(new Date(calDay.getTimeInMillis()), dayN, helper.getDayDAO());
                 week.addDay(day);
                 calDay.add(Calendar.DATE, 1);
             }
@@ -54,17 +55,22 @@ public class ScheduleInitializer {
             for (String s : lessonTypes){
                 helper.getPeriodTypeDAO().create(new PeriodType(s));
             }
+
             helper.getSubjectDAO().create(new Subject("Предмет 1"));
             helper.getSubjectDAO().create(new Subject("Предмет 2"));
+
             helper.getClassroomDAO().create(new Classroom("Аудитория 1"));
             helper.getClassroomDAO().create(new Classroom("Аудитория 2"));
+
             String[] lessonTimes= res.getStringArray(R.array.type_lesson_time);
             for (String begin : lessonTimes){
                 String end = TimeHelper.addDeltaTimeMinutes(begin, res.getInteger(R.integer.default_lesson_duration));
                 helper.getPeriodTimeDAO().create(new PeriodTime(begin,end));
             }
+
             helper.getTeacherDAO().create(new Teacher("Препод 1"));
             helper.getTeacherDAO().create(new Teacher("Препод 2"));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

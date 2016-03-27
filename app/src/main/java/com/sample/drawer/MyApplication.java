@@ -48,12 +48,12 @@ public class MyApplication extends Application {
 
         HelperFactory.setHelper(getApplicationContext());
 
-        ScheduleInitializer.insertDefaultData(getResources());
         try {
             ScheduleInitializer.initializeSchedule(new GregorianCalendar(2016,1,8), true, 17, new int[]{7, 14});
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ScheduleInitializer.insertDefaultData(getResources());
     }
 
     @Override

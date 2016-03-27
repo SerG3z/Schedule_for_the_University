@@ -23,6 +23,7 @@ public class Day {
 
     public static final String FIELD_DATE_NAME = "date";
     public static final String FIELD_DAY_OF_WEEK = "day_of_week";
+    public static final String FIELD_PERIODS = "periods";
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -30,7 +31,7 @@ public class Day {
     private Date date;
     @DatabaseField(canBeNull = false, columnName = FIELD_DAY_OF_WEEK)
     private int dayOfWeek;
-    @ForeignCollectionField(eager = true)
+    @ForeignCollectionField(eager = true, columnName = FIELD_PERIODS)
     private ForeignCollection<Period> periods;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Week week;
@@ -38,9 +39,14 @@ public class Day {
         this.date = date;
         this.periods = periods;
     }
-    public Day(Date date, int dayOfWeek) {
+    public Day(Date date, int dayOfWeek, Day.DAO dayDAO) {
         this.date = date;
         this.dayOfWeek = dayOfWeek;
+        try {
+            periods = dayDAO.getEmptyForeignCollection(FIELD_PERIODS);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public Day() {
@@ -70,8 +76,8 @@ public class Day {
         return periodsList;
     }
 
-    public void setPeriods(ForeignCollection<Period> periods) {
-        this.periods = periods;
+    public void addPeriod(Period period) {
+        periods.add(period);
     }
 
     public Week getWeek() {
