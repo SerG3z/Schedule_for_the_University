@@ -22,12 +22,13 @@ import java.util.List;
 public class Day {
 
     public static final String FIELD_DATE_NAME = "date";
+    public static final String FIELD_DAY_OF_WEEK = "day_of_week";
 
     @DatabaseField(generatedId = true)
     private int id;
     @DatabaseField(canBeNull = false, dataType = DataType.DATE, columnName = FIELD_DATE_NAME)
     private Date date;
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, columnName = FIELD_DAY_OF_WEEK)
     private int dayOfWeek;
     @ForeignCollectionField(eager = true)
     private ForeignCollection<Period> periods;
@@ -90,6 +91,12 @@ public class Day {
         public PreparedQuery<Day> getDayByDate(Date date) throws SQLException {
             QueryBuilder<Day, Integer> dayQb = queryBuilder();
             dayQb.where().eq(Day.FIELD_DATE_NAME, date);
+            return dayQb.prepare();
+        }
+
+        public PreparedQuery<Day> getDayByDayOfWeek(int dayOfWeek) throws SQLException {
+            QueryBuilder<Day, Integer> dayQb = queryBuilder();
+            dayQb.where().eq(FIELD_DAY_OF_WEEK, dayOfWeek);
             return dayQb.prepare();
         }
     }

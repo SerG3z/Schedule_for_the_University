@@ -30,6 +30,7 @@ import butterknife.OnClick;
 /**
  * Created by serg on 23.03.16.
  */
+//TODO: реализовать диалоговые фрагменты добавления новых значений
 public class NewLessonActivity extends ActionBarActivity {
 
     @Bind(R.id.time_lesson) Spinner time;

@@ -5,11 +5,14 @@ import com.j256.ormlite.dao.EagerForeignCollection;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Weeks table

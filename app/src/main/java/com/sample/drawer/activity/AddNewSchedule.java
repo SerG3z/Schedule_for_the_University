@@ -150,7 +150,7 @@ public class AddNewSchedule extends AppCompatActivity {
                 });
     }
 
-    //    получить все данные с базы
+    //    получить расписание дня (абстрактное)
     private ArrayList<Data> getDataSet() {
         ArrayList<Data> results = new ArrayList<>();
         for (int index = 0; index < 10; index++) {
