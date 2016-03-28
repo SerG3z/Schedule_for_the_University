@@ -112,7 +112,9 @@ public class AddNewSchedule extends AppCompatActivity {
         fabButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                //TODO: вызвать добавление пары
+                Intent intent = NewLessonActivity.newAddIntent(getBaseContext(),
+                        tabs.getSelectedTabPosition()+1);
+                startActivity(intent);
                 return false;
             }
         });
@@ -161,7 +163,7 @@ public class AddNewSchedule extends AppCompatActivity {
                 new MyRecyclerViewAdapter.MyClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-                        Intent intent = new Intent(getBaseContext(), NewLessonActivity.class);
+                        Intent intent = NewLessonActivity.newEditIntent(getBaseContext(),position+1);
                         startActivity(intent);
                         Log.i(LOG_TAG, " Clicked on Item " + position);
                     }
@@ -201,7 +203,7 @@ public class AddNewSchedule extends AppCompatActivity {
                     //TODO: переделать с учетом DayPeriod
                     //mAdapter = new MyRecyclerViewAdapter(day.getPeriods());
                     mRecyclerView.setAdapter(mAdapter);
-                    setAdapterOnClickListener();
+                    //setAdapterOnClickListener();
                 }
             }
             @Override

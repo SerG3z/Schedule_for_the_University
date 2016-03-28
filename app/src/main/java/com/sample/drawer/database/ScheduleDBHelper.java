@@ -9,6 +9,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.sample.drawer.database.dao.ClassroomDAO;
 import com.sample.drawer.database.dao.DayDAO;
+import com.sample.drawer.database.dao.DayPeriodDAO;
 import com.sample.drawer.database.dao.PeriodDAO;
 import com.sample.drawer.database.dao.PeriodTimeDAO;
 import com.sample.drawer.database.dao.PeriodTypeDAO;
@@ -38,6 +39,7 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
     private SubjectDAO subjectDAO = null;
     private TaskDAO taskDAO = null;
     private WeekDAO weekDAO = null;
+    private DayPeriodDAO dayPeriodDAO = null;
 
     public ScheduleDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -140,6 +142,17 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
             }
         }
         return weekDAO;
+    }
+
+    public DayPeriodDAO getDayPeriodDAO() {
+        if (dayPeriodDAO == null) {
+            try {
+                dayPeriodDAO = new DayPeriodDAO(getConnectionSource(), DayPeriod.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return dayPeriodDAO;
     }
 
     @Override

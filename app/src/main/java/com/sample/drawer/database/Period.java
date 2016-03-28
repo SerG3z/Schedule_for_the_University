@@ -124,6 +124,7 @@ public class Period {
         this.day = day;
     }
 
+
     public static class Builder {
         //required parameters
         private final Subject subject;
@@ -176,6 +177,10 @@ public class Period {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

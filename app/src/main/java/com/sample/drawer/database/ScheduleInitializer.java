@@ -36,7 +36,7 @@ public class ScheduleInitializer {
             }
             Week week = new Week(weekN, !isEven, isControl, helper.getWeekDAO());
             for (int dayN = 1; dayN <= daysInWeek; dayN++ ){
-                Day day = new Day(new Date(calDay.getTimeInMillis()), dayNt);
+                Day day = new Day(new Date(calDay.getTimeInMillis()), dayN);
                 week.addDay(day);
                 calDay.add(Calendar.DATE, 1);
             }
