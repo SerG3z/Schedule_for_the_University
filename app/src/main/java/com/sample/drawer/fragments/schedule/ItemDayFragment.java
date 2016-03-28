@@ -17,11 +17,9 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
-import com.sample.drawer.scheduleDataBase.Period;
-import com.sample.drawer.scheduleDataBase.PeriodTime;
-import com.sample.drawer.scheduleDataBase.ScheduleDBHelper;
-import com.sample.drawer.scheduleDataBase.Subject;
-import com.sample.drawer.utils.OrmLiteQueryForIdLoader;
+import com.sample.drawer.database.Period;
+import com.sample.drawer.database.ScheduleDBHelper;
+import com.sample.drawer.database.OrmLiteQueryForIdLoader;
 
 import java.util.ArrayList;
 import java.util.Calendar;

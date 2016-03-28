@@ -1,25 +1,22 @@
-package com.sample.drawer.utils;
+package com.sample.drawer.database;
 
 import android.content.res.Resources;
 
 import com.sample.drawer.R;
-import com.sample.drawer.scheduleDataBase.Classroom;
-import com.sample.drawer.scheduleDataBase.Day;
-import com.sample.drawer.scheduleDataBase.HelperFactory;
-import com.sample.drawer.scheduleDataBase.Period;
-import com.sample.drawer.scheduleDataBase.PeriodTime;
-import com.sample.drawer.scheduleDataBase.PeriodType;
-import com.sample.drawer.scheduleDataBase.ScheduleDBHelper;
-import com.sample.drawer.scheduleDataBase.Subject;
-import com.sample.drawer.scheduleDataBase.Teacher;
-import com.sample.drawer.scheduleDataBase.Week;
+import com.sample.drawer.database.Classroom;
+import com.sample.drawer.database.Day;
+import com.sample.drawer.database.HelperFactory;
+import com.sample.drawer.database.PeriodTime;
+import com.sample.drawer.database.PeriodType;
+import com.sample.drawer.database.ScheduleDBHelper;
+import com.sample.drawer.database.Subject;
+import com.sample.drawer.database.Teacher;
+import com.sample.drawer.database.Week;
+import com.sample.drawer.utils.TimeHelper;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 /**
  * A class to insert default values into database and initialize schedule
@@ -39,7 +36,7 @@ public class ScheduleInitializer {
             }
             Week week = new Week(weekN, !isEven, isControl, helper.getWeekDAO());
             for (int dayN = 1; dayN <= daysInWeek; dayN++ ){
-                Day day = new Day(new Date(calDay.getTimeInMillis()), dayN, helper.getDayDAO());
+                Day day = new Day(new Date(calDay.getTimeInMillis()), dayNt);
                 week.addDay(day);
                 calDay.add(Calendar.DATE, 1);
             }

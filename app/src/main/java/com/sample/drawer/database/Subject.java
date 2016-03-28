@@ -1,4 +1,4 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
@@ -35,10 +35,4 @@ public class Subject {
         return subject;
     }
 
-    public class DAO extends BaseDaoImpl<Subject, String> {
-
-        protected DAO(ConnectionSource connectionSource, Class<Subject> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
-        }
-    }
 }

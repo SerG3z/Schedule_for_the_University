@@ -1,4 +1,4 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
@@ -14,8 +14,9 @@ import java.sql.SQLException;
 public class Period {
 
     public static final String FIELD_SUBJECT_NAME = "subject";
+    public static final String FIELD_ID_NAME = "id";
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true, columnName = FIELD_ID_NAME)
     private int id;
     @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Subject subject;
@@ -182,10 +183,4 @@ public class Period {
         return subject.getSubject() + ", " + teacher.getTeacher() + ", " + type.getPeriodType() + ", " + classroom.getClassroom();
     }
 
-    public class DAO extends BaseDaoImpl<Period, Integer> {
-
-        protected DAO(ConnectionSource connectionSource, Class<Period> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
-        }
-    }
 }

@@ -1,4 +1,4 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,6 +7,15 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.sample.drawer.database.dao.ClassroomDAO;
+import com.sample.drawer.database.dao.DayDAO;
+import com.sample.drawer.database.dao.PeriodDAO;
+import com.sample.drawer.database.dao.PeriodTimeDAO;
+import com.sample.drawer.database.dao.PeriodTypeDAO;
+import com.sample.drawer.database.dao.SubjectDAO;
+import com.sample.drawer.database.dao.TaskDAO;
+import com.sample.drawer.database.dao.TeacherDAO;
+import com.sample.drawer.database.dao.WeekDAO;
 
 import java.sql.SQLException;
 
@@ -20,24 +29,24 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "schedule.db";
     private static final int DATABASE_VERSION = 1;
 
-    private Classroom.DAO classroomDAO = null;
-    private Teacher.DAO teacherDAO = null;
-    private Period.DAO periodDAO = null;
-    private Day.DAO dayDAO = null;
-    private PeriodTime.DAO periodTimeDAO = null;
-    private PeriodType.DAO periodTypeDAO = null;
-    private Subject.DAO subjectDAO = null;
-    private Task.DAO taskDAO = null;
-    private Week.DAO weekDAO = null;
+    private ClassroomDAO classroomDAO = null;
+    private TeacherDAO teacherDAO = null;
+    private PeriodDAO periodDAO = null;
+    private DayDAO dayDAO = null;
+    private PeriodTimeDAO periodTimeDAO = null;
+    private PeriodTypeDAO periodTypeDAO = null;
+    private SubjectDAO subjectDAO = null;
+    private TaskDAO taskDAO = null;
+    private WeekDAO weekDAO = null;
 
     public ScheduleDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public Classroom.DAO getClassroomDAO() {
+    public ClassroomDAO getClassroomDAO() {
         if (classroomDAO == null) {
             try {
-                classroomDAO = (new Classroom()).new DAO(getConnectionSource(), Classroom.class);
+                classroomDAO = new ClassroomDAO(getConnectionSource(), Classroom.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -45,10 +54,10 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
         return classroomDAO;
     }
 
-    public Day.DAO getDayDAO() {
+    public DayDAO getDayDAO() {
         if (dayDAO == null) {
             try {
-                dayDAO = (new Day()).new DAO(getConnectionSource(), Day.class);
+                dayDAO = new DayDAO(getConnectionSource(), Day.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -56,10 +65,10 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
         return dayDAO;
     }
 
-    public Period.DAO getPeriodDAO() {
+    public PeriodDAO getPeriodDAO() {
         if (periodDAO == null) {
             try {
-                periodDAO = (new Period()).new DAO(getConnectionSource(), Period.class);
+                periodDAO = new PeriodDAO(getConnectionSource(), Period.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -67,10 +76,10 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
         return periodDAO;
     }
 
-    public PeriodTime.DAO getPeriodTimeDAO() {
+    public PeriodTimeDAO getPeriodTimeDAO() {
         if (periodTimeDAO == null) {
             try {
-                periodTimeDAO = (new PeriodTime()).new DAO(getConnectionSource(), PeriodTime.class);
+                periodTimeDAO = new PeriodTimeDAO(getConnectionSource(), PeriodTime.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -78,10 +87,10 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
         return periodTimeDAO;
     }
 
-    public PeriodType.DAO getPeriodTypeDAO() {
+    public PeriodTypeDAO getPeriodTypeDAO() {
         if (periodTypeDAO == null) {
             try {
-                periodTypeDAO = (new PeriodType()).new DAO(getConnectionSource(), PeriodType.class);
+                periodTypeDAO = new PeriodTypeDAO(getConnectionSource(), PeriodType.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -89,10 +98,10 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
         return periodTypeDAO;
     }
 
-    public Subject.DAO getSubjectDAO() {
+    public SubjectDAO getSubjectDAO() {
         if (subjectDAO == null) {
             try {
-                subjectDAO = (new Subject()).new DAO(getConnectionSource(), Subject.class);
+                subjectDAO = new SubjectDAO(getConnectionSource(), Subject.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -100,10 +109,10 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
         return subjectDAO;
     }
 
-    public Task.DAO getTaskDAO() {
+    public TaskDAO getTaskDAO() {
         if (taskDAO == null) {
             try {
-                taskDAO = (new Task()).new DAO(getConnectionSource(), Task.class);
+                taskDAO = new TaskDAO(getConnectionSource(), Task.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -111,10 +120,10 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
         return taskDAO;
     }
 
-    public Teacher.DAO getTeacherDAO() {
+    public TeacherDAO getTeacherDAO() {
         if (teacherDAO == null) {
             try {
-                teacherDAO = (new Teacher()).new DAO(getConnectionSource(), Teacher.class);
+                teacherDAO = new TeacherDAO(getConnectionSource(), Teacher.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -122,10 +131,10 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
         return teacherDAO;
     }
 
-    public Week.DAO getWeekDAO() {
+    public WeekDAO getWeekDAO() {
         if (weekDAO == null) {
             try {
-                weekDAO = (new Week()).new DAO(getConnectionSource(), Week.class);
+                weekDAO = new WeekDAO(getConnectionSource(), Week.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -145,6 +154,7 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Week.class);
             TableUtils.createTable(connectionSource, Period.class);
             TableUtils.createTable(connectionSource, Task.class);
+            TableUtils.createTable(connectionSource, DayPeriod.class);
 
         } catch (SQLException e) {
             Log.e(TAG, "error creating DB " + DATABASE_NAME);
@@ -165,6 +175,7 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Subject.class, false);
             TableUtils.dropTable(connectionSource, Task.class, false);
             TableUtils.dropTable(connectionSource, Week.class, false);
+            TableUtils.dropTable(connectionSource, DayPeriod.class, false);
 
             onCreate(database, connectionSource);
 

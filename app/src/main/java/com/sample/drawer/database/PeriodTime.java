@@ -1,4 +1,4 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
@@ -64,10 +64,5 @@ public class PeriodTime {
         return beginTime + " - " + endTime;
     }
 
-    public class DAO extends BaseDaoImpl<PeriodTime, Integer> {
 
-        protected DAO(ConnectionSource connectionSource, Class<PeriodTime> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
-        }
-    }
 }

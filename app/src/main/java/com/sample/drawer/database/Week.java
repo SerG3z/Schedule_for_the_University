@@ -1,18 +1,15 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
-import com.j256.ormlite.dao.EagerForeignCollection;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
+import com.sample.drawer.database.dao.WeekDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Weeks table
@@ -38,7 +35,7 @@ public class Week {
         this.isControlPoint = isControlPoint;
     }
 
-    public Week(int number, boolean isFirst, boolean isControlPoint, Week.DAO weekDAO) {
+    public Week(int number, boolean isFirst, boolean isControlPoint, WeekDAO weekDAO) {
         this.number = number;
         this.isFirst = isFirst;
         this.isControlPoint = isControlPoint;
@@ -84,10 +81,5 @@ public class Week {
         days.add(day);
     }
 
-    public class DAO extends BaseDaoImpl<Week, Integer> {
 
-        protected DAO(ConnectionSource connectionSource, Class<Week> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
-        }
-    }
 }

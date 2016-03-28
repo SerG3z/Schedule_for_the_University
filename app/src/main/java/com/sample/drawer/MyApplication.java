@@ -3,16 +3,10 @@ package com.sample.drawer;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
-import com.sample.drawer.scheduleDataBase.Classroom;
-import com.sample.drawer.scheduleDataBase.HelperFactory;
-import com.sample.drawer.scheduleDataBase.PeriodTime;
-import com.sample.drawer.scheduleDataBase.PeriodType;
-import com.sample.drawer.scheduleDataBase.Subject;
-import com.sample.drawer.scheduleDataBase.Teacher;
-import com.sample.drawer.utils.ScheduleInitializer;
+import com.sample.drawer.database.HelperFactory;
+import com.sample.drawer.database.ScheduleInitializer;
 
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**

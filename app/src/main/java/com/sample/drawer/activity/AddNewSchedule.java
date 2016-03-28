@@ -1,12 +1,10 @@
 package com.sample.drawer.activity;
 
-import android.animation.Animator;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,22 +15,19 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
 import com.sample.drawer.decoration.FloatingActionButton;
-import com.sample.drawer.scheduleDataBase.Day;
-import com.sample.drawer.scheduleDataBase.Period;
-import com.sample.drawer.scheduleDataBase.ScheduleDBHelper;
-import com.sample.drawer.utils.LoaderIdManager;
-import com.sample.drawer.utils.OrmLiteQueryForFirstLoader;
-import com.sample.drawer.utils.OrmLiteQueryForIdLoader;
+import com.sample.drawer.database.Day;
+import com.sample.drawer.database.Period;
+import com.sample.drawer.database.ScheduleDBHelper;
+import com.sample.drawer.database.OrmLiteQueryForFirstLoader;
+import com.sample.drawer.database.OrmLiteQueryForIdLoader;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -203,8 +198,8 @@ public class AddNewSchedule extends AppCompatActivity {
             @Override
             public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
                 if (!data.isEmpty()) {
-                    Day day = data.get(0);
-                    mAdapter = new MyRecyclerViewAdapter(day.getPeriods());
+                    //TODO: переделать с учетом DayPeriod
+                    //mAdapter = new MyRecyclerViewAdapter(day.getPeriods());
                     mRecyclerView.setAdapter(mAdapter);
                     setAdapterOnClickListener();
                 }

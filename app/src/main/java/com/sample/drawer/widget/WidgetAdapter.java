@@ -9,7 +9,7 @@ import android.widget.RemoteViewsService;
 
 import com.sample.drawer.R;
 import com.sample.drawer.fragments.schedule.ItemDayFragment;
-import com.sample.drawer.scheduleDataBase.Period;
+import com.sample.drawer.database.Period;
 
 import java.util.ArrayList;
 import java.util.List;

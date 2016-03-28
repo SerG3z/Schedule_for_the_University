@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sample.drawer.R;
-import com.sample.drawer.scheduleDataBase.Period;
+import com.sample.drawer.database.Period;
 
 import java.util.ArrayList;
 import java.util.List;

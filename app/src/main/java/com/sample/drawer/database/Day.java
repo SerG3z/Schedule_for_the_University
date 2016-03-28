@@ -1,4 +1,4 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.ForeignCollection;
@@ -9,6 +9,7 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
+import com.sample.drawer.database.dao.DayDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,30 +24,23 @@ public class Day {
 
     public static final String FIELD_DATE_NAME = "date";
     public static final String FIELD_DAY_OF_WEEK = "day_of_week";
-    public static final String FIELD_PERIODS = "periods";
+    public static final String FIELD_ID_NAME = "id";
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true, columnName = FIELD_ID_NAME)
     private int id;
     @DatabaseField(canBeNull = false, dataType = DataType.DATE, columnName = FIELD_DATE_NAME)
     private Date date;
     @DatabaseField(canBeNull = false, columnName = FIELD_DAY_OF_WEEK)
     private int dayOfWeek;
-    @ForeignCollectionField(eager = true, columnName = FIELD_PERIODS)
-    private ForeignCollection<Period> periods;
+
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Week week;
     public Day(Date date, ForeignCollection<Period> periods) {
         this.date = date;
-        this.periods = periods;
     }
-    public Day(Date date, int dayOfWeek, Day.DAO dayDAO) {
+    public Day(Date date, int dayOfWeek) {
         this.date = date;
         this.dayOfWeek = dayOfWeek;
-        try {
-            periods = dayDAO.getEmptyForeignCollection(FIELD_PERIODS);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public Day() {
@@ -68,18 +62,6 @@ public class Day {
         this.date = date;
     }
 
-    public List<Period> getPeriods() {
-        ArrayList<Period> periodsList = new ArrayList<Period>();
-        for (Period item : periods) {
-            periodsList.add(item);
-        }
-        return periodsList;
-    }
-
-    public void addPeriod(Period period) {
-        periods.add(period);
-    }
-
     public Week getWeek() {
         return week;
     }
@@ -88,22 +70,4 @@ public class Day {
         this.week = week;
     }
 
-    public class DAO extends BaseDaoImpl<Day, Integer> {
-
-        protected DAO(ConnectionSource connectionSource, Class<Day> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
-        }
-
-        public PreparedQuery<Day> getDayByDate(Date date) throws SQLException {
-            QueryBuilder<Day, Integer> dayQb = queryBuilder();
-            dayQb.where().eq(Day.FIELD_DATE_NAME, date);
-            return dayQb.prepare();
-        }
-
-        public PreparedQuery<Day> getDayByDayOfWeek(int dayOfWeek) throws SQLException {
-            QueryBuilder<Day, Integer> dayQb = queryBuilder();
-            dayQb.where().eq(FIELD_DAY_OF_WEEK, dayOfWeek);
-            return dayQb.prepare();
-        }
-    }
 }

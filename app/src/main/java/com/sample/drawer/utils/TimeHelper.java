@@ -1,11 +1,12 @@
 package com.sample.drawer.utils;
 
-import android.provider.Settings;
-
 /**
  * Utility class
  */
-public class TimeHelper {
+public final class TimeHelper {
+    private TimeHelper(){
+        throw new UnsupportedOperationException();
+    }
     public static int getDeltaTimeMinutes(String time1, String time2){
         int reqLength = 5, colonIndex = 2, minutesInHour = 60;
         if (time1.length() < reqLength || time2.length() < reqLength)

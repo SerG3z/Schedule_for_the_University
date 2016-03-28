@@ -1,4 +1,4 @@
-package com.sample.drawer.utils;
+package com.sample.drawer.database;
 
 import android.content.Context;
 

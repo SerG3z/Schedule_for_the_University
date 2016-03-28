@@ -7,8 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.sample.drawer.fragments.schedule.ItemDayFragment;
-import com.sample.drawer.scheduleDataBase.HelperFactory;
-import com.sample.drawer.scheduleDataBase.Week;
+import com.sample.drawer.database.HelperFactory;
 
 import java.sql.SQLException;
 
