@@ -8,8 +8,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/
-        ">
+        android:theme="@style/AppThemeNonDrawer">
 
 
         <activity
@@ -37,6 +36,14 @@
             android:name=".activity.ShowTaskActivity"
             android:label="@string/info_tasks"
             android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNonDrawer">
+        </activity>
+
+        <activity
+            android:name=".activity.NewTaskActivity"
+            android:label="@string/info_tasks"
+            android:parentActivityName=".activity.ShowTaskActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNonDrawer">
         </activity>

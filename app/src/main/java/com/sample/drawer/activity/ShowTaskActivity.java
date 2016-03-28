@@ -52,8 +52,11 @@ public class ShowTaskActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_task_toolbar:
-//                Intent intent = new Intent(this, AddNewSchedule.class);
-//                startActivity(intent);
+                Intent intent = NewTaskActivity.newIntent(getApplicationContext(),
+                        lesson.getText().toString(),
+                        deadline.getText().toString(),
+                        info.getText().toString());
+                startActivity(intent);
                 return true;
             case R.id.complete_task_toolbar:
                 return true;
@@ -76,7 +79,4 @@ public class ShowTaskActivity extends AppCompatActivity {
         lesson.setText(intent.getStringExtra(LESSON_INTENT_KEY));
         info.setText(intent.getStringExtra(INFO_INTENT_KEY));
     }
-
-
-
 }

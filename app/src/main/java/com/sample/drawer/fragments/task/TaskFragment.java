@@ -8,18 +8,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.sample.drawer.R;
+import com.sample.drawer.activity.NewTaskActivity;
 import com.sample.drawer.activity.ShowTaskActivity;
 import com.sample.drawer.adapter.TaskRecyclerViewAdapter;
 import com.sample.drawer.model.Task;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 
 public class TaskFragment extends Fragment {
 
     private RecyclerView.Adapter recyclerViewAdapter;
+
+    @Bind(R.id.task_recycler)
+    RecyclerView taskRecyclerView;
 
     public static TaskFragment newIntent() {
         return new TaskFragment();
@@ -28,7 +37,7 @@ public class TaskFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.task_fragment, container, false);
-        final RecyclerView taskRecyclerView = (RecyclerView) view.findViewById(R.id.task_recycler);
+        ButterKnife.bind(this, view);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
         taskRecyclerView.setLayoutManager(layoutManager);
 
@@ -46,6 +55,13 @@ public class TaskFragment extends Fragment {
         return result;
     }
 
+    @OnClick(R.id.add_task_button_create)
+    public void clickButtonCreate() {
+        Toast.makeText(getContext(), "click create", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), NewTaskActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -58,5 +74,11 @@ public class TaskFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 }
