@@ -35,12 +35,13 @@ public class ScheduleInitializer {
                 }
             }
             Week week = new Week(weekN, !isEven, isControl, helper.getWeekDAO());
+            helper.getWeekDAO().create(week);
             for (int dayN = 1; dayN <= daysInWeek; dayN++ ){
                 Day day = new Day(new Date(calDay.getTimeInMillis()), dayN);
+                day.setWeek(week);
                 week.addDay(day);
                 calDay.add(Calendar.DATE, 1);
             }
-            helper.getWeekDAO().create(week);
             isEven = !isEven;
         }
     }

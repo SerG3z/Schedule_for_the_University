@@ -1,7 +1,12 @@
 package com.sample.drawer.database.dao;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
+import com.sample.drawer.database.Day;
+import com.sample.drawer.database.DayPeriod;
+import com.sample.drawer.database.HelperFactory;
 import com.sample.drawer.database.Period;
 
 import java.sql.SQLException;
@@ -10,5 +15,33 @@ public class PeriodDAO extends BaseDaoImpl<Period, Integer> {
 
     public PeriodDAO(ConnectionSource connectionSource, Class<Period> dataClass) throws SQLException {
         super(connectionSource, dataClass);
+    }
+
+    public PreparedQuery<Period> getPeriodsByDayOfWeek(int dayOfWeek) throws SQLException {
+        DayDAO dayDAO = HelperFactory.getHelper().getDayDAO();
+        QueryBuilder<Day, Integer> dayQb = dayDAO.queryBuilder();
+        dayQb.where().eq(Day.FIELD_DAY_OF_WEEK, dayOfWeek);
+
+        DayPeriodDAO dayPeriodDAO = HelperFactory.getHelper().getDayPeriodDAO();
+        QueryBuilder<DayPeriod, Integer> dayPeriodQB = dayPeriodDAO.queryBuilder();
+        dayPeriodQB.join(dayQb);
+
+        QueryBuilder<Period, Integer> periodQb = queryBuilder();
+
+        return periodQb.join(dayPeriodQB).prepare();
+    }
+
+    public PreparedQuery<Period> getPeriodsByDay(int dayID) throws SQLException {
+        DayDAO dayDAO = HelperFactory.getHelper().getDayDAO();
+        QueryBuilder<Day, Integer> dayQb = dayDAO.queryBuilder();
+        dayQb.where().eq(Day.FIELD_ID_NAME, dayID);
+
+        DayPeriodDAO dayPeriodDAO = HelperFactory.getHelper().getDayPeriodDAO();
+        QueryBuilder<DayPeriod, Integer> dayPeriodQB = dayPeriodDAO.queryBuilder();
+        dayPeriodQB.join(dayQb);
+
+        QueryBuilder<Period, Integer> periodQb = queryBuilder();
+
+        return periodQb.join(dayPeriodQB).prepare();
     }
 }

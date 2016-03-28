@@ -50,8 +50,8 @@ public class NewLessonActivity extends ActionBarActivity {
 
     public static final String ARG_DAY_OF_WEEK = "day_of_week";
     public static final String ARG_LESSON_ID = "lesson_id";
-    public static final int LOADER_ADD_LESSON = 1;
-    public static final int LOADER_EDIT_LESSON = 2;
+    public static final int LOADER_ADD_LESSON = 10;
+    public static final int LOADER_EDIT_LESSON = 11;
 
     private List<Subject> lessonList;
     private List<Teacher> teacherList;

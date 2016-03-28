@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
@@ -41,9 +42,10 @@ public class AddNewSchedule extends AppCompatActivity {
     private static final  String PERIOD_ID_KEY = "periodId";
     private static final  String DAY_OF_WEEK_KEY = "dayOfWeek";
     private static final  int LOADER_PERIOD_BY_ID = 1;
-    private static final  int LOADER_DAY_BY_DAY_OF_WEEK = 1;
+    private static final  int LOADER_PERIODS_BY_DAY_OF_WEEK = 1;
     private static String LOG_TAG = "RecyclerViewActivity";
     private RecyclerView.Adapter mAdapter;
+    private FloatingActionButton fabButton;
 
     @Bind(R.id.recycler) RecyclerView mRecyclerView;
 
@@ -103,7 +105,7 @@ public class AddNewSchedule extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
+        fabButton = new FloatingActionButton.Builder(this)
                 .withDrawable(ContextCompat.getDrawable(getBaseContext(),R.drawable.ic_add_black_18dp))
                 .withButtonColor(ContextCompat.getColor(getBaseContext(), R.color.accent))
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
@@ -114,6 +116,7 @@ public class AddNewSchedule extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 Intent intent = NewLessonActivity.newAddIntent(getBaseContext(),
                         tabs.getSelectedTabPosition()+1);
+                fabButton.hideFloatingActionButton();
                 startActivity(intent);
                 return false;
             }
@@ -176,21 +179,22 @@ public class AddNewSchedule extends AppCompatActivity {
         if (mAdapter != null){
             setAdapterOnClickListener();
         }
+        fabButton.showFloatingActionButton();
     }
 
     //    заполнить вкладку расписанием выбранного дня
     private void fillTabWithLessons(int dayOfWeek) {
         Bundle bundle = new Bundle();
         bundle.putInt(DAY_OF_WEEK_KEY, dayOfWeek);
-        getLoaderManager().initLoader(LOADER_DAY_BY_DAY_OF_WEEK, bundle, new LoaderManager.LoaderCallbacks<List<Day>>() {
+        getLoaderManager().initLoader(LOADER_PERIODS_BY_DAY_OF_WEEK, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
             @Override
-            public Loader<List<Day>> onCreateLoader(int id, Bundle args) {
+            public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
                 ScheduleDBHelper helper = OpenHelperManager
                         .getHelper(getApplicationContext(), ScheduleDBHelper.class);
                 int day = args.getInt(DAY_OF_WEEK_KEY);
                 try {
-                    return new OrmLiteQueryForFirstLoader<Day, Integer>(getBaseContext(),
-                            helper.getDayDAO(), helper.getDayDAO().getDayByDayOfWeek(day));
+                    return new OrmLitePreparedQueryLoader<>(getBaseContext(),
+                            helper.getPeriodDAO(), helper.getPeriodDAO().getPeriodsByDayOfWeek(day));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -198,16 +202,15 @@ public class AddNewSchedule extends AppCompatActivity {
             }
 
             @Override
-            public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
-                if (!data.isEmpty()) {
-                    //TODO: переделать с учетом DayPeriod
-                    //mAdapter = new MyRecyclerViewAdapter(day.getPeriods());
+            public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
+                if (data != null && !data.isEmpty()) {
+                    mAdapter = new MyRecyclerViewAdapter(data);
                     mRecyclerView.setAdapter(mAdapter);
-                    //setAdapterOnClickListener();
+                    setAdapterOnClickListener();
                 }
             }
             @Override
-            public void onLoaderReset(Loader<List<Day>> loader) {
+            public void onLoaderReset(Loader<List<Period>> loader) {
             }
         });
     }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
@@ -21,6 +22,7 @@ import com.sample.drawer.database.Period;
 import com.sample.drawer.database.ScheduleDBHelper;
 import com.sample.drawer.database.OrmLiteQueryForIdLoader;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -38,7 +40,7 @@ public class ItemDayFragment extends Fragment {
 
     static final String ARGUMENT_DAY = "arg_page_number";
     static final String KEY_DAY = "day";
-    static final int LOADER_DAY = 10;
+    static final int LOADER_PERIODS_BY_DAY = 10;
     int backColor;
 
     public static ItemDayFragment newInstance(int page) {
@@ -64,15 +66,21 @@ public class ItemDayFragment extends Fragment {
     private void fillPageWithLessons(int dayOfSemester) {
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_DAY, dayOfSemester);
-        getActivity().getLoaderManager().initLoader(LOADER_DAY, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
+        getActivity().getLoaderManager().initLoader(LOADER_PERIODS_BY_DAY, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
             @Override
             public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
                 ScheduleDBHelper helper = OpenHelperManager
                         .getHelper(getContext(), ScheduleDBHelper.class);
                 int day = args.getInt(KEY_DAY);
-                return new OrmLiteQueryForIdLoader<Period, Integer>(getContext(),
-                        helper.getPeriodDAO(), day);
+                try {
+                    return new OrmLitePreparedQueryLoader<>(getContext(), helper.getPeriodDAO(),
+                            helper.getPeriodDAO().getPeriodsByDay(day));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
             }
+
             @Override
             public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
                 if (data != null && !data.isEmpty()) {
