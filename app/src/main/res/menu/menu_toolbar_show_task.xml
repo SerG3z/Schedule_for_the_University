@@ -10,7 +10,7 @@
     <item
     android:id="@+id/complete_task_toolbar"
     android:title="@string/complete_task"
-    android:icon="@android:drawable/checkbox_on_background"
+    android:icon="@drawable/ic_done_black_24dp"
     app:showAsAction="always"/>
 
 </menu>
