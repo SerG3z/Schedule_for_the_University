@@ -49,5 +49,8 @@
     <string name="info">Задание</string>
     <string name="time">Срок выполнения</string>
 
+    <string name="complete_task">Завершить</string>
+    <string name="edit_task">Редактировать</string>
+
 
 </resources>

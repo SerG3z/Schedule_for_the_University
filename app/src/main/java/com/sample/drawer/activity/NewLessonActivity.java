@@ -1,5 +1,6 @@
 package com.sample.drawer.activity;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -41,6 +42,8 @@ public class NewLessonActivity extends ActionBarActivity {
     @Bind(R.id.number_auditory) TextView numberAuditory;
     @Bind(R.id.type_lesson) Spinner typeLesson;
     @Bind(R.id.type_week) Spinner typeWeek;
+
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +100,7 @@ public class NewLessonActivity extends ActionBarActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         startActivity(AddNewSchedule.newIntent(this, id));
+
     }
 }

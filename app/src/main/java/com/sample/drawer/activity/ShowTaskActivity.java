@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.sample.drawer.R;
@@ -35,9 +37,30 @@ public class ShowTaskActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setDisplayHomeAsUpEnabled(true);
 
         installIntent(getIntent());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar_show_task, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_task_toolbar:
+//                Intent intent = new Intent(this, AddNewSchedule.class);
+//                startActivity(intent);
+                return true;
+            case R.id.complete_task_toolbar:
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public static Intent newIntent(Context context, String textDeadline, String textLesson, String info) {
