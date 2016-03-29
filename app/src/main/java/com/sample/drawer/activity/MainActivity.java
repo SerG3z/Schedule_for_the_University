@@ -12,6 +12,7 @@ import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.sample.drawer.R;
 import com.sample.drawer.fragments.schedule.ScheduleViewPagerFragment;
 import com.sample.drawer.utils.Utils;
+import com.vk.sdk.util.VKUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,6 +40,7 @@ public class MainActivity extends ActionBarActivity {
         drawerResult.setSelectionByIdentifier(1, false); // Set proper selection
 
         drawerResult.openDrawer();
+
     }
 
     @Override

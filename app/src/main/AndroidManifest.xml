@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.sample.drawer"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          android:installLocation="auto">
+<manifest
+    package="com.sample.drawer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="auto">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".MyApplication"
@@ -20,6 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.vk.sdk.VKServiceActivity"
+            android:label="ServiceActivity"
+            android:theme="@style/VK.Transparent"/>
+
+
         <activity
             android:name=".activity.NewLessonActivity"
             android:label="@string/app_name"
@@ -41,12 +51,12 @@
         </activity>
 
         <activity
-        android:name=".activity.ShowItemLessonActivity"
-        android:label="@string/info_schedule"
-        android:parentActivityName=".activity.MainActivity"
-        android:screenOrientation="portrait"
-        android:theme="@style/AppThemeNonDrawer">
-    </activity>
+            android:name=".activity.ShowItemLessonActivity"
+            android:label="@string/info_schedule"
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNonDrawer">
+        </activity>
 
         <activity
             android:name=".activity.NewTaskActivity"
