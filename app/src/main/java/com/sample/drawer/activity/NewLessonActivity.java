@@ -62,7 +62,7 @@ public class NewLessonActivity extends ActionBarActivity {
     private int lessonID;
     private int dayOfWeek;
 
-    //добавление пары для дня неделиё
+    //добавление пары для дня недели
     public static Intent newAddIntent(Context context, int dayOfWeek){
         Intent intent = new Intent(context, NewLessonActivity.class);
         intent.putExtra(ARG_DAY_OF_WEEK, dayOfWeek);
@@ -70,9 +70,10 @@ public class NewLessonActivity extends ActionBarActivity {
     }
 
     //редактирование существующей пары
-    public static Intent newEditIntent(Context context, int lessonID){
+    public static Intent newEditIntent(Context context, int dayOfWeek, int lessonID){
         Intent intent = new Intent(context, NewLessonActivity.class);
         intent.putExtra(ARG_LESSON_ID, lessonID);
+        intent.putExtra(ARG_DAY_OF_WEEK, dayOfWeek);
         return intent;
     }
 
@@ -128,46 +129,17 @@ public class NewLessonActivity extends ActionBarActivity {
                     (typeWeek.getSelectedItem().toString().compareTo(even) == 0);
 
 
+            Period period = new Period.Builder(subject, periodTime, firstWeek, secondWeek)
+                    .teacher(teacher).type(periodType).сlassroom(classroom).build();
+
+
             //добавление
             if (lessonID == 0){
-                Period period = new Period.Builder(subject, periodTime, firstWeek, secondWeek)
-                        .teacher(teacher).type(periodType).сlassroom(classroom).build();
                 helper.getPeriodDAO().create(period);
                 id = period.getId();
                 addLessonToSchedule(period);
             } else { //редактирование
-                Bundle bundle = new Bundle();
-                bundle.putInt(ARG_LESSON_ID,lessonID);
-                getLoaderManager().initLoader(LOADER_EDIT_LESSON, bundle,
-                        new LoaderManager.LoaderCallbacks<List<Period>>() {
-                            @Override
-                            public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
-                                return new OrmLiteQueryForIdLoader<>(getBaseContext(),
-                                        HelperFactory.getHelper().getPeriodDAO(), args.getInt(ARG_LESSON_ID));
-                            }
-
-                            @Override
-                            public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
-                                if (data != null && !data.isEmpty()){
-                                    Period period = data.get(0);
-                                    period.setClassroom(classroom);
-                                    period.setFirstWeek(firstWeek);
-                                    period.setSecondWeek(secondWeek);
-                                    period.setSubject(subject);
-                                    period.setTeacher(teacher);
-                                    period.setTime(periodTime);
-                                    period.setType(periodType);
-                                    try {
-                                        HelperFactory.getHelper().getPeriodDAO().update(period);
-                                    } catch (SQLException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onLoaderReset(Loader<List<Period>> loader) {}
-                        });
+                updateLesson(period);
             }
 
         } catch (SQLException e) {
@@ -196,22 +168,7 @@ public class NewLessonActivity extends ActionBarActivity {
 
             @Override
             public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
-                if (data != null) {
-                    for (Day d : data) {
-                        boolean add = true;
-                        if (d.getWeek().isFirst() && !period.isFirstWeek() ||
-                                !d.getWeek().isFirst() && !period.isSecondWeek())
-                            add = false;
-                        if (add) {
-                            try {
-                                HelperFactory.getHelper().getDayPeriodDAO().
-                                        create(new DayPeriod(d, period));
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
+                addLessonToDays(period,data);
             }
 
             @Override
@@ -219,6 +176,63 @@ public class NewLessonActivity extends ActionBarActivity {
 
             }
         });
+    }
+
+    private void updateLesson(final Period period){
+        final Bundle bundle = new Bundle();
+        bundle.putInt(ARG_DAY_OF_WEEK,dayOfWeek);
+        bundle.putInt(ARG_LESSON_ID,lessonID);
+        getLoaderManager().initLoader(LOADER_EDIT_LESSON, bundle, new LoaderManager.LoaderCallbacks<List<Day>>() {
+            @Override
+            public Loader<List<Day>> onCreateLoader(int id, Bundle args) {
+                DayDAO dayDAO = HelperFactory.getHelper().getDayDAO();
+                int dayOfWeek = args.getInt(ARG_DAY_OF_WEEK);
+                int lessonID = args.getInt(ARG_LESSON_ID);
+                try {
+                    return new OrmLitePreparedQueryLoader<>(getBaseContext(), dayDAO,
+                            dayDAO.getDayByDayOfWeek(dayOfWeek));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
+                period.setId(lessonID);
+                try {
+                    HelperFactory.getHelper().getPeriodDAO().update(period);
+                    HelperFactory.getHelper().getDayPeriodDAO().deleteByPeriod(period);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                addLessonToDays(period, data);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<List<Day>> loader) {
+
+            }
+        });
+    }
+
+    private void addLessonToDays(Period period, List<Day> days){
+        if (days != null) {
+            for (Day d : days) {
+                boolean add = true;
+                if (d.getWeek().isFirst() && !period.isFirstWeek() ||
+                        !d.getWeek().isFirst() && !period.isSecondWeek())
+                    add = false;
+                if (add) {
+                    try {
+                        HelperFactory.getHelper().getDayPeriodDAO().
+                                create(new DayPeriod(d, period));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
 

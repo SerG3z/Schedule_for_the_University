@@ -32,8 +32,6 @@ public class Period {
     private boolean firstWeek;
     @DatabaseField(canBeNull = false)
     private boolean secondWeek;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Task task;
 
     private Period(Builder builder) {
         subject = builder.subject;
@@ -43,7 +41,6 @@ public class Period {
         type = builder.type;
         classroom = builder.classroom;
         teacher = builder.teacher;
-        task = builder.task;
     }
 
     public Period() {
@@ -81,14 +78,6 @@ public class Period {
         this.subject = subject;
     }
 
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
     public Teacher getTeacher() {
         return teacher;
     }
@@ -114,7 +103,6 @@ public class Period {
     }
 
 
-
     public static class Builder {
         //required parameters
         private final Subject subject;
@@ -125,7 +113,6 @@ public class Period {
         private PeriodType type = new PeriodType("");
         private Classroom classroom = new Classroom("");
         private Teacher teacher = new Teacher("");
-        private Task task = null;
 
         public Builder(Subject subject, PeriodTime time, boolean firstWeek, boolean secondWeek) {
             this.subject = subject;

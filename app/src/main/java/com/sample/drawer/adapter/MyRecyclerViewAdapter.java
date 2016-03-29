@@ -70,6 +70,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         }
     }
 
+    @Override
+    public long getItemId(int position) {
+        return periodList.get(position).getId();
+    }
+
     public void addItem(Period period, int index) {
         periodList.add(period);
         notifyItemInserted(index);

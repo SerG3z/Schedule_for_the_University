@@ -53,12 +53,14 @@ public class ScheduleInitializer {
             for (String s : lessonTypes){
                 helper.getPeriodTypeDAO().create(new PeriodType(s));
             }
-
+            String empty = "";
+            helper.getPeriodTypeDAO().create(new PeriodType(empty));
             helper.getSubjectDAO().create(new Subject("Предмет 1"));
             helper.getSubjectDAO().create(new Subject("Предмет 2"));
 
             helper.getClassroomDAO().create(new Classroom("Аудитория 1"));
             helper.getClassroomDAO().create(new Classroom("Аудитория 2"));
+            helper.getClassroomDAO().create(new Classroom(empty));
 
             String[] lessonTimes= res.getStringArray(R.array.type_lesson_time);
             for (String begin : lessonTimes){
@@ -68,6 +70,7 @@ public class ScheduleInitializer {
 
             helper.getTeacherDAO().create(new Teacher("Препод 1"));
             helper.getTeacherDAO().create(new Teacher("Препод 2"));
+            helper.getTeacherDAO().create(new Teacher(empty));
 
         } catch (SQLException e) {
             e.printStackTrace();

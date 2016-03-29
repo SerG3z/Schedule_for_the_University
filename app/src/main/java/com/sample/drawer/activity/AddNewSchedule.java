@@ -167,7 +167,8 @@ public class AddNewSchedule extends AppCompatActivity {
                 new MyRecyclerViewAdapter.MyClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-                        Intent intent = NewLessonActivity.newEditIntent(getBaseContext(),position+1);
+                        Intent intent = NewLessonActivity.newEditIntent(getBaseContext(),
+                                tabs.getSelectedTabPosition()+1, (int)mAdapter.getItemId(position));
                         startActivity(intent);
                         Log.i(LOG_TAG, " Clicked on Item " + position);
                     }

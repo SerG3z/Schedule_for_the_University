@@ -23,28 +23,32 @@ public class Task {
     @DatabaseField(canBeNull = false)
     private boolean done;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private DayPeriod targetPeriod;
+    private Day targetDay;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Period targetPeriod;
 
-    public Task(String task, DayPeriod targetPeriod) {
+    public Task(String task,Day targetDay, Period targetPeriod) {
         this.task = task;
         this.targetPeriod = targetPeriod;
+        this.targetDay = targetDay;
         done = false;
     }
 
     public Task(String task) {
         this.task = task;
         this.targetPeriod = null;
+        this.targetDay = null;
         done = false;
     }
 
     public Task() {
     }
 
-    public DayPeriod getTargetPeriod() {
+    public Period getTargetPeriod() {
         return targetPeriod;
     }
 
-    public void setTargetPeriod(DayPeriod targetPeriod) {
+    public void setTargetPeriod(Period targetPeriod) {
         this.targetPeriod = targetPeriod;
     }
 
@@ -64,5 +68,11 @@ public class Task {
         this.task = task;
     }
 
+    public Day getTargetDay() {
+        return targetDay;
+    }
 
+    public void setTargetDay(Day targetDay) {
+        this.targetDay = targetDay;
+    }
 }
