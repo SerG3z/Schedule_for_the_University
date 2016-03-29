@@ -52,5 +52,8 @@
     <string name="complete_task">Завершить</string>
     <string name="edit_task">Редактировать</string>
 
+    <!-- item_lesson_show_info layout-->
+    <string name="title_number_auditory">Номер аудитории</string>
+    <string name="title_name_teacher">Преподаватель</string>
 
 </resources>
