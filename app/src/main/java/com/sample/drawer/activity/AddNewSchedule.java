@@ -30,6 +30,7 @@ import com.sample.drawer.database.OrmLiteQueryForIdLoader;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,8 +42,7 @@ public class AddNewSchedule extends AppCompatActivity {
     private static final  String RETURN_RECORD_KEY = "week";
     private static final  String PERIOD_ID_KEY = "periodId";
     private static final  String DAY_OF_WEEK_KEY = "dayOfWeek";
-    private static final  int LOADER_PERIOD_BY_ID = 1;
-    private static final  int LOADER_PERIODS_BY_DAY_OF_WEEK = 1;
+    private static final  int LOADER_PERIOD_BY_ID = 8;
     private static String LOG_TAG = "RecyclerViewActivity";
     private RecyclerView.Adapter mAdapter;
     private FloatingActionButton fabButton;
@@ -131,6 +131,7 @@ public class AddNewSchedule extends AppCompatActivity {
         }
     }
 
+    //TODO: зачем это нужно?
     private Period initializeIntent() {
         final Period[] period = {null};
         Intent intent = getIntent();
@@ -184,9 +185,10 @@ public class AddNewSchedule extends AppCompatActivity {
 
     //    заполнить вкладку расписанием выбранного дня
     private void fillTabWithLessons(int dayOfWeek) {
+        Log.v("OPA","fillTab");
         Bundle bundle = new Bundle();
         bundle.putInt(DAY_OF_WEEK_KEY, dayOfWeek);
-        getLoaderManager().initLoader(LOADER_PERIODS_BY_DAY_OF_WEEK, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
+        getLoaderManager().initLoader(dayOfWeek, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
             @Override
             public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
                 ScheduleDBHelper helper = OpenHelperManager
@@ -203,7 +205,7 @@ public class AddNewSchedule extends AppCompatActivity {
 
             @Override
             public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
-                if (data != null && !data.isEmpty()) {
+                if (data != null) {
                     mAdapter = new MyRecyclerViewAdapter(data);
                     mRecyclerView.setAdapter(mAdapter);
                     setAdapterOnClickListener();

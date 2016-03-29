@@ -70,4 +70,7 @@ public class Day {
         this.week = week;
     }
 
+    public int getId() {
+        return id;
+    }
 }

@@ -1,5 +1,7 @@
 package com.sample.drawer.database.dao;
 
+import android.util.Log;
+
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -24,11 +26,11 @@ public class PeriodDAO extends BaseDaoImpl<Period, Integer> {
 
         DayPeriodDAO dayPeriodDAO = HelperFactory.getHelper().getDayPeriodDAO();
         QueryBuilder<DayPeriod, Integer> dayPeriodQB = dayPeriodDAO.queryBuilder();
-        dayPeriodQB.join(dayQb);
-
+        dayPeriodQB = dayPeriodQB.join(dayQb);
         QueryBuilder<Period, Integer> periodQb = queryBuilder();
-
-        return periodQb.join(dayPeriodQB).prepare();
+        periodQb = periodQb.join(dayPeriodQB);
+        periodQb.distinct();
+        return periodQb.prepare();
     }
 
     public PreparedQuery<Period> getPeriodsByDay(int dayID) throws SQLException {
@@ -38,10 +40,10 @@ public class PeriodDAO extends BaseDaoImpl<Period, Integer> {
 
         DayPeriodDAO dayPeriodDAO = HelperFactory.getHelper().getDayPeriodDAO();
         QueryBuilder<DayPeriod, Integer> dayPeriodQB = dayPeriodDAO.queryBuilder();
-        dayPeriodQB.join(dayQb);
-
+        dayPeriodQB = dayPeriodQB.join(dayQb);
         QueryBuilder<Period, Integer> periodQb = queryBuilder();
-
-        return periodQb.join(dayPeriodQB).prepare();
+        periodQb = periodQb.join(dayPeriodQB);
+        periodQb.distinct();
+        return periodQb.prepare();
     }
 }

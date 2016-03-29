@@ -138,7 +138,7 @@ public class NewLessonActivity extends ActionBarActivity {
             } else { //редактирование
                 Bundle bundle = new Bundle();
                 bundle.putInt(ARG_LESSON_ID,lessonID);
-                getLoaderManager().initLoader(LOADER_EDIT_LESSON, null,
+                getLoaderManager().initLoader(LOADER_EDIT_LESSON, bundle,
                         new LoaderManager.LoaderCallbacks<List<Period>>() {
                             @Override
                             public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
