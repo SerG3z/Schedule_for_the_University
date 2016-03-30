@@ -1,5 +1,6 @@
 package com.sample.drawer.activity;
 
+import android.app.DialogFragment;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +28,8 @@ import com.sample.drawer.database.ScheduleDBHelper;
 import com.sample.drawer.database.Subject;
 import com.sample.drawer.database.Teacher;
 import com.sample.drawer.database.dao.DayDAO;
+import com.sample.drawer.fragments.schedule.AddTimeDialogFragment;
+import com.sample.drawer.fragments.schedule.AddValueDialogFragment;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -50,6 +53,7 @@ public class NewLessonActivity extends ActionBarActivity {
 
     public static final String ARG_DAY_OF_WEEK = "day_of_week";
     public static final String ARG_LESSON_ID = "lesson_id";
+    public static final String TAG_DIALOG = "dialog";
     public static final int LOADER_ADD_LESSON = 10;
     public static final int LOADER_EDIT_LESSON = 11;
 
@@ -183,11 +187,12 @@ public class NewLessonActivity extends ActionBarActivity {
         bundle.putInt(ARG_DAY_OF_WEEK,dayOfWeek);
         bundle.putInt(ARG_LESSON_ID,lessonID);
         getLoaderManager().initLoader(LOADER_EDIT_LESSON, bundle, new LoaderManager.LoaderCallbacks<List<Day>>() {
+            int lessonID;
             @Override
             public Loader<List<Day>> onCreateLoader(int id, Bundle args) {
                 DayDAO dayDAO = HelperFactory.getHelper().getDayDAO();
                 int dayOfWeek = args.getInt(ARG_DAY_OF_WEEK);
-                int lessonID = args.getInt(ARG_LESSON_ID);
+                lessonID = args.getInt(ARG_LESSON_ID);
                 try {
                     return new OrmLitePreparedQueryLoader<>(getBaseContext(), dayDAO,
                             dayDAO.getDayByDayOfWeek(dayOfWeek));
@@ -211,7 +216,6 @@ public class NewLessonActivity extends ActionBarActivity {
 
             @Override
             public void onLoaderReset(Loader<List<Day>> loader) {
-
             }
         });
     }
@@ -310,5 +314,32 @@ public class NewLessonActivity extends ActionBarActivity {
         @Override
         public void onLoaderReset(Loader loader) {
         }
+    }
+
+    @OnClick(R.id.btn_add_fio_teacher)
+    void showAddTeacherDialog(){
+        showAddDialog(getString(R.string.fio_teacher));
+    }
+    @OnClick(R.id.btn_add_name_lesson)
+    void showAddLessonDialog(){
+        showAddDialog(getString(R.string.name_lesson));
+    }
+    @OnClick(R.id.btn_add_number_auditory)
+    void showAddAuditoryDialog(){
+        showAddDialog(getString(R.string.number_auditory));
+    }
+    @OnClick(R.id.btn_add_type_lesson)
+    void showAddLessonTypeDialog(){
+        showAddDialog(getString(R.string.type_lesson));
+    }
+    @OnClick(R.id.btn_add_time)
+    void showAddTimeDialog(){
+        DialogFragment newFragment = AddTimeDialogFragment.newInstance();
+        newFragment.show(getFragmentManager(), TAG_DIALOG);
+    }
+
+    void showAddDialog(String arg){
+        DialogFragment newFragment = AddValueDialogFragment.newInstance(arg);
+        newFragment.show(getFragmentManager(), TAG_DIALOG);
     }
 }

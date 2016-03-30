@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
+import com.sample.drawer.database.Day;
+import com.sample.drawer.database.HelperFactory;
 import com.sample.drawer.decoration.DividerItemDecoration;
 import com.sample.drawer.database.Period;
 import com.sample.drawer.database.ScheduleDBHelper;
@@ -25,6 +28,8 @@ import com.sample.drawer.database.OrmLiteQueryForIdLoader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 
@@ -39,8 +44,10 @@ public class ItemDayFragment extends Fragment {
     @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
 
     static final String ARGUMENT_DAY = "arg_page_number";
+    static final String ARGUMENT_HEADER_STRING = "header";
     static final String KEY_DAY = "day";
-    static final int LOADER_PERIODS_BY_DAY = 10;
+    static final int LOADER_DAY = 1000;
+    private int day;
     int backColor;
 
     public static ItemDayFragment newInstance(int page) {
@@ -54,7 +61,6 @@ public class ItemDayFragment extends Fragment {
     //TODO: убрать
     public static ArrayList<Period> getLessons() {
         ArrayList<Period> results = new ArrayList<>();
-        //TODO: вернуть заглушку
         /*for (int index = 0; index < 10; index++) {
             Period period = new Period.Builder(new Subject("Предмет"),
                     new PeriodTime("Начало","Конец"),true, true).build();
@@ -66,7 +72,7 @@ public class ItemDayFragment extends Fragment {
     private void fillPageWithLessons(int dayOfSemester) {
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_DAY, dayOfSemester);
-        getActivity().getLoaderManager().initLoader(LOADER_PERIODS_BY_DAY, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
+        getActivity().getLoaderManager().initLoader(dayOfSemester, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
             @Override
             public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
                 ScheduleDBHelper helper = OpenHelperManager
@@ -83,10 +89,8 @@ public class ItemDayFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
-                if (data != null && !data.isEmpty()) {
-                    RecyclerView.Adapter mAdapter = new MyRecyclerViewAdapter(data);
-                    mRecyclerView.setAdapter(mAdapter);
-                }
+                RecyclerView.Adapter mAdapter = new MyRecyclerViewAdapter(data);
+                mRecyclerView.setAdapter(mAdapter);
             }
             @Override
             public void onLoaderReset(Loader<List<Period>> loader) {}
@@ -96,7 +100,7 @@ public class ItemDayFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        day = getArguments().getInt(ARGUMENT_DAY);
         Random random = new Random();
         backColor = Color.argb(50, random.nextInt(256), random.nextInt(256), random.nextInt(256));
     }
@@ -106,7 +110,7 @@ public class ItemDayFragment extends Fragment {
         View view = inflater.inflate(R.layout.show_day_schedule, null);
         ButterKnife.bind(this, view);
 
-        fillPageWithLessons(getArguments().getInt(ARGUMENT_DAY));
+        fillPageWithLessons(day);
         //        mRecyclerView.setHasFixedSize(true);
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -122,16 +126,40 @@ public class ItemDayFragment extends Fragment {
         // Code to remove an item with default animation
         //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
 
-        headerTextView.setText(setCalendarTextView());
+        headerTextView.setText("");
+        setCalendarTextView();
         headerWeek.attachTo(mRecyclerView, true);
         return view;
     }
 
-    private String setCalendarTextView() {
-        Calendar calendar = Calendar.getInstance();
-        String[] dayWeek = getResources().getStringArray(R.array.day_week_list);
-        String date = dayWeek[calendar.get(calendar.DAY_OF_WEEK) - 1];
-        return date;
+    private void setCalendarTextView() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARGUMENT_DAY, day);
+        getActivity().getLoaderManager().initLoader(LOADER_DAY+day, bundle, new LoaderManager.LoaderCallbacks<List<Day>>() {
+            @Override
+            public Loader<List<Day>> onCreateLoader(int id, Bundle args) {
+                int dayID = args.getInt(ARGUMENT_DAY);
+                return new OrmLiteQueryForIdLoader<Day,Integer>(getContext(),
+                        HelperFactory.getHelper().getDayDAO(),dayID);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
+                if (!data.isEmpty() && data.get(0)!=null){
+                    Day d = data.get(0);
+                    Calendar myCal = new GregorianCalendar();
+                    myCal.setTime(d.getDate());
+                    String[] daysOfWeek = getResources().getStringArray(R.array.day_week_list);
+                    String s = String.format("%02d.%02d, %s",myCal.get(Calendar.DAY_OF_MONTH),
+                            (myCal.get(Calendar.MONTH)+1), daysOfWeek[d.getDayOfWeek()-1]) ;
+                    headerTextView.setText(s);
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<List<Day>> loader) {
+            }
+        });
     }
 
 }

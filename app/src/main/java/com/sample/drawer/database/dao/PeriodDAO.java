@@ -41,8 +41,10 @@ public class PeriodDAO extends BaseDaoImpl<Period, Integer> {
         DayPeriodDAO dayPeriodDAO = HelperFactory.getHelper().getDayPeriodDAO();
         QueryBuilder<DayPeriod, Integer> dayPeriodQB = dayPeriodDAO.queryBuilder();
         dayPeriodQB = dayPeriodQB.join(dayQb);
+
         QueryBuilder<Period, Integer> periodQb = queryBuilder();
         periodQb = periodQb.join(dayPeriodQB);
+
         periodQb.distinct();
         return periodQb.prepare();
     }

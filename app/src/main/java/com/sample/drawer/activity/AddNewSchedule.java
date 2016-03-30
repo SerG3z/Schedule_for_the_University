@@ -40,9 +40,7 @@ import butterknife.ButterKnife;
  */
 public class AddNewSchedule extends AppCompatActivity {
     private static final  String RETURN_RECORD_KEY = "week";
-    private static final  String PERIOD_ID_KEY = "periodId";
     private static final  String DAY_OF_WEEK_KEY = "dayOfWeek";
-    private static final  int LOADER_PERIOD_BY_ID = 8;
     private static String LOG_TAG = "RecyclerViewActivity";
     private RecyclerView.Adapter mAdapter;
     private FloatingActionButton fabButton;
@@ -85,8 +83,10 @@ public class AddNewSchedule extends AppCompatActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        //TODO: понедельник должен обновляться после редактирования пар
         tabs = (TabLayout) findViewById(R.id.tabsWeek);
         fillTabLayout();
+        fillTabWithLessons(1);
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -96,12 +96,10 @@ public class AddNewSchedule extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 
@@ -131,36 +129,6 @@ public class AddNewSchedule extends AppCompatActivity {
         }
     }
 
-    //TODO: зачем это нужно?
-    private Period initializeIntent() {
-        final Period[] period = {null};
-        Intent intent = getIntent();
-        int id = -1;
-        if (intent != null) {
-            id = intent.getIntExtra(RETURN_RECORD_KEY, -1);
-        }
-        if (id != -1){
-            Bundle bundle = new Bundle();
-            bundle.putInt(PERIOD_ID_KEY, id);
-            getLoaderManager().initLoader(LOADER_PERIOD_BY_ID, null, new LoaderManager.LoaderCallbacks<List<Period>>() {
-                @Override
-                public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
-                    ScheduleDBHelper helper = OpenHelperManager
-                            .getHelper(getApplicationContext(), ScheduleDBHelper.class);
-                    return new OrmLiteQueryForIdLoader<>(getBaseContext(),
-                            helper.getPeriodDAO(), args.getInt(PERIOD_ID_KEY));
-                }
-                @Override
-                public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
-                    if (!data.isEmpty())
-                        period[0] = data.get(0);
-                }
-                @Override
-                public void onLoaderReset(Loader<List<Period>> loader) {}
-            });
-        }
-        return period[0];
-    }
 
     public void setAdapterOnClickListener(){
         ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(
@@ -185,8 +153,7 @@ public class AddNewSchedule extends AppCompatActivity {
     }
 
     //    заполнить вкладку расписанием выбранного дня
-    private void fillTabWithLessons(int dayOfWeek) {
-        Log.v("OPA","fillTab");
+    private void fillTabWithLessons(final int dayOfWeek) {
         Bundle bundle = new Bundle();
         bundle.putInt(DAY_OF_WEEK_KEY, dayOfWeek);
         getLoaderManager().initLoader(dayOfWeek, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {

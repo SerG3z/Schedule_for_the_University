@@ -35,9 +35,7 @@ public class Day {
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Week week;
-    public Day(Date date, ForeignCollection<Period> periods) {
-        this.date = date;
-    }
+
     public Day(Date date, int dayOfWeek) {
         this.date = date;
         this.dayOfWeek = dayOfWeek;

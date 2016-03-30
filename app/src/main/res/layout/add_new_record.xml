@@ -38,7 +38,7 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_black_48dp"
                 android:layout_weight="1"
                 android:id="@+id/btn_add_time"
@@ -75,7 +75,7 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_black_48dp"
                 android:layout_weight="1"
                 android:id="@+id/btn_add_name_lesson"
@@ -111,7 +111,7 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_black_48dp"
                 android:layout_weight="1"
                 android:id="@+id/btn_add_fio_teacher"
@@ -147,7 +147,7 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_black_48dp"
                 android:layout_weight="1"
                 android:id="@+id/btn_add_number_auditory"
@@ -181,7 +181,7 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_black_48dp"
                 android:layout_weight="1"
                 android:id="@+id/btn_add_type_lesson"

@@ -18,17 +18,16 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
 
     private static final String LOG_TAG = "ViewPagerLoop";
     private static final int NUM_PAGES = 14;
-    private FragmentManager manager;
     private ViewPager viewPager;
 
     private long weeksCount;
     private int currentCycle;
     private int maxCycle;
-    private int currentPosition;
+
+    ItemDayFragment[] days;
 
     public ScreenSlidePagerAdapter(FragmentManager fragmentManager, ViewPager pager) {
         super(fragmentManager);
-        manager = fragmentManager;
         viewPager = pager;
         currentCycle = 1;
         try {
@@ -37,12 +36,14 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
             e.printStackTrace();
         }
         maxCycle = ((int)weeksCount + 1) / 2;
-        currentPosition = 1;
+        days = new ItemDayFragment[getCount()];
+        initDays();
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ItemDayFragment.newInstance(getCurrentDay());
+        return days[position];
+
     }
 
     @Override
@@ -56,15 +57,17 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
 
     @Override
     public void onPageSelected(int position) {
-        currentPosition = position;
         if (position == 0) {
             Log.d(LOG_TAG, "Swiped before first page, looping and resetting to last page.");
             viewPager.setCurrentItem(NUM_PAGES, false);
-            currentCycle = currentCycle == 1 ? maxCycle : currentCycle - 1;
+            currentCycle = (maxCycle + currentCycle - 2) % maxCycle + 1;
+            initDays();
         } else if (position == NUM_PAGES + 1) {
             Log.d(LOG_TAG, "Swiped beyond last page, looping and resetting to first page.");
             viewPager.setCurrentItem(1, false);
-            currentCycle = currentCycle == maxCycle ? 1 : currentCycle + 1;
+            currentCycle = currentCycle % maxCycle + 1;
+            initDays();
+
         }
         Log.d(LOG_TAG, "PageSelector " + position);
     }
@@ -73,10 +76,11 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
     public void onPageScrollStateChanged(final int state) {
     }
 
-    public int getCurrentDay(){
-        return (currentCycle -1)*NUM_PAGES + currentPosition;
-    }
-    public int getCurrentWeek(){
-        return (currentCycle - 1)*2 + (currentPosition < 8 ? 1 : 2);
+    void initDays(){
+        days[0] = ItemDayFragment.newInstance( ((maxCycle + currentCycle - 2)%maxCycle + 1)*(NUM_PAGES+1));
+        for (int i=1; i<=NUM_PAGES; i++){
+            days[i] = ItemDayFragment.newInstance( (currentCycle-1)*NUM_PAGES + i);
+        }
+        days[NUM_PAGES+1] = ItemDayFragment.newInstance( (currentCycle % maxCycle + 1)*NUM_PAGES+1);
     }
 }

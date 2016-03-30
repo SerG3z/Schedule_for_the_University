@@ -63,6 +63,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add">Добавить</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok">ОК</string>
+    <string name="lesson_begin">Начало занятия</string>
+    <string name="proceed">Далее</string>
+    <string name="lesson_end">Конец занятия</string>
+    <string name="back">Назад</string>
+    <string name="wrong_interval">Указан неверный интервал!</string>
+    <string name="accept">Подтвердить</string>
 
 
 </resources>
