@@ -12,7 +12,10 @@ import java.sql.SQLException;
  */
 @DatabaseTable
 public class Subject {
-    @DatabaseField(id = true, canBeNull = false)
+
+    public static final String FIELD_SUBJECT = "subject_name";
+
+    @DatabaseField(id = true, canBeNull = false, columnName = FIELD_SUBJECT)
     private String subject;
 
     public Subject(String subject) {

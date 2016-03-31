@@ -25,6 +25,8 @@ import com.sample.drawer.database.ScheduleDBHelper;
 import com.sample.drawer.database.Subject;
 import com.sample.drawer.database.Teacher;
 import com.sample.drawer.database.dao.DayDAO;
+import com.sample.drawer.database.dao.TeacherDAO;
+import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
 import com.sample.drawer.fragments.schedule.AddTimeDialogFragment;
 import com.sample.drawer.fragments.schedule.AddValueDialogFragment;
 
@@ -259,20 +261,20 @@ public class NewLessonActivity extends ActionBarActivity {
         public Loader onCreateLoader(int id, Bundle args) {
             switch (id) {
                 case LOADER_LESSONS:
-                    return new OrmLiteQueryForAllLoader<>(getBaseContext(),
-                            HelperFactory.getHelper().getSubjectDAO());
+                    return new OrmLiteQueryForAllOrderByLoader(getBaseContext(),
+                            HelperFactory.getHelper().getSubjectDAO(), Subject.FIELD_SUBJECT);
                 case LOADER_TIMES:
-                    return new OrmLiteQueryForAllLoader<>(getBaseContext(),
-                            HelperFactory.getHelper().getPeriodTimeDAO());
+                    return new OrmLiteQueryForAllOrderByLoader<>(getBaseContext(),
+                            HelperFactory.getHelper().getPeriodTimeDAO(), PeriodTime.FIELD_BEGIN_TIME);
                 case LOADER_AUDITORIES:
-                    return new OrmLiteQueryForAllLoader<>(getBaseContext(),
-                            HelperFactory.getHelper().getClassroomDAO());
+                    return new OrmLiteQueryForAllOrderByLoader<>(getBaseContext(),
+                            HelperFactory.getHelper().getClassroomDAO(), Classroom.FIELD_CLASSROOM);
                 case LOADER_TEACHERS:
-                    return new OrmLiteQueryForAllLoader<>(getBaseContext(),
-                            HelperFactory.getHelper().getTeacherDAO());
+                    return new OrmLiteQueryForAllOrderByLoader<>(getBaseContext(),
+                            HelperFactory.getHelper().getTeacherDAO(), Teacher.FIELD_TEACHER);
                 case LOADER_LESSON_TYPES:
-                    return new OrmLiteQueryForAllLoader<>(getBaseContext(),
-                            HelperFactory.getHelper().getPeriodTypeDAO());
+                    return new OrmLiteQueryForAllOrderByLoader<>(getBaseContext(),
+                            HelperFactory.getHelper().getPeriodTypeDAO(), PeriodType.FIELD_PERIOD_TYPE);
             }
             return null;
         }

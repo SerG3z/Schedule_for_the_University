@@ -12,7 +12,10 @@ import java.sql.SQLException;
  */
 @DatabaseTable
 public class PeriodType {
-    @DatabaseField(id = true, canBeNull = false)
+
+    public static final String FIELD_PERIOD_TYPE = "period_type";
+
+    @DatabaseField(id = true, canBeNull = false, columnName = FIELD_PERIOD_TYPE)
     private String periodType;
 
     public PeriodType(String periodType) {

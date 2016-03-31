@@ -14,10 +14,12 @@ import java.sql.SQLException;
 @DatabaseTable
 public class PeriodTime {
 
+    public static final String FIELD_BEGIN_TIME = "begin_time";
+
     @DatabaseField(generatedId = true)
     private int number;
     //format: "%2d:%2d"
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, columnName = FIELD_BEGIN_TIME)
     private String beginTime;
     //format: "%2d:%2d"
     @DatabaseField(canBeNull = false)

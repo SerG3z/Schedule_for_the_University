@@ -12,7 +12,10 @@ import java.sql.SQLException;
  */
 @DatabaseTable
 public class Classroom {
-    @DatabaseField(id = true, canBeNull = false)
+
+    public static final String FIELD_CLASSROOM = "classroom_num";
+
+    @DatabaseField(id = true, canBeNull = false, columnName = FIELD_CLASSROOM)
     private String classroom;
 
     public Classroom(String classroom) {
