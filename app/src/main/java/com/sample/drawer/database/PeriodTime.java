@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * Period time table
  */
 @DatabaseTable
-public class PeriodTime {
+public class PeriodTime implements Comparable<PeriodTime>{
 
     public static final String FIELD_BEGIN_TIME = "begin_time";
 
@@ -67,4 +67,12 @@ public class PeriodTime {
     }
 
 
+    @Override
+    public int compareTo(PeriodTime another) {
+        int result = beginTime.compareTo(another.getBeginTime());
+        if (result == 0){
+            return endTime.compareTo(another.getEndTime());
+        }
+        return result;
+    }
 }

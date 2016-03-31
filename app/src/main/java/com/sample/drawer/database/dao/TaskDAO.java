@@ -30,7 +30,7 @@ public class TaskDAO extends BaseDaoImpl<Task, Integer> {
 
     public PreparedQuery<Task> getTasksOrderedBySubject(PeriodDAO periodDao) throws SQLException {
         QueryBuilder<Period, Integer> periodQb = periodDao.queryBuilder();
-        periodQb.orderBy(Period.FIELD_SUBJECT_NAME, true);
+        periodQb.orderBy(Period.FIELD_SUBJECT, true);
         QueryBuilder<Task, Integer> taskQb = queryBuilder();
         return taskQb.join(periodQb).prepare();
     }

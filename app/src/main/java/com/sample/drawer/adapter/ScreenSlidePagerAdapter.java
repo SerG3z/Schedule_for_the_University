@@ -24,6 +24,7 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
     private int currentCycle;
     private int maxCycle;
 
+    //TODO: загружать по 14 вкладок - плохая идея. текущая реализация viewPager'a глючная
     ItemDayFragment[] days;
 
     public ScreenSlidePagerAdapter(FragmentManager fragmentManager, ViewPager pager) {

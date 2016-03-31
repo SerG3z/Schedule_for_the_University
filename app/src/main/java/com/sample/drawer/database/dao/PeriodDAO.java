@@ -29,7 +29,7 @@ public class PeriodDAO extends BaseDaoImpl<Period, Integer> {
         dayPeriodQB = dayPeriodQB.join(dayQb);
         QueryBuilder<Period, Integer> periodQb = queryBuilder();
         periodQb = periodQb.join(dayPeriodQB);
-        periodQb.distinct();
+        periodQb.distinct().orderBy(Period.FIELD_TIME, true);
         return periodQb.prepare();
     }
 
@@ -45,7 +45,7 @@ public class PeriodDAO extends BaseDaoImpl<Period, Integer> {
         QueryBuilder<Period, Integer> periodQb = queryBuilder();
         periodQb = periodQb.join(dayPeriodQB);
 
-        periodQb.distinct();
+        periodQb.distinct().orderBy(Period.FIELD_TIME, true);
         return periodQb.prepare();
     }
 }

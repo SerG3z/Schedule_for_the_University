@@ -1,11 +1,7 @@
 package com.sample.drawer.database;
 
-import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.sql.SQLException;
 
 /**
  * Periods table
@@ -13,16 +9,17 @@ import java.sql.SQLException;
 @DatabaseTable
 public class Period {
 
-    public static final String FIELD_SUBJECT_NAME = "subject";
-    public static final String FIELD_ID_NAME = "id";
+    public static final String FIELD_SUBJECT = "subject";
+    public static final String FIELD_ID = "id";
+    public static final String FIELD_TIME = "time";
 
-    @DatabaseField(generatedId = true, columnName = FIELD_ID_NAME)
+    @DatabaseField(generatedId = true, columnName = FIELD_ID)
     private int id;
     @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Subject subject;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private PeriodType type;
-    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true, columnName = FIELD_TIME)
     private PeriodTime time;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Classroom classroom;
@@ -103,7 +100,7 @@ public class Period {
     }
 
 
-    public static class Builder {
+    public static class Builder{
         //required parameters
         private final Subject subject;
         private final PeriodTime time;
@@ -154,5 +151,7 @@ public class Period {
     public String toString() {
         return subject.getSubject() + ", " + teacher.getTeacher() + ", " + type.getPeriodType() + ", " + classroom.getClassroom();
     }
+
+
 
 }
