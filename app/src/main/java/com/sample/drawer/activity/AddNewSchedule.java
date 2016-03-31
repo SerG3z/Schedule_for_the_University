@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -38,6 +37,7 @@ public class AddNewSchedule extends AppCompatActivity {
     private static final  String RETURN_RECORD_KEY = "week";
     private static final  String DAY_OF_WEEK_KEY = "dayOfWeek";
     private static String LOG_TAG = "RecyclerViewActivity";
+    private static final int RESULT_REQUEST = 1;
     private RecyclerView.Adapter mAdapter;
     private FloatingActionButton fabButton;
 
@@ -79,15 +79,14 @@ public class AddNewSchedule extends AppCompatActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //TODO: понедельник должен обновляться после редактирования пар
         tabs = (TabLayout) findViewById(R.id.tabsWeek);
         fillTabLayout();
-        fillTabWithLessons(1);
+        fillTabWithLessons(tabs.getSelectedTabPosition()+1);
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                fillTabWithLessons(tab.getPosition() + 1);
+                fillTabWithLessons(tab.getPosition());
             }
 
             @Override
@@ -105,14 +104,13 @@ public class AddNewSchedule extends AppCompatActivity {
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 16)
                 .create();
-        fabButton.setOnTouchListener(new View.OnTouchListener() {
+        fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Intent intent = NewLessonActivity.newAddIntent(getBaseContext(),
-                        tabs.getSelectedTabPosition()+1);
+            public void onClick(View v) {
+                Intent intent = NewLessonActivity.newAddIntent(AddNewSchedule.this,
+                        tabs.getSelectedTabPosition() + 1);
                 fabButton.hideFloatingActionButton();
                 startActivity(intent);
-                return false;
             }
         });
 
@@ -132,7 +130,7 @@ public class AddNewSchedule extends AppCompatActivity {
                     @Override
                     public void onItemClick(int position, View v) {
                         Intent intent = NewLessonActivity.newEditIntent(getBaseContext(),
-                                tabs.getSelectedTabPosition()+1, (int)mAdapter.getItemId(position));
+                                tabs.getSelectedTabPosition() + 1, (int) mAdapter.getItemId(position));
                         startActivity(intent);
                         Log.i(LOG_TAG, " Clicked on Item " + position);
                     }
@@ -175,9 +173,11 @@ public class AddNewSchedule extends AppCompatActivity {
                     setAdapterOnClickListener();
                 }
             }
+
             @Override
             public void onLoaderReset(Loader<List<Period>> loader) {
             }
         });
     }
+
 }

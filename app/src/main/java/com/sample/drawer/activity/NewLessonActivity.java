@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -40,7 +41,6 @@ import butterknife.OnClick;
 /**
  * Created by serg on 23.03.16.
  */
-//TODO: реализовать диалоговые фрагменты добавления новых значений
 public class NewLessonActivity extends ActionBarActivity {
 
     @Bind(R.id.time_lesson) Spinner time;
@@ -64,6 +64,7 @@ public class NewLessonActivity extends ActionBarActivity {
 
     private int lessonID;
     private int dayOfWeek;
+
 
     //добавление пары для дня недели
     public static Intent newAddIntent(Context context, int dayOfWeek){
@@ -95,6 +96,16 @@ public class NewLessonActivity extends ActionBarActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.button_cancel)
+    public void onClickButtonCancel(){
+        this.finish();
+    }
+
+    @OnClick(R.id.button_delete)
+    public void onClickButtonDelete(){
+
     }
 
     //работа с базой
@@ -135,7 +146,6 @@ public class NewLessonActivity extends ActionBarActivity {
             Period period = new Period.Builder(subject, periodTime, firstWeek, secondWeek)
                     .teacher(teacher).type(periodType).сlassroom(classroom).build();
 
-
             //добавление
             if (lessonID == 0){
                 helper.getPeriodDAO().create(period);
@@ -148,8 +158,7 @@ public class NewLessonActivity extends ActionBarActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //TODO: убрать аргумент id, если будет неактуален
-        startActivity(AddNewSchedule.newIntent(this, id));
+        this.finish();
     }
 
     private void addLessonToSchedule(final Period period){
@@ -238,7 +247,6 @@ public class NewLessonActivity extends ActionBarActivity {
         }
     }
 
-
     private void loadLists(){
         getLoaderManager().initLoader(ListLoader.LOADER_LESSONS, null, new ListLoader());
         getLoaderManager().initLoader(ListLoader.LOADER_AUDITORIES, null, new ListLoader());
@@ -315,6 +323,7 @@ public class NewLessonActivity extends ActionBarActivity {
         }
     }
 
+
     @OnClick(R.id.btn_add_fio_teacher)
     void showAddTeacherDialog(){
         showAddDialog(getString(R.string.fio_teacher));
@@ -337,8 +346,10 @@ public class NewLessonActivity extends ActionBarActivity {
         newFragment.show(getFragmentManager(), TAG_DIALOG);
     }
 
-    void showAddDialog(String arg){
+
+    private void showAddDialog(String arg){
         DialogFragment newFragment = AddValueDialogFragment.newInstance(arg);
         newFragment.show(getFragmentManager(), TAG_DIALOG);
     }
+
 }

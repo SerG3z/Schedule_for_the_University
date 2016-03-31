@@ -72,6 +72,7 @@
     <string name="back">Назад</string>
     <string name="wrong_interval">Указан неверный интервал!</string>
     <string name="accept">Подтвердить</string>
+    <string name="button_delete">Удалить</string>
 
 
 </resources>
