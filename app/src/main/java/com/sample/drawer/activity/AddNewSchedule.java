@@ -22,15 +22,11 @@ import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
 import com.sample.drawer.decoration.FloatingActionButton;
-import com.sample.drawer.database.Day;
 import com.sample.drawer.database.Period;
 import com.sample.drawer.database.ScheduleDBHelper;
-import com.sample.drawer.database.OrmLiteQueryForFirstLoader;
-import com.sample.drawer.database.OrmLiteQueryForIdLoader;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

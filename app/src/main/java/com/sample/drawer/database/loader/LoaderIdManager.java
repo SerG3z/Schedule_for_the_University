@@ -1,4 +1,4 @@
-package com.sample.drawer.database;
+package com.sample.drawer.database.loader;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
