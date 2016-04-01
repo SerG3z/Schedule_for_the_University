@@ -128,8 +128,8 @@ public class AddNewSchedule extends AppCompatActivity {
 
 
     public void setAdapterOnClickListener(){
-        ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(
-                new MyRecyclerViewAdapter.MyClickListener() {
+        ((ScheduleRecyclerViewAdapter) mAdapter).setOnItemClickListener(
+                new ScheduleRecyclerViewAdapter.ScheduleClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
                         Intent intent = NewLessonActivity.newEditIntent(getBaseContext(),
@@ -171,7 +171,7 @@ public class AddNewSchedule extends AppCompatActivity {
             @Override
             public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
                 if (data != null) {
-                    mAdapter = new MyRecyclerViewAdapter(data);
+                    mAdapter = new ScheduleRecyclerViewAdapter(data);
                     mRecyclerView.setAdapter(mAdapter);
                     setAdapterOnClickListener();
                 }

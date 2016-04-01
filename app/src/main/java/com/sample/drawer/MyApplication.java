@@ -5,6 +5,7 @@ import android.app.Application;
 import com.facebook.stetho.Stetho;
 import com.sample.drawer.database.HelperFactory;
 import com.sample.drawer.database.ScheduleInitializer;
+import com.vk.sdk.VKSdk;
 
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
@@ -48,6 +49,8 @@ public class MyApplication extends Application {
             e.printStackTrace();
         }
         ScheduleInitializer.insertDefaultData(getResources());
+
+        VKSdk.initialize(this);
     }
 
     @Override

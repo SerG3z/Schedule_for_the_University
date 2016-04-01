@@ -25,14 +25,14 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_EMPTY = 1;
     private final ArrayList<Period> periodList = new ArrayList<>();
-    private MyClickListener myClickListener;
+    private ScheduleClickListener myClickListener;
 
-    public MyRecyclerViewAdapter(List<Period> myDataset) {
+    public ScheduleRecyclerViewAdapter(List<Period> myDataset) {
         periodList.addAll(myDataset);
     }
 
     public void setOnItemClickListener(ScheduleClickListener myClickListener) {
-        this.scheduleClickListener = myClickListener;
+        this.myClickListener = myClickListener;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
             holder = new PeriodHolder(view, myClickListener);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empty_lesson, parent, false);
-            holder = new EmptyObjectHolder(view, scheduleClickListener);
+            holder = new EmptyObjectHolder(view, myClickListener);
         }
         return holder;
     }
@@ -122,7 +122,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
         private ScheduleClickListener clickListener;
 
-        public PeriodHolder(View itemView, MyClickListener myClickListener) {
+        public PeriodHolder(View itemView, ScheduleClickListener myClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             clickListener = myClickListener;
@@ -140,7 +140,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     public class EmptyObjectHolder extends BaseHolder implements View.OnClickListener {
         @Bind(R.id.item_time) TextView time;
 
-        private MyClickListener clickListener;
+        private ScheduleClickListener clickListener;
 
         public EmptyObjectHolder(final View itemView, ScheduleClickListener myClickListener) {
             super(itemView);
