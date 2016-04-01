@@ -1,4 +1,4 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
@@ -6,6 +6,8 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
+import com.sample.drawer.database.dao.DayDAO;
+import com.sample.drawer.database.dao.PeriodDAO;
 
 import java.sql.SQLException;
 
@@ -21,17 +23,21 @@ public class Task {
     @DatabaseField(canBeNull = false)
     private boolean done;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Day targetDay;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Period targetPeriod;
 
-    public Task(String task, Period targetPeriod) {
+    public Task(String task,Day targetDay, Period targetPeriod) {
         this.task = task;
         this.targetPeriod = targetPeriod;
+        this.targetDay = targetDay;
         done = false;
     }
 
     public Task(String task) {
         this.task = task;
         this.targetPeriod = null;
+        this.targetDay = null;
         done = false;
     }
 
@@ -62,28 +68,11 @@ public class Task {
         this.task = task;
     }
 
-    public class DAO extends BaseDaoImpl<Task, Integer> {
+    public Day getTargetDay() {
+        return targetDay;
+    }
 
-        protected DAO(ConnectionSource connectionSource, Class<Task> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
-        }
-
-        public PreparedQuery<Task> getTasksOrderedByDate(Period.DAO periodDao, Day.DAO dayDao) throws SQLException {
-            QueryBuilder<Day, Integer> dayQb = dayDao.queryBuilder();
-            dayQb.orderBy(Day.FIELD_DATE_NAME, true);
-
-            QueryBuilder<Period, Integer> periodQb = periodDao.queryBuilder();
-            periodQb.join(dayQb);
-
-            QueryBuilder<Task, Integer> taskQb = queryBuilder();
-            return taskQb.join(periodQb).prepare();
-        }
-
-        public PreparedQuery<Task> getTasksOrderedBySubject(Period.DAO periodDao) throws SQLException {
-            QueryBuilder<Period, Integer> periodQb = periodDao.queryBuilder();
-            periodQb.orderBy(Period.FIELD_SUBJECT_NAME, true);
-            QueryBuilder<Task, Integer> taskQb = queryBuilder();
-            return taskQb.join(periodQb).prepare();
-        }
+    public void setTargetDay(Day targetDay) {
+        this.targetDay = targetDay;
     }
 }

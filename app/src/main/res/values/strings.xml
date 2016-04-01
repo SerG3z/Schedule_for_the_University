@@ -60,6 +60,16 @@
     <string name="type_week">Тип недели</string>
     <string name="button_save">Сохранить</string>
 
+    <!-- default lesson time-->
+    <string-array name="type_lesson_time">
+        <item>08:00</item>
+        <item>09:50</item>
+        <item>11:40</item>
+        <item>13:45</item>
+        <item>15:35</item>
+        <item>17:25</item>
+    </string-array>
+
     <!-- button edit_schedule-->
     <string name="edit_schedule">Изменить расписание</string>
 
@@ -67,6 +77,20 @@
     <string name="lesson">Предмет</string>
     <string name="info">Задание</string>
     <string name="time">Срок выполнения</string>
+    <string name="toast_choose_subject">Выберите предмет!</string>
+    <string name="toast_choose_time">Выберите время!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add">Добавить</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok">ОК</string>
+    <string name="lesson_begin">Начало занятия</string>
+    <string name="proceed">Далее</string>
+    <string name="lesson_end">Конец занятия</string>
+    <string name="back">Назад</string>
+    <string name="wrong_interval">Указан неверный интервал!</string>
+    <string name="accept">Подтвердить</string>
 
     <string name="complete_task">Завершить</string>
     <string name="edit_task">Редактировать</string>

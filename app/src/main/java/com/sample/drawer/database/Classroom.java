@@ -1,4 +1,4 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
@@ -12,7 +12,10 @@ import java.sql.SQLException;
  */
 @DatabaseTable
 public class Classroom {
-    @DatabaseField(id = true, canBeNull = false)
+
+    public static final String FIELD_CLASSROOM = "classroom_num";
+
+    @DatabaseField(id = true, canBeNull = false, columnName = FIELD_CLASSROOM)
     private String classroom;
 
     public Classroom(String classroom) {
@@ -30,10 +33,10 @@ public class Classroom {
         this.classroom = classroom;
     }
 
-    public class DAO extends BaseDaoImpl<Classroom, String> {
 
-        protected DAO(ConnectionSource connectionSource, Class<Classroom> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
-        }
+    @Override
+    public String toString() {
+        return classroom;
     }
+
 }

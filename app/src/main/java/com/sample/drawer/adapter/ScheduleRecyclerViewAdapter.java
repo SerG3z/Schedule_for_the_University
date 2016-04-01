@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sample.drawer.R;
-import com.sample.drawer.model.Data;
+import com.sample.drawer.database.Period;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by admin on 3/23/2016.
@@ -21,11 +24,11 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_EMPTY = 1;
-    private final ArrayList<Data> dataList = new ArrayList<>();
-    private ScheduleClickListener scheduleClickListener;
+    private final ArrayList<Period> periodList = new ArrayList<>();
+    private MyClickListener myClickListener;
 
-    public ScheduleRecyclerViewAdapter(ArrayList<Data> myDataset) {
-        dataList.addAll(myDataset);
+    public MyRecyclerViewAdapter(List<Period> myDataset) {
+        periodList.addAll(myDataset);
     }
 
     public void setOnItemClickListener(ScheduleClickListener myClickListener) {
@@ -38,7 +41,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         if (viewType == TYPE_NORMAL) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_lesson, parent, false);
-            holder = new DataObjectHolder(view, scheduleClickListener);
+            holder = new PeriodHolder(view, myClickListener);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empty_lesson, parent, false);
             holder = new EmptyObjectHolder(view, scheduleClickListener);
@@ -48,37 +51,50 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
     @Override
     public void onBindViewHolder(BaseHolder holder, int position) {
+        Period period = periodList.get(position);
+        if (period == null){
+            return;
+        }
+        //TODO: устранить проблемы с null
+        if (period.getTime() == null || period.getType() == null || period.getSubject() == null ||
+                period.getTeacher() == null || period.getClassroom() == null)
+                    return;
         if (getItemViewType(position) == TYPE_NORMAL) {
-            ((DataObjectHolder) holder).time.setText(dataList.get(position).getTime());
-            ((DataObjectHolder) holder).typeLesson.setText(dataList.get(position).getTypeLesson());
-            ((DataObjectHolder) holder).nameLesson.setText(dataList.get(position).getNameLesson());
-            ((DataObjectHolder) holder).fioTeacher.setText(dataList.get(position).getFioTeacher());
-            ((DataObjectHolder) holder).numberAuditory.setText(dataList.get(position).getNumberAuditory());
+            ((PeriodHolder) holder).time.setText(period.getTime().toString());
+            ((PeriodHolder) holder).typeLesson.setText(period.getType().toString());
+            ((PeriodHolder) holder).nameLesson.setText(period.getSubject().toString());
+            ((PeriodHolder) holder).fioTeacher.setText(period.getTeacher().toString());
+            ((PeriodHolder) holder).numberAuditory.setText(period.getClassroom().toString());
         } else {
-            ((EmptyObjectHolder) holder).time.setText(dataList.get(position).getTime());
+            ((EmptyObjectHolder) holder).time.setText(period.getTime().toString());
         }
     }
 
-    public void addItem(Data dataObj, int index) {
-        dataList.add(dataObj);
+    @Override
+    public long getItemId(int position) {
+        return periodList.get(position).getId();
+    }
+
+    public void addItem(Period period, int index) {
+        periodList.add(period);
         notifyItemInserted(index);
     }
 
     public void deleteItem(int index) {
-        dataList.remove(index);
+        periodList.remove(index);
         notifyItemRemoved(index);
     }
 
-    public void replaceData(final List<Data> data) {
-        dataList.clear();
-        dataList.addAll(data);
+    public void replaceData(final List<Period> periods) {
+        periodList.clear();
+        periodList.addAll(periods);
         notifyDataSetChanged();
     }
 
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return periodList.size();
     }
 
     @Override
@@ -97,29 +113,19 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         }
     }
 
-    public class DataObjectHolder extends BaseHolder implements View.OnClickListener {
-        //        @Bind(R.id.item_time)
-        TextView time;
-        //        @Bind(R.id.item_type_lesson)
-        TextView typeLesson;
-        //        @Bind(R.id.item_name_lesson)
-        TextView nameLesson;
-        //        @Bind(R.id.item_fio_teacher)
-        TextView fioTeacher;
-        //        @Bind(R.id.item_number_auditory)
-        TextView numberAuditory;
+    public class PeriodHolder extends BaseHolder implements View.OnClickListener {
+        @Bind(R.id.item_time) TextView time;
+        @Bind(R.id.item_type_lesson) TextView typeLesson;
+        @Bind(R.id.item_name_lesson) TextView nameLesson;
+        @Bind(R.id.item_fio_teacher) TextView fioTeacher;
+        @Bind(R.id.item_number_auditory) TextView numberAuditory;
 
         private ScheduleClickListener clickListener;
 
-        public DataObjectHolder(View itemView, ScheduleClickListener myClickListener) {
+        public PeriodHolder(View itemView, MyClickListener myClickListener) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
             clickListener = myClickListener;
-//            ButterKnife.bind(itemView);
-            time = (TextView) itemView.findViewById(R.id.item_time);
-            typeLesson = (TextView) itemView.findViewById(R.id.item_type_lesson);
-            nameLesson = (TextView) itemView.findViewById(R.id.item_name_lesson);
-            fioTeacher = (TextView) itemView.findViewById(R.id.item_fio_teacher);
-            numberAuditory = (TextView) itemView.findViewById(R.id.item_number_auditory);
 
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
@@ -132,13 +138,14 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     }
 
     public class EmptyObjectHolder extends BaseHolder implements View.OnClickListener {
-        TextView time;
-        private ScheduleClickListener clickListener;
+        @Bind(R.id.item_time) TextView time;
+
+        private MyClickListener clickListener;
 
         public EmptyObjectHolder(final View itemView, ScheduleClickListener myClickListener) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
             clickListener = myClickListener;
-            time = (TextView) itemView.findViewById(R.id.item_time_empty);
             itemView.setOnClickListener(this);
         }
 

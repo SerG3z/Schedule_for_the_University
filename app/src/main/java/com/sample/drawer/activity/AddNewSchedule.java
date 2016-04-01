@@ -6,38 +6,45 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.ScheduleRecyclerViewAdapter;
 import com.sample.drawer.decoration.DividerItemDecoration;
-import com.sample.drawer.model.Data;
-import com.sample.drawer.scheduleDataBase.Period;
-import com.sample.drawer.scheduleDataBase.ScheduleDBHelper;
-import com.sample.drawer.utils.LoaderIdManager;
-import com.sample.drawer.utils.OrmLiteQueryForIdLoader;
+import com.sample.drawer.decoration.FloatingActionButton;
+import com.sample.drawer.database.Period;
+import com.sample.drawer.database.ScheduleDBHelper;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by admin on 3/23/2016.
  */
 public class AddNewSchedule extends AppCompatActivity {
-    private final static String RETURN_RECORD_KEY = "week";
-    private final static String PERIOD_ID_KEY = "week";
+    private static final  String RETURN_RECORD_KEY = "week";
+    private static final  String DAY_OF_WEEK_KEY = "dayOfWeek";
     private static String LOG_TAG = "RecyclerViewActivity";
-    private RecyclerView.Adapter adapter;
+
+    private RecyclerView.Adapter mAdapter;
+    private FloatingActionButton fabButton;
+
+    @Bind(R.id.recycler) RecyclerView mRecyclerView;
 
     TabLayout tabs;
-
-    private LoaderIdManager idManager;
 
     public static Intent newIntent(Context context, int newPeriodId) {
         Intent intent = new Intent(context, AddNewSchedule.class);
@@ -49,15 +56,12 @@ public class AddNewSchedule extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_day);
+        ButterKnife.bind(this);
 
-        final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
 //        mRecyclerView.setHasFixedSize(true);
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-
-        adapter = new ScheduleRecyclerViewAdapter(getDataSet());
-        mRecyclerView.setAdapter(adapter);
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
@@ -76,27 +80,43 @@ public class AddNewSchedule extends AppCompatActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        //TODO: понедельник должен обновляться после редактирования пар
         tabs = (TabLayout) findViewById(R.id.tabsWeek);
         fillTabLayout();
+        fillTabWithLessons(1);
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                fillTabWithLessons(tab.getPosition() + 1);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 
-        idManager = new LoaderIdManager();
+        fabButton = new FloatingActionButton.Builder(this)
+                .withDrawable(ContextCompat.getDrawable(getBaseContext(),R.drawable.ic_add_black_18dp))
+                .withButtonColor(ContextCompat.getColor(getBaseContext(), R.color.accent))
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 16)
+                .create();
+        fabButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Intent intent = NewLessonActivity.newAddIntent(getBaseContext(),
+                        tabs.getSelectedTabPosition()+1);
+                fabButton.hideFloatingActionButton();
+                startActivity(intent);
+                return false;
+            }
+        });
+
     }
 
     private void fillTabLayout() {
@@ -106,63 +126,59 @@ public class AddNewSchedule extends AppCompatActivity {
         }
     }
 
-    private Period initializeIntent() {
-        final Period[] period = {null};
-        Intent intent = getIntent();
-        int id = -1;
-        if (intent != null) {
-            id = intent.getIntExtra(RETURN_RECORD_KEY, -1);
-        }
-        if (id != -1){
-            Bundle bundle = new Bundle();
-            bundle.putInt(PERIOD_ID_KEY, id);
-            getLoaderManager().initLoader(idManager.grabId(), null, new LoaderManager.LoaderCallbacks<List<Period>>() {
-                @Override
-                public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
-                    ScheduleDBHelper helper = OpenHelperManager
-                            .getHelper(getApplicationContext(), ScheduleDBHelper.class);
-                    return new OrmLiteQueryForIdLoader<Period, Integer>(getBaseContext(),
-                            helper.getPeriodDAO(), args.getInt(PERIOD_ID_KEY));
-                }
-                @Override
-                public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
-                    if (!data.isEmpty())
-                        period[0] = data.get(0);
-                }
-                @Override
-                public void onLoaderReset(Loader<List<Period>> loader) {}
-            });
-        }
-        return period[0];
-    }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ((ScheduleRecyclerViewAdapter) adapter).setOnItemClickListener(
-                new ScheduleRecyclerViewAdapter.ScheduleClickListener() {
+    public void setAdapterOnClickListener(){
+        ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(
+                new MyRecyclerViewAdapter.MyClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-                        Intent intent = new Intent(getBaseContext(), NewLessonActivity.class);
+                        Intent intent = NewLessonActivity.newEditIntent(getBaseContext(),
+                                tabs.getSelectedTabPosition()+1, (int)mAdapter.getItemId(position));
                         startActivity(intent);
                         Log.i(LOG_TAG, " Clicked on Item " + position);
                     }
                 });
     }
 
-    //    получить все данные с базы
-    private ArrayList<Data> getDataSet() {
-        ArrayList<Data> results = new ArrayList<>();
-        for (int index = 0; index < 10; index++) {
-            Data obj = new Data("time ", "type ", "nameLesson", "fioTeacher", "numberAuditory", "typeWeek");
-            /*if (initializeIntent() != null) {
-                //results.add(index, initializeIntent());
-            } else {
-                results.add(index, obj);
-            }*/
-            results.add(index, obj);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdapter != null){
+            setAdapterOnClickListener();
         }
-        return results;
+        fabButton.showFloatingActionButton();
+    }
+
+    //    заполнить вкладку расписанием выбранного дня
+    private void fillTabWithLessons(final int dayOfWeek) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(DAY_OF_WEEK_KEY, dayOfWeek);
+        getLoaderManager().initLoader(dayOfWeek, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
+            @Override
+            public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
+                ScheduleDBHelper helper = OpenHelperManager
+                        .getHelper(getApplicationContext(), ScheduleDBHelper.class);
+                int day = args.getInt(DAY_OF_WEEK_KEY);
+                try {
+                    return new OrmLitePreparedQueryLoader<>(getBaseContext(),
+                            helper.getPeriodDAO(), helper.getPeriodDAO().getPeriodsByDayOfWeek(day));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
+                if (data != null) {
+                    mAdapter = new MyRecyclerViewAdapter(data);
+                    mRecyclerView.setAdapter(mAdapter);
+                    setAdapterOnClickListener();
+                }
+            }
+            @Override
+            public void onLoaderReset(Loader<List<Period>> loader) {
+            }
+        });
     }
 }

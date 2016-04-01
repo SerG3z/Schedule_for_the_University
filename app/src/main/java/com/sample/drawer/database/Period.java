@@ -1,11 +1,7 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
-import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.sql.SQLException;
 
 /**
  * Periods table
@@ -13,15 +9,17 @@ import java.sql.SQLException;
 @DatabaseTable
 public class Period {
 
-    public static final String FIELD_SUBJECT_NAME = "subject";
+    public static final String FIELD_SUBJECT = "subject";
+    public static final String FIELD_ID = "id";
+    public static final String FIELD_TIME = "time";
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true, columnName = FIELD_ID)
     private int id;
     @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Subject subject;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private PeriodType type;
-    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true, columnName = FIELD_TIME)
     private PeriodTime time;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Classroom classroom;
@@ -31,10 +29,6 @@ public class Period {
     private boolean firstWeek;
     @DatabaseField(canBeNull = false)
     private boolean secondWeek;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Task task;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Day day;
 
     private Period(Builder builder) {
         subject = builder.subject;
@@ -44,8 +38,6 @@ public class Period {
         type = builder.type;
         classroom = builder.classroom;
         teacher = builder.teacher;
-        task = builder.task;
-        day = builder.day;
     }
 
     public Period() {
@@ -83,14 +75,6 @@ public class Period {
         this.subject = subject;
     }
 
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
     public Teacher getTeacher() {
         return teacher;
     }
@@ -115,26 +99,17 @@ public class Period {
         this.classroom = classroom;
     }
 
-    public Day getDay() {
-        return day;
-    }
 
-    public void setDay(Day day) {
-        this.day = day;
-    }
-
-    public static class Builder {
+    public static class Builder{
         //required parameters
         private final Subject subject;
         private final PeriodTime time;
         private final boolean firstWeek;
         private final boolean secondWeek;
         //optional parameters
-        private PeriodType type = null;
-        private Classroom classroom = null;
-        private Teacher teacher = null;
-        private Task task = null;
-        private Day day = null;
+        private PeriodType type = new PeriodType("");
+        private Classroom classroom = new Classroom("");
+        private Teacher teacher = new Teacher("");
 
         public Builder(Subject subject, PeriodTime time, boolean firstWeek, boolean secondWeek) {
             this.subject = subject;
@@ -158,15 +133,6 @@ public class Period {
             return this;
         }
 
-        public Builder teacher(Task val) {
-            task = val;
-            return this;
-        }
-
-        public Builder day(Day val) {
-            day = val;
-            return this;
-        }
 
         public Period build() {
             return new Period(this);
@@ -177,15 +143,15 @@ public class Period {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return subject.getSubject() + ", " + teacher.getTeacher() + ", " + type.getPeriodType() + ", " + classroom.getClassroom();
     }
 
-    public class DAO extends BaseDaoImpl<Period, Integer> {
 
-        protected DAO(ConnectionSource connectionSource, Class<Period> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
-        }
-    }
+
 }

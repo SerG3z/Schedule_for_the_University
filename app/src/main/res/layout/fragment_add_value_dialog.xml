@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sample.drawer.fragments.schedule.AddValueDialogFragment">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newValue_et"
+        android:layout_alignParentTop="false"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin20" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:id="@+id/cancel_btn"
+        android:layout_below="@+id/newValue_et"
+        android:layout_toLeftOf="@+id/ok_btn"
+        android:layout_toStartOf="@+id/ok_btn"
+        android:layout_marginTop="@dimen/margin20"
+        android:layout_marginBottom="@dimen/margin20" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        android:id="@+id/ok_btn"
+        android:layout_below="@+id/newValue_et"
+        android:layout_alignRight="@+id/newValue_et"
+        android:layout_alignEnd="@+id/newValue_et"
+        android:layout_marginTop="@dimen/margin20"
+        android:layout_marginBottom="@dimen/margin20" />
+</RelativeLayout>

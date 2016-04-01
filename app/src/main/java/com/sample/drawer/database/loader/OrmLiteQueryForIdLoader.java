@@ -1,4 +1,4 @@
-package com.sample.drawer.utils;
+package com.sample.drawer.database.loader;
 
 import android.content.Context;
 
@@ -47,7 +47,6 @@ public class OrmLiteQueryForIdLoader<T, ID> extends BaseOrmLiteLoader<T, ID> {
             list.add(dao.queryForId(requestedId));
             return list;
         } catch (SQLException e) {
-            // XXX: is this really the right thing to do? Maybe throw RuntimeException?
             e.printStackTrace();
             return Collections.emptyList();
         }

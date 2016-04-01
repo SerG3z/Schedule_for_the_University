@@ -3,7 +3,11 @@ package com.sample.drawer;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
-import com.sample.drawer.scheduleDataBase.HelperFactory;
+import com.sample.drawer.database.HelperFactory;
+import com.sample.drawer.database.ScheduleInitializer;
+
+import java.sql.SQLException;
+import java.util.GregorianCalendar;
 
 /**
  * An application class (to provide work with Stetho)
@@ -12,6 +16,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //TODO: не забыть убрать
+        deleteDatabase("schedule.db");
 
         // Create an InitializerBuilder
         Stetho.InitializerBuilder initializerBuilder =
@@ -34,6 +41,13 @@ public class MyApplication extends Application {
         Stetho.initialize(initializer);
 
         HelperFactory.setHelper(getApplicationContext());
+
+        try {
+            ScheduleInitializer.initializeSchedule(new GregorianCalendar(2016,1,8), true, 17, new int[]{7, 14});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ScheduleInitializer.insertDefaultData(getResources());
     }
 
     @Override

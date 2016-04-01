@@ -1,12 +1,12 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
-import com.j256.ormlite.dao.EagerForeignCollection;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
+import com.sample.drawer.database.dao.WeekDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,18 +23,22 @@ public class Week {
     private int number;
     @DatabaseField(canBeNull = false)
     private boolean isFirst;
-    @ForeignCollectionField(eager = true, foreignFieldName = FIELD_DAYS_NAME)
+    @DatabaseField(canBeNull = false)
+    private boolean isControlPoint;
+    @ForeignCollectionField(eager = true, columnName = FIELD_DAYS_NAME)
     private ForeignCollection<Day> days;
 
-    public Week(int number, boolean isFirst, ForeignCollection<Day> days) {
+    public Week(int number, boolean isFirst,boolean isControlPoint, ForeignCollection<Day> days) {
         this.number = number;
         this.isFirst = isFirst;
         this.days = days;
+        this.isControlPoint = isControlPoint;
     }
 
-    public Week(int number, boolean isFirst, Week.DAO weekDAO) {
+    public Week(int number, boolean isFirst, boolean isControlPoint, WeekDAO weekDAO) {
         this.number = number;
         this.isFirst = isFirst;
+        this.isControlPoint = isControlPoint;
         try {
             days = weekDAO.getEmptyForeignCollection(FIELD_DAYS_NAME);
         } catch (SQLException e) {
@@ -77,10 +81,5 @@ public class Week {
         days.add(day);
     }
 
-    public class DAO extends BaseDaoImpl<Week, Integer> {
 
-        protected DAO(ConnectionSource connectionSource, Class<Week> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
-        }
-    }
 }

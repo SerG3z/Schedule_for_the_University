@@ -1,4 +1,4 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
@@ -12,7 +12,10 @@ import java.sql.SQLException;
  */
 @DatabaseTable
 public class PeriodType {
-    @DatabaseField(id = true, canBeNull = false)
+
+    public static final String FIELD_PERIOD_TYPE = "period_type";
+
+    @DatabaseField(id = true, canBeNull = false, columnName = FIELD_PERIOD_TYPE)
     private String periodType;
 
     public PeriodType(String periodType) {
@@ -30,10 +33,9 @@ public class PeriodType {
         this.periodType = periodType;
     }
 
-    public class DAO extends BaseDaoImpl<PeriodType, String> {
-
-        protected DAO(ConnectionSource connectionSource, Class<PeriodType> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
-        }
+    @Override
+    public String toString() {
+        return periodType;
     }
+
 }

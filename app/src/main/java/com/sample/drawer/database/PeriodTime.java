@@ -1,4 +1,4 @@
-package com.sample.drawer.scheduleDataBase;
+package com.sample.drawer.database;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
@@ -12,12 +12,14 @@ import java.sql.SQLException;
  * Period time table
  */
 @DatabaseTable
-public class PeriodTime {
+public class PeriodTime implements Comparable<PeriodTime>{
+
+    public static final String FIELD_BEGIN_TIME = "begin_time";
 
     @DatabaseField(generatedId = true)
     private int number;
     //format: "%2d:%2d"
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, columnName = FIELD_BEGIN_TIME)
     private String beginTime;
     //format: "%2d:%2d"
     @DatabaseField(canBeNull = false)
@@ -59,10 +61,18 @@ public class PeriodTime {
         return TimeHelper.getDeltaTimeMinutes(beginTime, endTime);
     }
 
-    public class DAO extends BaseDaoImpl<PeriodTime, Integer> {
+    @Override
+    public String toString() {
+        return beginTime + " - " + endTime;
+    }
 
-        protected DAO(ConnectionSource connectionSource, Class<PeriodTime> dataClass) throws SQLException {
-            super(connectionSource, dataClass);
+
+    @Override
+    public int compareTo(PeriodTime another) {
+        int result = beginTime.compareTo(another.getBeginTime());
+        if (result == 0){
+            return endTime.compareTo(another.getEndTime());
         }
+        return result;
     }
 }
