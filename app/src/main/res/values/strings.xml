@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Расписание</string>
 
+    <integer name="com_vk_sdk_AppId">4333469</integer>
+    <string name="sibsutis_life_Id">-34213539</string>
+
     <!-- Navigation Drawer-->
     <string name="info_schedule">Расписание</string>
     <string name="info_tasks">Задания</string>
@@ -30,6 +33,22 @@
         <item>Пятница</item>
         <item>Суббота</item>
         <item>Воскресенье</item>
+    </string-array>
+
+    <!-- Array for mounts-->
+    <string-array name="mount_list">
+        <item>января</item>
+        <item>февраля</item>
+        <item>марта</item>
+        <item>апреля</item>
+        <item>мая</item>
+        <item>июня</item>
+        <item>июля</item>
+        <item>августа</item>
+        <item>сентября</item>
+        <item>октября</item>
+        <item>ноября</item>
+        <item>декабря</item>
     </string-array>
 
     <!-- add new lesson-->
@@ -74,5 +93,14 @@
     <string name="accept">Подтвердить</string>
     <string name="button_delete">Удалить</string>
 
+    <string name="complete_task">Завершить</string>
+    <string name="edit_task">Редактировать</string>
+
+    <!-- item_lesson_show_info layout-->
+    <string name="title_number_auditory">Номер аудитории</string>
+    <string name="title_name_teacher">Преподаватель</string>
+
+
+        <string name="format_date" formatted="false">%d %s %d</string>
 
 </resources>

@@ -11,5 +11,9 @@
     <dimen name="padding25">25dp</dimen>
     <dimen name="heightHeaderWeek">40dp</dimen>
 
+    <!-- item_lesson_show_info layout-->
+    <dimen name="text_size_time">28dp</dimen>
+    <dimen name="text_size_for_type_name">24dp</dimen>
+
 
 </resources>

@@ -16,7 +16,7 @@ import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.sample.drawer.R;
-import com.sample.drawer.adapter.MyRecyclerViewAdapter;
+import com.sample.drawer.adapter.ScheduleRecyclerViewAdapter;
 import com.sample.drawer.database.Day;
 import com.sample.drawer.database.HelperFactory;
 import com.sample.drawer.decoration.DividerItemDecoration;
@@ -39,7 +39,7 @@ public class ItemDayFragment extends Fragment {
 
     @Bind(R.id.headerTextView) TextView headerTextView;
     @Bind(R.id.headerItemWeek) RecyclerViewHeader headerWeek;
-    @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
+    @Bind(R.id.recyclerView) RecyclerView recyclerView;
 
     static final String ARGUMENT_DAY = "arg_page_number";
     static final String ARGUMENT_HEADER_STRING = "header";
@@ -87,8 +87,8 @@ public class ItemDayFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
-                RecyclerView.Adapter mAdapter = new MyRecyclerViewAdapter(data);
-                mRecyclerView.setAdapter(mAdapter);
+                RecyclerView.Adapter mAdapter = new ScheduleRecyclerViewAdapter(data);
+                recyclerView.setAdapter(mAdapter);
             }
             @Override
             public void onLoaderReset(Loader<List<Period>> loader) {}
@@ -110,23 +110,23 @@ public class ItemDayFragment extends Fragment {
 
         fillPageWithLessons(day);
         //        mRecyclerView.setHasFixedSize(true);
-        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+        recyclerView.setLayoutManager(layoutManager);
 
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this.getActivity(), LinearLayoutManager.VERTICAL);
-        mRecyclerView.addItemDecoration(itemDecoration);
-        mRecyclerView.setBackgroundColor(backColor);
+        recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.setBackgroundColor(backColor);
 
         // Code to Add an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
+        //(() mAdapter).addItem(obj, index);
 
         // Code to remove an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
+        //(() mAdapter).deleteItem(index);
 
         headerTextView.setText("");
         setCalendarTextView();
-        headerWeek.attachTo(mRecyclerView, true);
+        headerWeek.attachTo(recyclerView, true);
         return view;
     }
 

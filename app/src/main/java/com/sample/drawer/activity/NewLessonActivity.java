@@ -1,5 +1,6 @@
 package com.sample.drawer.activity;
 
+import android.app.FragmentManager;
 import android.app.DialogFragment;
 import android.app.LoaderManager;
 import android.content.Context;
@@ -54,6 +55,7 @@ public class NewLessonActivity extends ActionBarActivity {
     @Bind(R.id.type_lesson) Spinner typeLesson;
     @Bind(R.id.type_week) Spinner typeWeek;
     @Bind(R.id.button_delete) Button deleteBtn;
+    FragmentManager fragmentManager;
     public static final String ARG_DAY_OF_WEEK = "day_of_week";
     public static final String ARG_LESSON_ID = "lesson_id";
     public static final String TAG_DIALOG = "dialog";
@@ -206,6 +208,7 @@ public class NewLessonActivity extends ActionBarActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     private void addLessonToSchedule(final Period period){

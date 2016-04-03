@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
     >
@@ -38,25 +39,24 @@
             />
 
         <EditText
-            android:id="@+id/info"
+            android:id="@+id/add_task_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/add_task_deadline"
             android:layout_marginTop="@dimen/margin30"
             android:hint="@string/info"
             />
-
-        <Button
-            android:id="@+id/button_save_new_task"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/margin20"
-            android:layout_marginEnd="@dimen/margin20"
-            android:layout_marginRight="@dimen/margin20"
-            android:text="@string/button_save"/>
-
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_task_button_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_save"
+        android:layout_margin="@dimen/margin16"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
 </RelativeLayout>

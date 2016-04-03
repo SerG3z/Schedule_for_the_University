@@ -19,19 +19,19 @@ import butterknife.ButterKnife;
 /**
  * Created by admin on 3/23/2016.
  */
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.BaseHolder> {
-    private final static String LOG_TAG = "MyRecyclerViewAdapter";
+public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRecyclerViewAdapter.BaseHolder> {
+    private final static String LOG_TAG = "Schedule Adapter";
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_EMPTY = 1;
     private final ArrayList<Period> periodList = new ArrayList<>();
-    private MyClickListener myClickListener;
+    private ScheduleClickListener myClickListener;
 
-    public MyRecyclerViewAdapter(List<Period> myDataset) {
+    public ScheduleRecyclerViewAdapter(List<Period> myDataset) {
         periodList.addAll(myDataset);
     }
 
-    public void setOnItemClickListener(MyClickListener myClickListener) {
+    public void setOnItemClickListener(ScheduleClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
 
@@ -99,7 +99,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
 
-    public interface MyClickListener {
+    public interface ScheduleClickListener {
         public void onItemClick(int position, View v);
     }
 
@@ -116,9 +116,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         @Bind(R.id.item_fio_teacher) TextView fioTeacher;
         @Bind(R.id.item_number_auditory) TextView numberAuditory;
 
-        private MyClickListener clickListener;
+        private ScheduleClickListener clickListener;
 
-        public PeriodHolder(View itemView, MyClickListener myClickListener) {
+        public PeriodHolder(View itemView, ScheduleClickListener myClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             clickListener = myClickListener;
@@ -136,9 +136,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public class EmptyObjectHolder extends BaseHolder implements View.OnClickListener {
         @Bind(R.id.item_time) TextView time;
 
-        private MyClickListener clickListener;
+        private ScheduleClickListener clickListener;
 
-        public EmptyObjectHolder(final View itemView, MyClickListener myClickListener) {
+        public EmptyObjectHolder(final View itemView, ScheduleClickListener myClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             clickListener = myClickListener;

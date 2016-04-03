@@ -1,74 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    android:id="@+id/card_view"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    card_view:cardCornerRadius="@dimen/cardRadius">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/show_task_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin10"
-        android:paddingLeft="@dimen/margin5">
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin5"
+        card_view:cardCornerRadius="@dimen/cardRadius">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin10"
+            android:paddingLeft="@dimen/margin5">
 
 
-        <TextView
-            android:id="@+id/title_lesson"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lesson"
-            android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/title_lesson"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lesson"
+                android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/task_item_lesson_show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title_lesson"
-            android:layout_marginTop="@dimen/margin5"
-            android:text="lesson"/>
-
-
-        <TextView
-            android:id="@+id/title_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/task_item_lesson_show"
-            android:layout_marginTop="@dimen/margin10"
-            android:text="@string/info"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/task_item_info_show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title_info"
-            android:layout_marginTop="@dimen/margin5"
-            android:text="info"/>
+            <TextView
+                android:id="@+id/task_item_lesson_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_lesson"
+                android:layout_marginTop="@dimen/margin5"
+                android:text="lesson"/>
 
 
-        <TextView
-            android:id="@+id/title_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/task_item_info_show"
-            android:layout_marginTop="@dimen/margin10"
-            android:text="@string/time"
-            android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/title_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/task_item_lesson_show"
+                android:layout_marginTop="@dimen/margin10"
+                android:text="@string/info"
+                android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/task_item_deadline_show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/title_time"
-            android:layout_marginTop="@dimen/margin5"
-            android:singleLine="true"
-            android:text="information"
-            />
+            <TextView
+                android:id="@+id/task_item_info_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_info"
+                android:layout_marginTop="@dimen/margin5"
+                android:text="info"/>
 
-    </RelativeLayout>
-</android.support.v7.widget.CardView>
 
+            <TextView
+                android:id="@+id/title_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/task_item_info_show"
+                android:layout_marginTop="@dimen/margin10"
+                android:text="@string/time"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/task_item_deadline_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_time"
+                android:layout_marginTop="@dimen/margin5"
+                android:singleLine="true"
+                android:text="information"
+                />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
 
