@@ -1,16 +1,21 @@
 package com.sample.drawer.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sample.drawer.R;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.vk.sdk.api.model.VKApiPhoto;
 import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKAttachments;
@@ -42,6 +47,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         NewsObjectHolder holder;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
         holder = new NewsObjectHolder(view);
+
         return holder;
     }
 
@@ -57,7 +63,11 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         String date = timeFromUTCSecs(context, vkApiPosts.get(position).date);
         holder.timeNews.setText(date);
 
-        holder.textNews.setText(vkApiPosts.get(position).text);
+        String textPost = vkApiPosts.get(position).text;
+        holder.textNews.setText(textPost);
+        if (textPost.isEmpty()) {
+//            holder.textNews.setVisibility(View.GONE);
+        }
         if (vkApiPosts.get(position).attachments.getCount() > 0) {
             String type = vkApiPosts.get(position).attachments.get(0).getType();
             if (type.equals(VKAttachments.TYPE_PHOTO) || type.equals(VKAttachments.TYPE_POSTED_PHOTO)) {
@@ -65,9 +75,48 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
                 Picasso.with(context)
                         .load(((VKApiPhoto) attachments.get(0)).photo_604)
                         .into(holder.imageNews);
+            } else {
+                holder.imageNews.setImageDrawable(null);
             }
         } else {
             holder.imageNews.setImageDrawable(null);
+        }
+
+
+        VKList<VKApiPost> reposts = new VKList<>();
+        reposts.addAll(vkApiPosts.get(position).copy_history);
+        VKApiPost repost = null;
+        if (reposts.size() > 0) {
+            repost = reposts.get(0);
+        } else {
+//            holder.repost.removeAllViews();
+            holder.repost.setVisibility(View.GONE);
+        }
+        if (repost != null) {
+
+            Picasso.with(context)
+                    .load(urlIconGroup)
+                    .into(holder.imageGroupNewsRepost);
+
+            holder.titleNewsRepost.setText(nameGroup);
+
+            String date2 = timeFromUTCSecs(context, repost.date);
+            holder.timeNewsRepost.setText(date2);
+
+            holder.textNewsRepost.setText(repost.text);
+            if (repost.attachments.getCount() > 0) {
+                String type = repost.attachments.get(0).getType();
+                if (type.equals(VKAttachments.TYPE_PHOTO) || type.equals(VKAttachments.TYPE_POSTED_PHOTO)) {
+                    VKAttachments attachments = repost.attachments;
+                    Picasso.with(context)
+                            .load(((VKApiPhoto) attachments.get(0)).photo_604)
+                            .into(holder.imageNewsRepost);
+                } else {
+                    holder.imageNewsRepost.setImageDrawable(null);
+                }
+            } else {
+                holder.imageNewsRepost.setImageDrawable(null);
+            }
         }
     }
 
@@ -99,6 +148,25 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         @Bind(R.id.image_item_news)
         ImageView imageNews;
 
+
+
+        @Bind(R.id.image_group_item_news_repost)
+        ImageView imageGroupNewsRepost;
+
+        @Bind(R.id.title_item_news_repost)
+        TextView titleNewsRepost;
+
+        @Bind(R.id.time_item_news_repost)
+        TextView timeNewsRepost;
+
+        @Bind(R.id.text_item_news_repost)
+        TextView textNewsRepost;
+
+        @Bind(R.id.image_item_news_repost)
+        ImageView imageNewsRepost;
+
+        @Bind(R.id.repost)
+        RelativeLayout repost;
 
         public NewsObjectHolder(final View itemView) {
             super(itemView);

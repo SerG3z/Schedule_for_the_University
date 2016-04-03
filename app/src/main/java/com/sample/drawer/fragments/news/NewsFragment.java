@@ -62,7 +62,7 @@ public class NewsFragment extends Fragment {
                 final String nameGroup = communityArray.get(0).name;
                 final String urlIconGroup = communityArray.get(0).photo_100;
 
-                final VKRequest request2 = VKApi.wall().get(VKParameters.from(VKApiConst.OWNER_ID, -34213539, VKApiConst.EXTENDED, 1, VKApiConst.COUNT, 50));
+                final VKRequest request2 = VKApi.wall().get(VKParameters.from(VKApiConst.OWNER_ID, -34213539, VKApiConst.EXTENDED, 1, VKApiConst.COUNT, 20));
                 request2.setPreferredLang("ru");
                 request2.executeWithListener(new VKRequest.VKRequestListener() {
                     @Override

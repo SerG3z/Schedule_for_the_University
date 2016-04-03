@@ -59,12 +59,20 @@
                 android:text="text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text "
                 />
 
+            <include
+                android:id="@+id/repost"
+                android:layout_marginLeft="@dimen/margin10"
+                android:layout_below="@id/text_item_news"
+                layout="@layout/item_news_repost"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
+
             <ImageView
                 android:id="@+id/image_item_news"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/header"
-                android:layout_below="@id/text_item_news"
+                android:layout_below="@id/repost"
                 android:layout_marginTop="@dimen/margin5"
                 android:layout_marginBottom="10dp"/>
 
