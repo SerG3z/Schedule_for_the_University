@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,6 +28,8 @@ import com.sample.drawer.database.ScheduleDBHelper;
 import com.sample.drawer.database.Subject;
 import com.sample.drawer.database.Teacher;
 import com.sample.drawer.database.dao.DayDAO;
+import com.sample.drawer.database.dao.DayPeriodDAO;
+import com.sample.drawer.database.dao.PeriodDAO;
 import com.sample.drawer.database.dao.TeacherDAO;
 import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
 import com.sample.drawer.fragments.schedule.AddTimeDialogFragment;
@@ -49,12 +53,13 @@ public class NewLessonActivity extends ActionBarActivity {
     @Bind(R.id.number_auditory) Spinner numberAuditory;
     @Bind(R.id.type_lesson) Spinner typeLesson;
     @Bind(R.id.type_week) Spinner typeWeek;
-
+    @Bind(R.id.button_delete) Button deleteBtn;
     public static final String ARG_DAY_OF_WEEK = "day_of_week";
     public static final String ARG_LESSON_ID = "lesson_id";
     public static final String TAG_DIALOG = "dialog";
     public static final int LOADER_ADD_LESSON = 10;
     public static final int LOADER_EDIT_LESSON = 11;
+    public static final int LOADER_DELETE_LESSON = 11;
 
     private List<Subject> lessonList;
     private List<Teacher> teacherList;
@@ -90,6 +95,9 @@ public class NewLessonActivity extends ActionBarActivity {
 
         lessonID = getIntent().getIntExtra(ARG_LESSON_ID,0);
         dayOfWeek = getIntent().getIntExtra(ARG_DAY_OF_WEEK,0);
+        if (lessonID == 0){
+            deleteBtn.setEnabled(false);
+        }
     }
 
     @Override
@@ -105,13 +113,53 @@ public class NewLessonActivity extends ActionBarActivity {
 
     @OnClick(R.id.button_delete)
     public void onClickButtonDelete(){
+        final Bundle bundle = new Bundle();
+        bundle.putInt(ARG_LESSON_ID, lessonID);
+        getLoaderManager().initLoader(LOADER_DELETE_LESSON, bundle, new LoaderManager.LoaderCallbacks<List<DayPeriod>>() {
+            @Override
+            public Loader<List<DayPeriod>> onCreateLoader(int id, Bundle args) {
+                DayPeriodDAO dayPeriodDAO = HelperFactory.getHelper().getDayPeriodDAO();
+                int lessonID = args.getInt(ARG_LESSON_ID);
+                try {
+                    return new OrmLitePreparedQueryLoader<>(getBaseContext(), dayPeriodDAO,
+                            dayPeriodDAO.getWithPeriodId(lessonID));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
 
+            @Override
+            public void onLoadFinished(Loader<List<DayPeriod>> loader, List<DayPeriod> data) {
+                removeLesson(data);
+                finish();
+            }
+
+            @Override
+            public void onLoaderReset(Loader<List<DayPeriod>> loader) {
+
+            }
+        });
+    }
+
+    public void removeLesson(List<DayPeriod> dayPeriods){
+        for (DayPeriod dp : dayPeriods){
+            try {
+                HelperFactory.getHelper().getDayPeriodDAO().delete(dp);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            HelperFactory.getHelper().getPeriodDAO().deleteById(lessonID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     //работа с базой
     @OnClick(R.id.button_save)
     public void onClickButtonSave() {
-
         ScheduleDBHelper helper = HelperFactory.getHelper();
         int id = 0;
         try {
@@ -158,7 +206,6 @@ public class NewLessonActivity extends ActionBarActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        this.finish();
     }
 
     private void addLessonToSchedule(final Period period){
@@ -181,6 +228,7 @@ public class NewLessonActivity extends ActionBarActivity {
             @Override
             public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
                 addLessonToDays(period,data);
+                finish();
             }
 
             @Override
@@ -190,12 +238,14 @@ public class NewLessonActivity extends ActionBarActivity {
         });
     }
 
+
     private void updateLesson(final Period period){
         final Bundle bundle = new Bundle();
         bundle.putInt(ARG_DAY_OF_WEEK,dayOfWeek);
         bundle.putInt(ARG_LESSON_ID,lessonID);
         getLoaderManager().initLoader(LOADER_EDIT_LESSON, bundle, new LoaderManager.LoaderCallbacks<List<Day>>() {
             int lessonID;
+
             @Override
             public Loader<List<Day>> onCreateLoader(int id, Bundle args) {
                 DayDAO dayDAO = HelperFactory.getHelper().getDayDAO();
@@ -220,6 +270,7 @@ public class NewLessonActivity extends ActionBarActivity {
                     e.printStackTrace();
                 }
                 addLessonToDays(period, data);
+                finish();
             }
 
             @Override
@@ -246,6 +297,7 @@ public class NewLessonActivity extends ActionBarActivity {
             }
         }
     }
+
 
     private void loadLists(){
         getLoaderManager().initLoader(ListLoader.LOADER_LESSONS, null, new ListLoader());
@@ -345,7 +397,6 @@ public class NewLessonActivity extends ActionBarActivity {
         DialogFragment newFragment = AddTimeDialogFragment.newInstance();
         newFragment.show(getFragmentManager(), TAG_DIALOG);
     }
-
 
     private void showAddDialog(String arg){
         DialogFragment newFragment = AddValueDialogFragment.newInstance(arg);

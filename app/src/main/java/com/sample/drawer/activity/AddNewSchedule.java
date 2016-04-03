@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,13 +20,18 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.sample.drawer.R;
 import com.sample.drawer.adapter.MyRecyclerViewAdapter;
+import com.sample.drawer.database.loader.LoaderIdManager;
 import com.sample.drawer.decoration.DividerItemDecoration;
 import com.sample.drawer.decoration.FloatingActionButton;
 import com.sample.drawer.database.Period;
 import com.sample.drawer.database.ScheduleDBHelper;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,6 +46,8 @@ public class AddNewSchedule extends AppCompatActivity {
     private static final int RESULT_REQUEST = 1;
     private RecyclerView.Adapter mAdapter;
     private FloatingActionButton fabButton;
+
+    private LoaderIdManager loadIdMan;
 
     @Bind(R.id.recycler) RecyclerView mRecyclerView;
 
@@ -56,6 +64,7 @@ public class AddNewSchedule extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_day);
         ButterKnife.bind(this);
+        loadIdMan=new LoaderIdManager();
 
 //        mRecyclerView.setHasFixedSize(true);
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -65,6 +74,8 @@ public class AddNewSchedule extends AppCompatActivity {
                 new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
 
+        mAdapter = new MyRecyclerViewAdapter(new ArrayList<Period>());
+        mRecyclerView.setAdapter(mAdapter);
 
         // Code to Add an item with default animation
         //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
@@ -81,12 +92,12 @@ public class AddNewSchedule extends AppCompatActivity {
 
         tabs = (TabLayout) findViewById(R.id.tabsWeek);
         fillTabLayout();
-        fillTabWithLessons(tabs.getSelectedTabPosition()+1);
+        fillTabWithLessons(tabs.getSelectedTabPosition() + 1);
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                fillTabWithLessons(tab.getPosition());
+                fillTabWithLessons(tab.getPosition() + 1);
             }
 
             @Override
@@ -150,7 +161,7 @@ public class AddNewSchedule extends AppCompatActivity {
     private void fillTabWithLessons(final int dayOfWeek) {
         Bundle bundle = new Bundle();
         bundle.putInt(DAY_OF_WEEK_KEY, dayOfWeek);
-        getLoaderManager().initLoader(dayOfWeek, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
+        getLoaderManager().initLoader((new Random()).nextInt(), bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
             @Override
             public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
                 ScheduleDBHelper helper = OpenHelperManager
@@ -168,9 +179,7 @@ public class AddNewSchedule extends AppCompatActivity {
             @Override
             public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
                 if (data != null) {
-                    mAdapter = new MyRecyclerViewAdapter(data);
-                    mRecyclerView.setAdapter(mAdapter);
-                    setAdapterOnClickListener();
+                    ((MyRecyclerViewAdapter) mAdapter).replaceData(data);
                 }
             }
 
@@ -179,5 +188,4 @@ public class AddNewSchedule extends AppCompatActivity {
             }
         });
     }
-
 }
