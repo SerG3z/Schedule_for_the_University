@@ -36,6 +36,7 @@ dependencies {
     compile files('libs/ormlite-android-4.49-SNAPSHOT.jar')
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.vk:androidsdk:+'
+    compile 'com.squareup.picasso:picasso:+'
 }
 
 
