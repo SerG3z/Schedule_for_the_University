@@ -22,6 +22,11 @@
         android:layout_margin="@dimen/margin5"
         card_view:cardCornerRadius="@dimen/cardRadius">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="235dp"
+            android:src="@drawable/header9"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

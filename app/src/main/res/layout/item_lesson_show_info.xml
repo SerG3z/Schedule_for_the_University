@@ -30,7 +30,7 @@
                 android:id="@+id/image_lesson"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/header"/>
+                android:src="@drawable/header4"/>
 
             <TextView
                 android:id="@+id/time_lesson_show"

@@ -102,7 +102,7 @@ public class AddNewSchedule extends AppCompatActivity {
 
         fabButton = new FloatingActionButton.Builder(this)
                 .withDrawable(ContextCompat.getDrawable(getBaseContext(),R.drawable.ic_add_black_18dp))
-                .withButtonColor(ContextCompat.getColor(getBaseContext(), R.color.accent))
+                .withButtonColor(ContextCompat.getColor(getBaseContext(), R.color.my_accent))
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 16)
                 .create();

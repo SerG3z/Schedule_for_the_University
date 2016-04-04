@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppThemeDrawer);
+        setTheme(R.style.MyThemeIndigoDrawer);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, ScheduleViewPagerFragment.newIntent()).commit();

@@ -46,7 +46,7 @@ public class ItemDayFragment extends Fragment {
     static final String KEY_DAY = "day";
     static final int LOADER_DAY = 1000;
     private int day;
-    int backColor;
+//    int backColor;
 
     public static ItemDayFragment newInstance(int page) {
         ItemDayFragment scheduleFragment = new ItemDayFragment();
@@ -99,8 +99,8 @@ public class ItemDayFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         day = getArguments().getInt(ARGUMENT_DAY);
-        Random random = new Random();
-        backColor = Color.argb(50, random.nextInt(256), random.nextInt(256), random.nextInt(256));
+//        Random random = new Random();
+//        backColor = Color.argb(50, random.nextInt(256), random.nextInt(256), random.nextInt(256));
     }
 
     @Override
@@ -116,7 +116,7 @@ public class ItemDayFragment extends Fragment {
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(this.getActivity(), LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
-        recyclerView.setBackgroundColor(backColor);
+//        recyclerView.setBackgroundColor(backColor);
 
         // Code to Add an item with default animation
         //(() mAdapter).addItem(obj, index);
