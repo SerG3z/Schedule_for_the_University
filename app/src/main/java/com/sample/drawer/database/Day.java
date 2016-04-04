@@ -13,6 +13,7 @@ import com.sample.drawer.database.dao.DayDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import java.util.List;
  * A day representation
  */
 @DatabaseTable
-public class Day {
+public class Day implements Comparable<Day>{
 
     public static final String FIELD_DATE_NAME = "date";
     public static final String FIELD_DAY_OF_WEEK = "day_of_week";
@@ -70,5 +71,18 @@ public class Day {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(Day another) {
+        return getDate().compareTo(another.getDate());
+    }
+
+    @Override
+    public String toString() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(date.getTime());
+        return cal.get(Calendar.DATE) + "." +
+                cal.get(Calendar.MONTH) +"." +cal.get(Calendar.YEAR);
     }
 }

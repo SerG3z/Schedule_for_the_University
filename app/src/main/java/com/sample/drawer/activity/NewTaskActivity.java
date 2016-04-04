@@ -27,7 +27,7 @@ public class NewTaskActivity extends AppCompatActivity {
     private static final String LESSON_INTENT_KEY = "lesson_intent_key";
     private static final String DEADLINE_INTENT_KEY = "deadline_intent_key";
     private static final String INFO_INTENT_KEY = "info_intent_key";
-
+    private static final String TASK_ID_INTENT_KEY = "task_id";
     private final static String DATAPICKER_KEY = "datePicker";
 
     @Bind(R.id.add_task_lesson)
@@ -41,6 +41,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     DateDialog newFragment;
 
+    private int taskID;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -56,11 +57,12 @@ public class NewTaskActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    public static Intent newIntent(Context context, String lesson, String deadline, String info) {
+    public static Intent newIntent(Context context,int taskID, String lesson, String deadline, String info) {
         Intent intent = new Intent(context, NewTaskActivity.class);
         intent.putExtra(LESSON_INTENT_KEY, lesson);
         intent.putExtra(DEADLINE_INTENT_KEY, deadline);
         intent.putExtra(INFO_INTENT_KEY, info);
+        intent.putExtra(TASK_ID_INTENT_KEY,taskID);
         return intent;
     }
 
@@ -69,6 +71,7 @@ public class NewTaskActivity extends AppCompatActivity {
             addTaskLesson.setText(intent.getStringExtra(LESSON_INTENT_KEY));
             addTaskDeadline.setText(intent.getStringExtra(DEADLINE_INTENT_KEY));
             addTaskInfo.setText(intent.getStringExtra(INFO_INTENT_KEY));
+            taskID = intent.getIntExtra(TASK_ID_INTENT_KEY,0);
         }
     }
 

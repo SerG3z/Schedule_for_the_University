@@ -23,6 +23,9 @@ public class ShowTaskActivity extends AppCompatActivity {
     private static final String DEADLINE_INTENT_KEY = "deadline";
     private static final String LESSON_INTENT_KEY = "lesson";
     private static final String INFO_INTENT_KEY = "info";
+    private static final String TASK_ID_INTENT_KEY = "task_id";
+
+    private int taskID;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class ShowTaskActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.edit_task_toolbar:
                 Intent intent = NewTaskActivity.newIntent(getApplicationContext(),
+                        getIntent().getIntExtra(TASK_ID_INTENT_KEY,0),
                         lesson.getText().toString(),
                         deadline.getText().toString(),
                         info.getText().toString());
@@ -66,11 +70,12 @@ public class ShowTaskActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent newIntent(Context context, String textDeadline, String textLesson, String info) {
+    public static Intent newIntent(Context context, int taskID, String textDeadline, String textLesson, String info) {
         Intent intent = new Intent(context.getApplicationContext(), ShowTaskActivity.class);
         intent.putExtra(DEADLINE_INTENT_KEY, textDeadline);
         intent.putExtra(LESSON_INTENT_KEY, textLesson);
         intent.putExtra(INFO_INTENT_KEY, info);
+        intent.putExtra(TASK_ID_INTENT_KEY, taskID);
         return intent;
     }
 
@@ -78,5 +83,6 @@ public class ShowTaskActivity extends AppCompatActivity {
         deadline.setText(intent.getStringExtra(DEADLINE_INTENT_KEY));
         lesson.setText(intent.getStringExtra(LESSON_INTENT_KEY));
         info.setText(intent.getStringExtra(INFO_INTENT_KEY));
+        taskID = intent.getIntExtra(TASK_ID_INTENT_KEY,0);
     }
 }

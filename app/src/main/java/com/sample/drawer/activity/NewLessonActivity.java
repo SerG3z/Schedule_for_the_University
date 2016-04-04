@@ -324,7 +324,7 @@ public class NewLessonActivity extends ActionBarActivity {
         public Loader onCreateLoader(int id, Bundle args) {
             switch (id) {
                 case LOADER_LESSONS:
-                    return new OrmLiteQueryForAllOrderByLoader(getBaseContext(),
+                    return new OrmLiteQueryForAllOrderByLoader<>(getBaseContext(),
                             HelperFactory.getHelper().getSubjectDAO(), Subject.FIELD_SUBJECT);
                 case LOADER_TIMES:
                     return new OrmLiteQueryForAllOrderByLoader<>(getBaseContext(),

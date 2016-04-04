@@ -16,13 +16,15 @@ import java.sql.SQLException;
  */
 @DatabaseTable
 public class Task {
+    public static final String FIELD_DAY = "targetday";
+
     @DatabaseField(generatedId = true)
     private int id;
     @DatabaseField(canBeNull = false)
     private String task;
     @DatabaseField(canBeNull = false)
     private boolean done;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = FIELD_DAY)
     private Day targetDay;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Period targetPeriod;
@@ -74,5 +76,9 @@ public class Task {
 
     public void setTargetDay(Day targetDay) {
         this.targetDay = targetDay;
+    }
+
+    public int getId() {
+        return id;
     }
 }

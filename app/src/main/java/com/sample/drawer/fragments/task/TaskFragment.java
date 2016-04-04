@@ -1,6 +1,8 @@
 package com.sample.drawer.fragments.task;
 
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,9 +16,12 @@ import com.sample.drawer.R;
 import com.sample.drawer.activity.NewTaskActivity;
 import com.sample.drawer.activity.ShowTaskActivity;
 import com.sample.drawer.adapter.TaskRecyclerViewAdapter;
-import com.sample.drawer.model.Task;
+import com.sample.drawer.database.HelperFactory;
+import com.sample.drawer.database.Task;
+import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,7 +30,10 @@ import butterknife.OnClick;
 
 public class TaskFragment extends Fragment {
 
+    private static final int LOADER_TASKS = 1;
     private RecyclerView.Adapter recyclerViewAdapter;
+
+
 
     @Bind(R.id.task_recycler)
     RecyclerView taskRecyclerView;
@@ -41,18 +49,31 @@ public class TaskFragment extends Fragment {
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
         taskRecyclerView.setLayoutManager(layoutManager);
 
-        recyclerViewAdapter = new TaskRecyclerViewAdapter(getDataTask());
+        recyclerViewAdapter = new TaskRecyclerViewAdapter(new ArrayList<Task>());
         taskRecyclerView.setAdapter(recyclerViewAdapter);
         return view;
     }
 
-    private ArrayList<Task> getDataTask() {
-        ArrayList<Task> result = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Task task = new Task("deadline", "lesson", "information information information information information");
-            result.add(i, task);
-        }
-        return result;
+
+    private void loadTasks(){
+        getActivity().getLoaderManager().initLoader(LOADER_TASKS, null, new LoaderManager.LoaderCallbacks<List<Task>>() {
+            @Override
+            public Loader<List<Task>> onCreateLoader(int id, Bundle args) {
+                return new OrmLiteQueryForAllOrderByLoader<>(getContext(),
+                        HelperFactory.getHelper().getTaskDAO(),Task.FIELD_DAY);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<List<Task>> loader, List<Task> data) {
+                if (data != null){
+                    ((TaskRecyclerViewAdapter)recyclerViewAdapter).replaceData(data);
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<List<Task>> loader) {
+            }
+        });
     }
 
     @OnClick(R.id.add_task_button_create)
@@ -69,8 +90,14 @@ public class TaskFragment extends Fragment {
                 new TaskRecyclerViewAdapter.TaskClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-                        Task task = ((TaskRecyclerViewAdapter) recyclerViewAdapter).getItemTask(position);
-                        Intent intent = ShowTaskActivity.newIntent(getContext(), task.getDeadline(), task.getLesson(), task.getInfo());
+                        Task task = ((TaskRecyclerViewAdapter) recyclerViewAdapter).
+                                getItemTask(position);
+                        String deadline = task.getTargetDay() == null ? "" : task.getTargetDay().
+                                toString();
+                        String lesson = task.getTargetPeriod() == null ? "" : task.getTargetPeriod().
+                                getSubject().toString();
+                        Intent intent = ShowTaskActivity.newIntent(getContext(), task.getId(), deadline, lesson,
+                                task.getTask());
                         startActivity(intent);
                     }
                 });
