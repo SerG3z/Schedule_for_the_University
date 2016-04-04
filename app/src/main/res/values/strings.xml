@@ -102,5 +102,6 @@
 
 
         <string name="format_date" formatted="false">%d %s %d</string>
+    <string name="text_set">Задать...</string>
 
 </resources>

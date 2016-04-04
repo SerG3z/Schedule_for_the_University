@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -35,6 +36,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -64,16 +66,20 @@ public class NewTaskActivity extends AppCompatActivity {
     Toolbar toolbar;
     @Bind(R.id.name_lesson)
     Spinner nameLesson;
+    @Bind(R.id.set_deadline_cb)
+    CheckBox setDeadline;
 
     DateDialog newFragment;
 
     private int taskID;
     private Calendar date;
     private String lessonName;
+    private boolean created;
 
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        Log.v("DBG", "activity created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_new_task_show);
         ButterKnife.bind(this);
@@ -87,6 +93,7 @@ public class NewTaskActivity extends AppCompatActivity {
         date = new GregorianCalendar(date.get(Calendar.YEAR),
                 date.get(Calendar.MONTH),date.get(Calendar.DATE));
         loadLessons();
+        created = false;
     }
 
     public static Intent newIntent(Context context,int taskID, String lesson, String deadline, String info) {
@@ -174,29 +181,36 @@ public class NewTaskActivity extends AppCompatActivity {
 
             @Override
             public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
-                Day day;
-                if (data != null && data.size() > 0) {
-                    day = data.get(0);
-                } else {
-                    day = new Day(date.getTime(),date.get(Calendar.DAY_OF_WEEK));
-                    try {
-                        HelperFactory.getHelper().getDayDAO().create(day);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                Day day = null;
+                if (setDeadline.isChecked()){
+                    if (data != null && data.size() > 0) {
+                        day = data.get(0);
+                    } else {
+                        day = new Day(date.getTime(),date.get(Calendar.DAY_OF_WEEK));
+                        try {
+                            HelperFactory.getHelper().getDayDAO().create(day);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-                Task task;
-                if (taskID == 0){ // добавление
-                    task = new Task(addTaskInfo.getText().toString(), day,
-                            lessonList.get(nameLesson.getSelectedItemPosition()));
+                Task task = new Task(addTaskInfo.getText().toString(), day,
+                        lessonList.get(nameLesson.getSelectedItemPosition()));
+                if (taskID == 0 && !created){ // добавление
                     try {
+                        created = true;
                         HelperFactory.getHelper().getTaskDAO().create(task);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
                 else { //редактирование
-
+                    task.setId(taskID);
+                    try {
+                        HelperFactory.getHelper().getTaskDAO().update(task);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
                 finish();
             }

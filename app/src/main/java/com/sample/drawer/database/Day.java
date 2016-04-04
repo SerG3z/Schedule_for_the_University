@@ -76,11 +76,20 @@ public class Day implements Comparable<Day>{
 
     @Override
     public int compareTo(Day another) {
+        if (date == null){
+            return (another.getDate() == null) ? 0 : 1;
+        }
+        if (another.getDate() == null){
+            return -1;
+        }
         return getDate().compareTo(another.getDate());
     }
 
     @Override
     public String toString() {
+        if (date == null){
+            return "";
+        }
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return String.format("%02d.%02d.%d", cal.get(Calendar.DATE),
