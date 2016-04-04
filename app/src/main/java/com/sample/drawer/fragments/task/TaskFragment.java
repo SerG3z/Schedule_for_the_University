@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,10 @@ import com.sample.drawer.database.HelperFactory;
 import com.sample.drawer.database.Task;
 import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,7 +59,7 @@ public class TaskFragment extends Fragment {
 
 
     private void loadTasks(){
-        getActivity().getLoaderManager().initLoader(LOADER_TASKS, null, new LoaderManager.LoaderCallbacks<List<Task>>() {
+        getActivity().getLoaderManager().initLoader((new Random()).nextInt(), null, new LoaderManager.LoaderCallbacks<List<Task>>() {
             @Override
             public Loader<List<Task>> onCreateLoader(int id, Bundle args) {
                 return new OrmLiteQueryForAllOrderByLoader<>(getContext(),
@@ -86,6 +89,7 @@ public class TaskFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        loadTasks();
         ((TaskRecyclerViewAdapter) recyclerViewAdapter).setOnItemClickListener(
                 new TaskRecyclerViewAdapter.TaskClickListener() {
                     @Override
@@ -94,7 +98,7 @@ public class TaskFragment extends Fragment {
                                 getItemTask(position);
                         String deadline = task.getTargetDay() == null ? "" : task.getTargetDay().
                                 toString();
-                        String lesson = task.getTargetPeriod() == null ? "" : task.getTargetPeriod().
+                        String lesson = task.getSubject() == null ? "" : task.getSubject().
                                 getSubject().toString();
                         Intent intent = ShowTaskActivity.newIntent(getContext(), task.getId(), deadline, lesson,
                                 task.getTask());

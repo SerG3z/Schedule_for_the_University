@@ -9,6 +9,7 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
+import com.sample.drawer.R;
 import com.sample.drawer.database.dao.DayDAO;
 
 import java.sql.SQLException;
@@ -81,8 +82,8 @@ public class Day implements Comparable<Day>{
     @Override
     public String toString() {
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(date.getTime());
-        return cal.get(Calendar.DATE) + "." +
-                cal.get(Calendar.MONTH) +"." +cal.get(Calendar.YEAR);
+        cal.setTime(date);
+        return String.format("%02d.%02d.%d", cal.get(Calendar.DATE),
+                cal.get(Calendar.MONTH)+1, cal.get(Calendar.YEAR)) ;
     }
 }

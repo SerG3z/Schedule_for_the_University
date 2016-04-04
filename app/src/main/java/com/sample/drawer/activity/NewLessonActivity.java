@@ -159,7 +159,6 @@ public class NewLessonActivity extends ActionBarActivity {
         }
     }
 
-    //работа с базой
     @OnClick(R.id.button_save)
     public void onClickButtonSave() {
         ScheduleDBHelper helper = HelperFactory.getHelper();

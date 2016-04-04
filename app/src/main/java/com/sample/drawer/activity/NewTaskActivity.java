@@ -18,15 +18,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.sample.drawer.R;
+import com.sample.drawer.database.Day;
 import com.sample.drawer.database.HelperFactory;
 import com.sample.drawer.database.Subject;
+import com.sample.drawer.database.Task;
+import com.sample.drawer.database.dao.DayDAO;
 import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
 import com.sample.drawer.fragments.DateDialog;
 import com.sample.drawer.fragments.schedule.AddValueDialogFragment;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -46,6 +52,7 @@ public class NewTaskActivity extends AppCompatActivity {
     private static final String DATAPICKER_KEY = "datePicker";
     private static final String TAG_LESSON_ADD_DIALOG = "add_lesson_dialog";
     private static final int LOADER_LESSONS = 1;
+    private static final int LOADER_DAY = 2;
 
     private List<Subject> lessonList;
 
@@ -62,6 +69,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     private int taskID;
     private Calendar date;
+    private String lessonName;
 
 
     @Override
@@ -73,12 +81,11 @@ public class NewTaskActivity extends AppCompatActivity {
         initializationIntent(getIntent());
 
         setSupportActionBar(toolbar);
-
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         date = Calendar.getInstance();
-        date = new GregorianCalendar(date.get(Calendar.YEAR),date.get(Calendar.MONTH),date.get(Calendar.DATE));
-        Log.v("DBG", date.get(Calendar.DATE)+"."+date.get(Calendar.MONTH)+"."+date.get(Calendar.YEAR));
+        date = new GregorianCalendar(date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH),date.get(Calendar.DATE));
         loadLessons();
     }
 
@@ -95,6 +102,7 @@ public class NewTaskActivity extends AppCompatActivity {
         if (intent != null) {
             addTaskDeadline.setText(intent.getStringExtra(DEADLINE_INTENT_KEY));
             addTaskInfo.setText(intent.getStringExtra(INFO_INTENT_KEY));
+            lessonName = intent.getStringExtra(LESSON_INTENT_KEY);
             taskID = intent.getIntExtra(TASK_ID_INTENT_KEY,0);
         }
     }
@@ -108,7 +116,6 @@ public class NewTaskActivity extends AppCompatActivity {
                 String[] mounth = getResources().getStringArray(R.array.mount_list);
                 addTaskDeadline.setText(getString(R.string.format_date, dayOfMonth, mounth[monthOfYear], year));
                 date = new GregorianCalendar(year,monthOfYear,dayOfMonth);
-                Log.v("DBG", date.get(Calendar.DATE)+"."+date.get(Calendar.MONTH)+"."+date.get(Calendar.YEAR));
             }
         });
         newFragment.show(getFragmentManager(), DATAPICKER_KEY);
@@ -126,13 +133,21 @@ public class NewTaskActivity extends AppCompatActivity {
             public void onLoadFinished(Loader<List<Subject>> loader, List<Subject> data) {
                 if (data != null) {
                     lessonList = data;
+                    int selected = -1, i = 0;
                     List<String> lessonNames = new ArrayList<String>();
-                    for (Subject s : data) {
+                    for (Subject s : data ) {
                         lessonNames.add(s.toString());
+                        if (lessonName != null && s.getSubject().compareTo(lessonName) == 0){
+                            selected = i;
+                        }
+                        i++;
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(),
                             android.R.layout.simple_spinner_dropdown_item, lessonNames);
                     nameLesson.setAdapter(adapter);
+                    if (selected != -1){
+                        nameLesson.setSelection(selected,true);
+                    }
                 }
             }
 
@@ -144,7 +159,53 @@ public class NewTaskActivity extends AppCompatActivity {
 
     @OnClick(R.id.add_task_button_save)
     public void clickToButtonSave() {
-        Toast.makeText(getApplicationContext(), "save", Toast.LENGTH_SHORT).show();
+        getLoaderManager().initLoader(LOADER_DAY, null, new LoaderManager.LoaderCallbacks<List<Day>>() {
+            @Override
+            public Loader<List<Day>> onCreateLoader(int id, Bundle args) {
+                DayDAO dao = HelperFactory.getHelper().getDayDAO();
+                try {
+                    return new OrmLitePreparedQueryLoader<>(getBaseContext(),dao,
+                            dao.getDayByDate(date.getTime()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
+                Day day;
+                if (data != null && data.size() > 0) {
+                    day = data.get(0);
+                } else {
+                    day = new Day(date.getTime(),date.get(Calendar.DAY_OF_WEEK));
+                    try {
+                        HelperFactory.getHelper().getDayDAO().create(day);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Task task;
+                if (taskID == 0){ // добавление
+                    task = new Task(addTaskInfo.getText().toString(), day,
+                            lessonList.get(nameLesson.getSelectedItemPosition()));
+                    try {
+                        HelperFactory.getHelper().getTaskDAO().create(task);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else { //редактирование
+
+                }
+                finish();
+            }
+
+            @Override
+            public void onLoaderReset(Loader<List<Day>> loader) {
+
+            }
+        });
     }
 
     @OnClick(R.id.btn_add_name_lesson)

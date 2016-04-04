@@ -1,15 +1,7 @@
 package com.sample.drawer.database;
 
-import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
-import com.sample.drawer.database.dao.DayDAO;
-import com.sample.drawer.database.dao.PeriodDAO;
-
-import java.sql.SQLException;
 
 /**
  * Tasks table
@@ -27,18 +19,18 @@ public class Task {
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = FIELD_DAY)
     private Day targetDay;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Period targetPeriod;
+    private Subject subject;
 
-    public Task(String task,Day targetDay, Period targetPeriod) {
+    public Task(String task,Day targetDay, Subject subject) {
         this.task = task;
-        this.targetPeriod = targetPeriod;
+        this.subject = subject;
         this.targetDay = targetDay;
         done = false;
     }
 
     public Task(String task) {
         this.task = task;
-        this.targetPeriod = null;
+        this.subject = null;
         this.targetDay = null;
         done = false;
     }
@@ -46,12 +38,12 @@ public class Task {
     public Task() {
     }
 
-    public Period getTargetPeriod() {
-        return targetPeriod;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setTargetPeriod(Period targetPeriod) {
-        this.targetPeriod = targetPeriod;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
     public boolean isDone() {

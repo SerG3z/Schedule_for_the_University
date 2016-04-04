@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sample.drawer.R;
-import com.sample.drawer.database.Period;
 import com.sample.drawer.database.Task;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     public void onBindViewHolder(final TaskRecyclerViewAdapter.TaskObjectHolder holder, final int position) {
         Task task = dataTask.get(position);
         String deadline = task.getTargetDay() == null ? "" : task.getTargetDay().toString();
-        String lesson = task.getTargetPeriod() == null ? "" : task.getTargetPeriod().getSubject().toString();
+        String lesson = task.getSubject() == null ? "" : task.getSubject().getSubject().toString();
         holder.deadline.setText(deadline);
         holder.lesson.setText(lesson);
         holder.info.setText(task.getTask());
