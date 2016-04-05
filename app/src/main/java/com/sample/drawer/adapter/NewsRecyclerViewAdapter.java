@@ -1,9 +1,7 @@
 package com.sample.drawer.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 
 import com.sample.drawer.R;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.vk.sdk.api.model.VKApiPhoto;
 import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKAttachments;
@@ -33,6 +30,8 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     private Context context;
     private String nameGroup;
     private String urlIconGroup;
+    private static final int TYPE_POST = 0;
+    private static final int TYPE_REPOST = 1;
 
     public NewsRecyclerViewAdapter(VKList<VKApiPost> vkApiPosts, Context context, String nameGroup, String urlIconGroup) {
         this.vkApiPosts.addAll(vkApiPosts);
@@ -41,81 +40,108 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         this.urlIconGroup = urlIconGroup;
     }
 
+    @Override
+    public int getItemViewType(final int position) {
+        if(vkApiPosts.get(position).copy_history.size() == 0) {
+            return TYPE_POST;
+        } else {
+            return TYPE_REPOST;
+        }
+    }
 
     @Override
     public NewsObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         NewsObjectHolder holder;
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
-        holder = new NewsObjectHolder(view);
+        if (viewType == TYPE_POST) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
+            holder = new NewsObjectHolder(view);
+        }
+        else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news_repost, parent, false);
+            holder = new NewsRepostViewHolder(view);
+        }
 
         return holder;
     }
 
-    @Override
-    public void onBindViewHolder(NewsObjectHolder holder, int position) {
-        //TODO сохранять картунку один раз а не скачивать её для каждой новости
+    private void showPost(NewsObjectHolder holder, VKApiPost post) {
+        NewsObjectHolder newsObjectHolder = ((NewsObjectHolder) holder);
         Picasso.with(context)
                 .load(urlIconGroup)
-                .into(holder.imageGroupNews);
+                .into(newsObjectHolder.imageGroupNews);
 
-        holder.titleNews.setText(nameGroup);
-
-        String date = timeFromUTCSecs(context, vkApiPosts.get(position).date);
-        holder.timeNews.setText(date);
-
-        String textPost = vkApiPosts.get(position).text;
-        holder.textNews.setText(textPost);
-        if (textPost.isEmpty()) {
-//            holder.textNews.setVisibility(View.GONE);
+        newsObjectHolder.titleNews.setText(nameGroup);
+        String date = timeFromUTCSecs(context, post.date);
+        newsObjectHolder.timeNews.setText(date);
+        String textPost = post.text;
+        newsObjectHolder.textNews.setText(textPost);
+        if (textPost.isEmpty())
+        {
+            newsObjectHolder.textNews.setVisibility(View.GONE);
+        } else {
+            newsObjectHolder.textNews.setVisibility(View.VISIBLE);
         }
-        if (vkApiPosts.get(position).attachments.getCount() > 0) {
-            String type = vkApiPosts.get(position).attachments.get(0).getType();
+        if (post.attachments.getCount() > 0) {
+            String type = post.attachments.get(0).getType();
             if (type.equals(VKAttachments.TYPE_PHOTO) || type.equals(VKAttachments.TYPE_POSTED_PHOTO)) {
-                VKAttachments attachments = vkApiPosts.get(position).attachments;
+                VKAttachments attachments = post.attachments;
                 Picasso.with(context)
                         .load(((VKApiPhoto) attachments.get(0)).photo_604)
-                        .into(holder.imageNews);
+                        .into(newsObjectHolder.imageNews);
             } else {
-                holder.imageNews.setImageDrawable(null);
+                newsObjectHolder.imageNews.setImageDrawable(null);
             }
         } else {
-            holder.imageNews.setImageDrawable(null);
+            newsObjectHolder.imageNews.setImageDrawable(null);
         }
+    }
 
+    @Override
+    public void onBindViewHolder(NewsObjectHolder holder, int position) {
 
-        VKList<VKApiPost> reposts = new VKList<>();
-        reposts.addAll(vkApiPosts.get(position).copy_history);
-        VKApiPost repost = null;
-        if (reposts.size() > 0) {
-            repost = reposts.get(0);
+        if(getItemViewType(position) == TYPE_POST) {
+            VKApiPost post = vkApiPosts.get(position);
+            showPost(holder, post);
         } else {
-//            holder.repost.removeAllViews();
-            holder.repost.setVisibility(View.GONE);
-        }
-        if (repost != null) {
+            VKList<VKApiPost> reposts = new VKList<>();
+            reposts.addAll(vkApiPosts.get(position).copy_history);
+            VKApiPost repost = null;
+            if (reposts.size() > 0) {
+                repost = reposts.get(0);
+            }
+            if (repost != null) {
+                final NewsRepostViewHolder repostHolder = ((NewsRepostViewHolder)holder);
 
-            Picasso.with(context)
-                    .load(urlIconGroup)
-                    .into(holder.imageGroupNewsRepost);
+                Picasso.with(context)
+                        .load(urlIconGroup)
+                        .into(repostHolder.imageGroupNewsRepost);
+                VKApiPost post = vkApiPosts.get(position);
+                repostHolder.titleNewsRepost.setText(nameGroup);
+                String date2 = timeFromUTCSecs(context, post.date);
+                repostHolder.timeNewsRepost.setText(date2);
 
-            holder.titleNewsRepost.setText(nameGroup);
-
-            String date2 = timeFromUTCSecs(context, repost.date);
-            holder.timeNewsRepost.setText(date2);
-
-            holder.textNewsRepost.setText(repost.text);
-            if (repost.attachments.getCount() > 0) {
-                String type = repost.attachments.get(0).getType();
-                if (type.equals(VKAttachments.TYPE_PHOTO) || type.equals(VKAttachments.TYPE_POSTED_PHOTO)) {
-                    VKAttachments attachments = repost.attachments;
-                    Picasso.with(context)
-                            .load(((VKApiPhoto) attachments.get(0)).photo_604)
-                            .into(holder.imageNewsRepost);
+                repostHolder.textNewsRepost.setText(post.text);
+                if (post.text.isEmpty())
+                {
+                    repostHolder.textNewsRepost.setVisibility(View.GONE);
                 } else {
-                    holder.imageNewsRepost.setImageDrawable(null);
+                    repostHolder.textNewsRepost.setVisibility(View.VISIBLE);
                 }
-            } else {
-                holder.imageNewsRepost.setImageDrawable(null);
+
+                if (post.attachments.getCount() > 0) {
+                    String type = post.attachments.get(0).getType();
+                    if (type.equals(VKAttachments.TYPE_PHOTO) || type.equals(VKAttachments.TYPE_POSTED_PHOTO)) {
+                        VKAttachments attachments = post.attachments;
+                        Picasso.with(context)
+                                .load(((VKApiPhoto) attachments.get(0)).photo_604)
+                                .into(((NewsRepostViewHolder)holder).imageNewsRepost);
+                    } else {
+                        repostHolder.imageNewsRepost.setImageDrawable(null);
+                    }
+                } else {
+                    repostHolder.imageNewsRepost.setImageDrawable(null);
+                }
+                showPost(holder, repost);
             }
         }
     }
@@ -130,6 +156,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     public int getItemCount() {
         return vkApiPosts.size();
     }
+
 
     public class NewsObjectHolder extends RecyclerView.ViewHolder {
 
@@ -148,7 +175,13 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         @Bind(R.id.image_item_news)
         ImageView imageNews;
 
+        public NewsObjectHolder(final View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
 
+    public class NewsRepostViewHolder extends NewsObjectHolder {
 
         @Bind(R.id.image_group_item_news_repost)
         ImageView imageGroupNewsRepost;
@@ -165,15 +198,9 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         @Bind(R.id.image_item_news_repost)
         ImageView imageNewsRepost;
 
-        @Bind(R.id.repost)
-        RelativeLayout repost;
-
-        public NewsObjectHolder(final View itemView) {
+        public NewsRepostViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-
     }
-
-
 }

@@ -34,7 +34,7 @@ public class ScheduleViewPagerFragment extends Fragment {
         viewPager.setAdapter(slidePagerAdapter);
         viewPager.setPageTransformer(true, new ReaderViewPagerTransformer(ReaderViewPagerTransformer.TransformType.FLOW));
         viewPager.addOnPageChangeListener(slidePagerAdapter);
-        viewPager.setCurrentItem(1, false);
+        viewPager.setCurrentItem(135, false);
         return view;
     }
 

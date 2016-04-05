@@ -53,7 +53,6 @@ public class NewTaskActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     public static Intent newIntent(Context context, String lesson, String deadline, String info) {

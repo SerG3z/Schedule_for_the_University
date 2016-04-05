@@ -101,5 +101,8 @@
 
 
         <string name="format_date" formatted="false">%d %s %d</string>
+    <string name="title_title">Title Title Title Title Title</string>
+    <string name="title_time">time time time time time</string>
+    <string name="title_text">text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</string>
 
 </resources>
