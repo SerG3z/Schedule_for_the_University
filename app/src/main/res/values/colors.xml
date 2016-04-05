@@ -24,6 +24,7 @@
     <color name="my_secondary_text">#727272</color>
     <color name="my_icons">#FFFFFF</color>
     <color name="my_divider">#B6B6B6</color>
+    <color name="colorFAB">#1A237E</color>
 
 
 </resources>

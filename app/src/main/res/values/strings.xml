@@ -91,6 +91,7 @@
     <string name="back">Назад</string>
     <string name="wrong_interval">Указан неверный интервал!</string>
     <string name="accept">Подтвердить</string>
+    <string name="button_delete">Удалить</string>
 
     <string name="complete_task">Завершить</string>
     <string name="edit_task">Редактировать</string>
@@ -100,9 +101,13 @@
     <string name="title_name_teacher">Преподаватель</string>
 
 
-        <string name="format_date" formatted="false">%d %s %d</string>
+    <string name="format_date" formatted="false">%d %s %d</string>
+
     <string name="title_title">Title Title Title Title Title</string>
     <string name="title_time">time time time time time</string>
     <string name="title_text">text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</string>
+
+    <string name="text_set">Задать...</string>
+
 
 </resources>

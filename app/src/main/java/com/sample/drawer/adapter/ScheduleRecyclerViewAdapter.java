@@ -55,10 +55,6 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         if (period == null){
             return;
         }
-        //TODO: устранить проблемы с null
-        if (period.getTime() == null || period.getType() == null || period.getSubject() == null ||
-                period.getTeacher() == null || period.getClassroom() == null)
-                    return;
         if (getItemViewType(position) == TYPE_NORMAL) {
             ((PeriodHolder) holder).time.setText(period.getTime().toString());
             ((PeriodHolder) holder).typeLesson.setText(period.getType().toString());

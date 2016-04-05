@@ -7,9 +7,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sample.drawer.R;
-import com.sample.drawer.model.Task;
+import com.sample.drawer.database.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by admin on 3/26/2016.
@@ -36,9 +37,12 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
 
     @Override
     public void onBindViewHolder(final TaskRecyclerViewAdapter.TaskObjectHolder holder, final int position) {
-        holder.deadline.setText(dataTask.get(position).getDeadline());
-        holder.lesson.setText(dataTask.get(position).getLesson());
-        holder.info.setText(dataTask.get(position).getInfo());
+        Task task = dataTask.get(position);
+        String deadline = task.getTargetDay() == null ? "" : task.getTargetDay().toString();
+        String lesson = task.getSubject() == null ? "" : task.getSubject().getSubject().toString();
+        holder.deadline.setText(deadline);
+        holder.lesson.setText(lesson);
+        holder.info.setText(task.getTask());
     }
 
     @Override
@@ -48,6 +52,12 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
 
     public Task getItemTask(int position) {
         return dataTask.get(position);
+    }
+
+    public void replaceData(final List<Task> tasks) {
+        dataTask.clear();
+        dataTask.addAll(tasks);
+        notifyDataSetChanged();
     }
 
     public interface TaskClickListener {

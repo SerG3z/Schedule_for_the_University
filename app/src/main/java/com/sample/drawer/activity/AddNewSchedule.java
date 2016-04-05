@@ -26,7 +26,9 @@ import com.sample.drawer.database.Period;
 import com.sample.drawer.database.ScheduleDBHelper;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -66,6 +68,8 @@ public class AddNewSchedule extends AppCompatActivity {
                 new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
 
+        mAdapter = new ScheduleRecyclerViewAdapter(new ArrayList<Period>());
+        mRecyclerView.setAdapter(mAdapter);
 
         // Code to Add an item with default animation
         //(() ).addItem(obj, index);
@@ -80,10 +84,9 @@ public class AddNewSchedule extends AppCompatActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //TODO: понедельник должен обновляться после редактирования пар
         tabs = (TabLayout) findViewById(R.id.tabsWeek);
         fillTabLayout();
-        fillTabWithLessons(1);
+        fillTabWithLessons(tabs.getSelectedTabPosition() + 1);
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -106,14 +109,13 @@ public class AddNewSchedule extends AppCompatActivity {
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 16)
                 .create();
-        fabButton.setOnTouchListener(new View.OnTouchListener() {
+        fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Intent intent = NewLessonActivity.newAddIntent(getBaseContext(),
-                        tabs.getSelectedTabPosition()+1);
+            public void onClick(View v) {
+                Intent intent = NewLessonActivity.newAddIntent(AddNewSchedule.this,
+                        tabs.getSelectedTabPosition() + 1);
                 fabButton.hideFloatingActionButton();
                 startActivity(intent);
-                return false;
             }
         });
 
@@ -153,7 +155,7 @@ public class AddNewSchedule extends AppCompatActivity {
     private void fillTabWithLessons(final int dayOfWeek) {
         Bundle bundle = new Bundle();
         bundle.putInt(DAY_OF_WEEK_KEY, dayOfWeek);
-        getLoaderManager().initLoader(dayOfWeek, bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
+        getLoaderManager().initLoader((new Random()).nextInt(), bundle, new LoaderManager.LoaderCallbacks<List<Period>>() {
             @Override
             public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
                 ScheduleDBHelper helper = OpenHelperManager
@@ -171,9 +173,7 @@ public class AddNewSchedule extends AppCompatActivity {
             @Override
             public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
                 if (data != null) {
-                    mAdapter = new ScheduleRecyclerViewAdapter(data);
-                    mRecyclerView.setAdapter(mAdapter);
-                    setAdapterOnClickListener();
+                    ((ScheduleRecyclerViewAdapter) mAdapter).replaceData(data);
                 }
             }
             @Override
