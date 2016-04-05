@@ -54,7 +54,7 @@ public class NewLessonActivity extends ActionBarActivity {
     @Bind(R.id.number_auditory) Spinner numberAuditory;
     @Bind(R.id.type_lesson) Spinner typeLesson;
     @Bind(R.id.type_week) Spinner typeWeek;
-    @Bind(R.id.button_delete) Button deleteBtn;
+    //@Bind(R.id.button_delete) Button deleteBtn;
     FragmentManager fragmentManager;
     public static final String ARG_DAY_OF_WEEK = "day_of_week";
     public static final String ARG_LESSON_ID = "lesson_id";
@@ -98,7 +98,7 @@ public class NewLessonActivity extends ActionBarActivity {
         lessonID = getIntent().getIntExtra(ARG_LESSON_ID,0);
         dayOfWeek = getIntent().getIntExtra(ARG_DAY_OF_WEEK,0);
         if (lessonID == 0){
-            deleteBtn.setEnabled(false);
+            //deleteBtn.setEnabled(false);
         }
     }
 
@@ -108,6 +108,7 @@ public class NewLessonActivity extends ActionBarActivity {
         ButterKnife.unbind(this);
     }
 
+    /*
     @OnClick(R.id.button_cancel)
     public void onClickButtonCancel(){
         this.finish();
@@ -143,6 +144,7 @@ public class NewLessonActivity extends ActionBarActivity {
             }
         });
     }
+    */
 
     public void removeLesson(List<DayPeriod> dayPeriods){
         for (DayPeriod dp : dayPeriods){
