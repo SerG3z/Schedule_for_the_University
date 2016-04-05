@@ -1,9 +1,18 @@
 package com.sample.drawer.utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Utility class
  */
 public final class TimeHelper {
+
+    private static final DateFormat DF = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
     private TimeHelper(){
         throw new UnsupportedOperationException();
     }
@@ -25,5 +34,16 @@ public final class TimeHelper {
         int m = Integer.parseInt(time1.substring(colonIndex + 1, time1.length() ));
         int minutes = h * minutesInHour + m + delta;
         return String.format("%02d:%02d",minutes/60, minutes%60);
+    }
+    public static Calendar dateFromString(String d){
+        try {
+            final Date date = DF.parse(d);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            return calendar;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

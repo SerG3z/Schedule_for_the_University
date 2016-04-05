@@ -103,5 +103,7 @@
 
         <string name="format_date" formatted="false">%d %s %d</string>
     <string name="text_set">Задать...</string>
+    <string name="completed">Задача была отечена как выполненная и удалена.</string>
+    <string name="no_task_in_the_past">Устанавливать срок выполнения в прошлом бессмысленно.</string>
 
 </resources>

@@ -81,7 +81,6 @@ public class TaskFragment extends Fragment {
 
     @OnClick(R.id.add_task_button_create)
     public void clickButtonCreate() {
-        Toast.makeText(getContext(), "click create", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getContext(), NewTaskActivity.class);
         startActivity(intent);
     }

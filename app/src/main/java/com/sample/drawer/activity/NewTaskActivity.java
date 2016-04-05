@@ -29,6 +29,7 @@ import com.sample.drawer.database.dao.DayDAO;
 import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
 import com.sample.drawer.fragments.DateDialog;
 import com.sample.drawer.fragments.schedule.AddValueDialogFragment;
+import com.sample.drawer.utils.TimeHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -79,21 +80,22 @@ public class NewTaskActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        Log.v("DBG", "activity created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_new_task_show);
         ButterKnife.bind(this);
+
+        date = Calendar.getInstance();
+        date = new GregorianCalendar(date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH),date.get(Calendar.DATE));
 
         initializationIntent(getIntent());
 
         setSupportActionBar(toolbar);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        date = Calendar.getInstance();
-        date = new GregorianCalendar(date.get(Calendar.YEAR),
-                date.get(Calendar.MONTH),date.get(Calendar.DATE));
+
         loadLessons();
         created = false;
+        setDeadline.setChecked(false);
     }
 
     public static Intent newIntent(Context context,int taskID, String lesson, String deadline, String info) {
@@ -109,6 +111,10 @@ public class NewTaskActivity extends AppCompatActivity {
         if (intent != null) {
             addTaskDeadline.setText(intent.getStringExtra(DEADLINE_INTENT_KEY));
             addTaskInfo.setText(intent.getStringExtra(INFO_INTENT_KEY));
+            String d = intent.getStringExtra(DEADLINE_INTENT_KEY);
+            if (d != null){
+                date = TimeHelper.dateFromString(d);
+            }
             lessonName = intent.getStringExtra(LESSON_INTENT_KEY);
             taskID = intent.getIntExtra(TASK_ID_INTENT_KEY,0);
         }
@@ -121,8 +127,18 @@ public class NewTaskActivity extends AppCompatActivity {
             @Override
             public void onDateSet(final DatePicker datePicker, final int year, final int monthOfYear, final int dayOfMonth) {
                 String[] mounth = getResources().getStringArray(R.array.mount_list);
-                addTaskDeadline.setText(getString(R.string.format_date, dayOfMonth, mounth[monthOfYear], year));
-                date = new GregorianCalendar(year,monthOfYear,dayOfMonth);
+                if ((new GregorianCalendar(year,monthOfYear,dayOfMonth)).compareTo(Calendar.getInstance()) < 0)
+                {
+                    Toast.makeText(getBaseContext(),
+                            R.string.no_task_in_the_past,
+                            Toast.LENGTH_SHORT).show();
+                    setDeadline.setChecked(false);
+                }
+                else{
+                    date = new GregorianCalendar(year,monthOfYear,dayOfMonth);
+                    addTaskDeadline.setText(getString(R.string.format_date, dayOfMonth, mounth[monthOfYear], year));
+                    setDeadline.setChecked(true);
+                }
             }
         });
         newFragment.show(getFragmentManager(), DATAPICKER_KEY);
@@ -212,6 +228,7 @@ public class NewTaskActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                setResult(RESULT_OK, new Intent());
                 finish();
             }
 

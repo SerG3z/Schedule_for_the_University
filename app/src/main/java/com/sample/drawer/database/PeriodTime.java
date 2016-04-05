@@ -63,7 +63,7 @@ public class PeriodTime implements Comparable<PeriodTime>{
 
     @Override
     public String toString() {
-        return beginTime + " - " + endTime;
+        return beginTime + "\n" + endTime;
     }
 
 
