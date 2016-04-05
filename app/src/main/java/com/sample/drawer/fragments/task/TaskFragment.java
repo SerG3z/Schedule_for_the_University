@@ -3,6 +3,7 @@ package com.sample.drawer.fragments.task;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,10 +26,9 @@ import butterknife.OnClick;
 
 public class TaskFragment extends Fragment {
 
-    private RecyclerView.Adapter recyclerViewAdapter;
-
     @Bind(R.id.task_recycler)
     RecyclerView taskRecyclerView;
+    private RecyclerView.Adapter recyclerViewAdapter;
 
     public static TaskFragment newIntent() {
         return new TaskFragment();
@@ -43,6 +43,9 @@ public class TaskFragment extends Fragment {
 
         recyclerViewAdapter = new TaskRecyclerViewAdapter(getDataTask());
         taskRecyclerView.setAdapter(recyclerViewAdapter);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.info_tasks);
+
         return view;
     }
 
