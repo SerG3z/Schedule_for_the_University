@@ -42,7 +42,7 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
 
     @Override
     public Fragment getItem(int position) {
-        return ItemDayFragment.newInstance(position - semBegin + 1);
+        return ItemDayFragment.newInstance((daysInSemester+(position - semBegin + 1))%daysInSemester);
     }
 
     @Override

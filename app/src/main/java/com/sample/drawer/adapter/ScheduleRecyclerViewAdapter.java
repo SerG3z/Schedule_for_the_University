@@ -51,6 +51,9 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
     @Override
     public void onBindViewHolder(BaseHolder holder, int position) {
+        if (!(periodList.get(position) instanceof Period)){
+            return;
+        }
         Period period = periodList.get(position);
         if (period == null){
             return;
