@@ -39,6 +39,7 @@ import com.sample.drawer.database.dao.DayPeriodDAO;
 import com.sample.drawer.database.dao.PeriodDAO;
 import com.sample.drawer.database.dao.TeacherDAO;
 import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
+import com.sample.drawer.database.loader.OrmLiteQueryForIdLoader;
 import com.sample.drawer.fragments.schedule.AddTimeDialogFragment;
 import com.sample.drawer.fragments.schedule.AddValueDialogFragment;
 
@@ -68,7 +69,8 @@ public class NewLessonActivity extends ActionBarActivity {
     public static final String TAG_DIALOG = "dialog";
     public static final int LOADER_ADD_LESSON = 10;
     public static final int LOADER_EDIT_LESSON = 11;
-    public static final int LOADER_DELETE_LESSON = 11;
+    public static final int LOADER_DELETE_LESSON = 12;
+    public static final int LOADER_LOAD_LESSON = 13;
 
     private List<Subject> lessonList;
     private List<Teacher> teacherList;
@@ -102,12 +104,15 @@ public class NewLessonActivity extends ActionBarActivity {
         setContentView(R.layout.add_new_record);
         ButterKnife.bind(this);
         loadLists();
-
         lessonID = getIntent().getIntExtra(ARG_LESSON_ID,0);
         dayOfWeek = getIntent().getIntExtra(ARG_DAY_OF_WEEK,0);
-        if (lessonID == 0){
+        if (lessonID != 0){
+            loadPeriod();
+        }
+        else {
             //deleteBtn.setEnabled(false);
         }
+
         lessonIndex = auditoryIndex = teacherIndex = -1;
         final int nameThreshold =2, numThreshold = 1;
         fioTeacher.setThreshold(nameThreshold);
@@ -379,6 +384,41 @@ public class NewLessonActivity extends ActionBarActivity {
         }
     }
 
+
+    private void loadPeriod(){
+        getLoaderManager().initLoader(LOADER_LOAD_LESSON, null, new LoaderManager.LoaderCallbacks<List<Period>>() {
+            @Override
+            public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
+                return new OrmLiteQueryForIdLoader<>(getBaseContext(),
+                        HelperFactory.getHelper().getPeriodDAO(),lessonID);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
+                if (data != null && !data.isEmpty()){
+                    Period period = data.get(0);
+                    for (int i =0; i<timeList.size(); i++){
+                        if (period.getTime().compareTo(timeList.get(i)) == 0){
+                            time.setSelection(i,true);
+                        }
+                    }
+                    nameLesson.setText(period.getSubject().toString());
+                    fioTeacher.setText(period.getTeacher().toString());
+                    numberAuditory.setText(period.getClassroom().toString());
+                    for (int i =0; i<typeLessonList.size(); i++){
+                        if (period.getType().toString().compareTo(typeLessonList.get(i).toString()) == 0){
+                            typeLesson.setSelection(i,true);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<List<Period>> loader) {
+
+            }
+        });
+    }
 
     private void loadLists(){
         getLoaderManager().initLoader(ListLoader.LOADER_LESSONS, null, new ListLoader());
