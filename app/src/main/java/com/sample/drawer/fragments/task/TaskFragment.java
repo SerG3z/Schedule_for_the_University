@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,12 +35,10 @@ import butterknife.OnClick;
 public class TaskFragment extends Fragment {
 
     private static final int LOADER_TASKS = 1;
-    private RecyclerView.Adapter recyclerViewAdapter;
-
-
 
     @Bind(R.id.task_recycler)
     RecyclerView taskRecyclerView;
+    private RecyclerView.Adapter recyclerViewAdapter;
 
     public static TaskFragment newIntent() {
         return new TaskFragment();
@@ -54,6 +53,9 @@ public class TaskFragment extends Fragment {
 
         recyclerViewAdapter = new TaskRecyclerViewAdapter(new ArrayList<Task>());
         taskRecyclerView.setAdapter(recyclerViewAdapter);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.info_tasks);
+
         return view;
     }
 

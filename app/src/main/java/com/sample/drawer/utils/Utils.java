@@ -22,15 +22,6 @@ import com.sample.drawer.fragments.schedule.ScheduleViewPagerFragment;
 public class Utils {
     public static final int ACCOUNTS_LOGOUT_ID = 110;
 
-    public static void hideSoftKeyboard(Activity activity) {
-        try {
-            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-        } catch (Exception e) {
-            //
-        }
-    }
-
     public static Drawer.OnDrawerItemClickListener handlerOnClick(final Drawer.Result drawerResult, final ActionBarActivity activity) {
         return new Drawer.OnDrawerItemClickListener() {
             @Override
@@ -85,43 +76,5 @@ public class Utils {
 //                .withSavedInstance(savedInstanceState)
 //                .build();
 //    }
-
-    public static Drawer.Result createCommonDrawer(final ActionBarActivity activity, Toolbar toolbar, AccountHeader.Result headerResult) {
-
-        Drawer.Result drawerResult = new Drawer()
-                .withActivity(activity)
-                .withHeader(R.layout.drawer_header)
-                .withToolbar(toolbar)
-                .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.info_schedule).withIcon(GoogleMaterial.Icon.gmd_event_note).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.info_tasks).withIcon(GoogleMaterial.Icon.gmd_assignment_turned_in).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(R.string.info_news).withIcon(GoogleMaterial.Icon.gmd_dvr).withIdentifier(3)
-                )
-                .withOnDrawerListener(new Drawer.OnDrawerListener() {
-                    @Override
-                    public boolean equals(Object o) {
-                        return super.equals(o);
-                    }
-
-                    @Override
-                    public void onDrawerOpened(View drawerView) {
-                        //Toast.makeText(MainActivity.this, "onDrawerOpened", Toast.LENGTH_SHORT).show();
-                        hideSoftKeyboard(activity);
-                    }
-
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        //Toast.makeText(MainActivity.this, "onDrawerClosed", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .build();
-
-
-        drawerResult.setOnDrawerItemClickListener(handlerOnClick(drawerResult, activity));
-
-        return drawerResult;
-    }
-
 
 }
