@@ -132,7 +132,6 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
         @Override
         public void onClick(View view) {
-            clickListener.onItemClick(getPosition(), view);
         }
     }
 
