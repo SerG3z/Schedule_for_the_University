@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:fab="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/liner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -13,259 +14,281 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/time_lesson"
+            android:layout_marginBottom="@dimen/margin5"
             android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
             android:layout_marginRight="@dimen/margin16"
-            android:layout_marginBottom="@dimen/margin5" />
+            android:layout_marginTop="@dimen/margin16"
+            android:text="@string/time_lesson"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/margin16"
             android:paddingRight="@dimen/margin16">
 
             <Spinner
                 android:id="@+id/time_lesson"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
+                android:layout_marginRight="@dimen/margin16"
                 android:layout_weight="1"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_marginRight="@dimen/margin16" />
+                android:spinnerMode="dropdown" />
 
             <ImageButton
+                android:id="@+id/btn_add_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_black_48dp"
                 android:layout_weight="1"
-                android:id="@+id/btn_add_time"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_add_black_48dp" />
         </LinearLayout>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/name_lesson"
+            android:layout_marginBottom="@dimen/margin5"
             android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
             android:layout_marginRight="@dimen/margin16"
-            android:layout_marginBottom="@dimen/margin5" />
+            android:layout_marginTop="@dimen/margin16"
+            android:text="@string/name_lesson"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/margin16"
             android:paddingRight="@dimen/margin16">
 
             <Spinner
                 android:id="@+id/name_lesson"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
+                android:layout_marginRight="@dimen/margin16"
                 android:layout_weight="1"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_marginRight="@dimen/margin16" />
+                android:spinnerMode="dropdown" />
 
             <ImageButton
+                android:id="@+id/btn_add_name_lesson"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_black_48dp"
                 android:layout_weight="1"
-                android:id="@+id/btn_add_name_lesson"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_add_black_48dp" />
         </LinearLayout>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/fio_teacher"
+            android:layout_marginBottom="@dimen/margin5"
             android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
             android:layout_marginRight="@dimen/margin16"
-            android:layout_marginBottom="@dimen/margin5" />
+            android:layout_marginTop="@dimen/margin16"
+            android:text="@string/fio_teacher"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/margin16"
             android:paddingRight="@dimen/margin16">
 
             <Spinner
                 android:id="@+id/fio_teacher"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
+                android:layout_marginRight="@dimen/margin16"
                 android:layout_weight="1"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_marginRight="@dimen/margin16" />
+                android:spinnerMode="dropdown" />
 
             <ImageButton
+                android:id="@+id/btn_add_fio_teacher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_black_48dp"
                 android:layout_weight="1"
-                android:id="@+id/btn_add_fio_teacher"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_add_black_48dp" />
         </LinearLayout>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/number_auditory"
+            android:layout_marginBottom="@dimen/margin5"
             android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
             android:layout_marginRight="@dimen/margin16"
-            android:layout_marginBottom="@dimen/margin5" />
+            android:layout_marginTop="@dimen/margin16"
+            android:text="@string/number_auditory"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/margin16"
             android:paddingRight="@dimen/margin16">
 
             <Spinner
                 android:id="@+id/number_auditory"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
+                android:layout_marginRight="@dimen/margin16"
                 android:layout_weight="1"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_marginRight="@dimen/margin16" />
+                android:spinnerMode="dropdown" />
 
             <ImageButton
+                android:id="@+id/btn_add_number_auditory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_black_48dp"
                 android:layout_weight="1"
-                android:id="@+id/btn_add_number_auditory"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_add_black_48dp" />
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/type_lesson"
+            android:layout_marginBottom="@dimen/margin5"
             android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
             android:layout_marginRight="@dimen/margin16"
-            android:layout_marginBottom="@dimen/margin5" />
+            android:layout_marginTop="@dimen/margin16"
+            android:text="@string/type_lesson"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/margin16"
             android:paddingRight="@dimen/margin16">
 
             <Spinner
                 android:id="@+id/type_lesson"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/margin16"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_weight="1" />
 
             <ImageButton
+                android:id="@+id/btn_add_type_lesson"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_black_48dp"
                 android:layout_weight="1"
-                android:id="@+id/btn_add_type_lesson"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_add_black_48dp" />
         </LinearLayout>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/type_week"
+            android:layout_marginBottom="@dimen/margin5"
             android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
             android:layout_marginRight="@dimen/margin16"
-            android:layout_marginBottom="@dimen/margin5" />
+            android:layout_marginTop="@dimen/margin16"
+            android:text="@string/type_week"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <Spinner
             android:id="@+id/type_week"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin16"
-            android:entries="@array/type_week_list"
-            style="@style/Widget.AppCompat.Spinner.Underlined" />
+            android:entries="@array/type_week_list" />
 
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin16"
-            android:layout_marginBottom="@dimen/margin16">
+        </FrameLayout>
 
-            <Button
-                android:id="@+id/button_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@android:color/holo_red_light"
-                android:text="@string/button_delete"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/margin16" />
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="74dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            fab:menu_animationDelayPerItem="50"
+            fab:menu_backgroundColor="@android:color/transparent"
+            fab:menu_buttonSpacing="0dp"
+            fab:menu_colorNormal="#DA4336"
+            fab:menu_colorPressed="#E75043"
+            fab:menu_colorRipple="#99FFFFFF"
+            fab:menu_fab_hide_animation="@anim/my_hide_animation"
+            fab:menu_fab_label="your_label_here"
+            fab:menu_fab_show_animation="@anim/my_show_animation"
+            fab:menu_fab_size="normal"
+            fab:menu_icon="@drawable/fab_add"
+            fab:menu_labels_colorNormal="#333333"
+            fab:menu_labels_colorPressed="#444444"
+            fab:menu_labels_colorRipple="#66FFFFFF"
+            fab:menu_labels_cornerRadius="3dp"
+            fab:menu_labels_ellipsize="none"
+            fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+            fab:menu_labels_margin="0dp"
+            fab:menu_labels_maxLines="1"
+            fab:menu_labels_padding="8dp"
+            fab:menu_labels_paddingBottom="4dp"
+            fab:menu_labels_paddingLeft="8dp"
+            fab:menu_labels_paddingRight="8dp"
+            fab:menu_labels_paddingTop="4dp"
+            fab:menu_labels_position="left"
+            fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+            fab:menu_labels_showShadow="true"
+            fab:menu_labels_singleLine="true"
+            fab:menu_labels_style="@style/YourCustomLabelsStyle"
+            fab:menu_labels_textColor="#FFFFFF"
+            fab:menu_labels_textSize="14sp"
+            fab:menu_openDirection="up"
+            fab:menu_shadowColor="#66000000"
+            fab:menu_shadowRadius="4dp"
+            fab:menu_shadowXOffset="1dp"
+            fab:menu_shadowYOffset="3dp"
+            fab:menu_showShadow="true">
 
-            <Button
-                android:id="@+id/button_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@android:color/holo_orange_dark"
-                android:text="@string/cancel"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/margin16"
-                android:layout_marginRight="@dimen/margin16" />
-
-            <Button
+            <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:background="@android:color/holo_orange_dark"
-                android:text="@string/button_save"
-                android:layout_weight="1"
-                android:layout_marginRight="@dimen/margin16" />
+                android:src="@android:drawable/ic_menu_save"
+                fab:fab_label="Menu item 1"
+                fab:fab_size="mini" />
 
-            <RelativeLayout
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_revert"
+                fab:fab_label="Menu item 2"
+                fab:fab_size="mini" />
 
-                <include layout="@layout/floating_action_button_menu" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_delete"
+                fab:fab_label="Menu item 3"
+                fab:fab_size="mini" />
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="@dimen/fab_margin"
-                    android:src="@android:drawable/ic_menu_help"
-                    />
-            </RelativeLayout>
-
-        </LinearLayout>
-
-
+        </com.github.clans.fab.FloatingActionMenu>
     </LinearLayout>
+
 
 </ScrollView>
 
