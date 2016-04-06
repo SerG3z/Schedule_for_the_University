@@ -1,202 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/tools"
+    android:id="@+id/liner"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin5"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin16"
+        android:text="@string/time_lesson"
+        android:textSize="@dimen/title_size"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/liner"
+        android:id="@+id/linear1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin5"
-            android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
-            android:layout_marginRight="@dimen/margin16" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/margin16"
-            android:paddingRight="@dimen/margin16"
-            android:layout_marginBottom="@dimen/margin20">
-
-            <Spinner
-                android:id="@+id/time_lesson"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin16"
-                android:layout_weight="1"
-                android:spinnerMode="dropdown" />
-
-            <ImageButton
-                android:id="@+id/btn_add_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_add_black_48dp" />
-        </LinearLayout>
-
-
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/name_lesson"
-            android:layout_marginBottom="@dimen/margin20"
-            android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginRight="@dimen/margin16"
-            android:hint="@string/name_lesson" />
-
-
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/fio_teacher"
-            android:layout_marginBottom="@dimen/margin20"
-            android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginRight="@dimen/margin16"
-            android:hint="@string/fio_teacher" />
-
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/number_auditory"
-            android:layout_marginBottom="@dimen/margin20"
-            android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginRight="@dimen/margin16"
-            android:hint="@string/number_auditory" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin5"
-            android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
-            android:layout_marginRight="@dimen/margin16" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/margin16"
-            android:paddingRight="@dimen/margin16">
-
-            <Spinner
-                android:id="@+id/type_lesson"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin16"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/btn_add_type_lesson"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_add_black_48dp" />
-        </LinearLayout>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin5"
-            android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
-            android:layout_marginRight="@dimen/margin16" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_time"
+        android:layout_marginBottom="@dimen/margin20"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin16"
+        android:paddingRight="@dimen/margin16">
 
         <Spinner
-            android:id="@+id/type_week"
+            android:id="@+id/time_lesson"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin16"
-            android:entries="@array/type_week_list" />
+            android:layout_height="@dimen/height_spinner"
+            android:layout_marginRight="@dimen/margin16"
+            android:layout_weight="1"
+            android:spinnerMode="dropdown" />
 
-        <com.github.clans.fab.FloatingActionMenu
-            android:id="@+id/menu"
-            android:layout_width="wrap_content"
-            android:layout_height="74dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            fab:menu_animationDelayPerItem="50"
-            fab:menu_backgroundColor="@android:color/transparent"
-            fab:menu_buttonSpacing="0dp"
-            fab:menu_colorNormal="#DA4336"
-            fab:menu_colorPressed="#E75043"
-            fab:menu_colorRipple="#99FFFFFF"
-            fab:menu_fab_hide_animation="@anim/my_hide_animation"
-            fab:menu_fab_label="your_label_here"
-            fab:menu_fab_show_animation="@anim/my_show_animation"
-            fab:menu_fab_size="normal"
-            fab:menu_icon="@drawable/fab_add"
-            fab:menu_labels_colorNormal="#333333"
-            fab:menu_labels_colorPressed="#444444"
-            fab:menu_labels_colorRipple="#66FFFFFF"
-            fab:menu_labels_cornerRadius="3dp"
-            fab:menu_labels_ellipsize="none"
-            fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
-            fab:menu_labels_margin="0dp"
-            fab:menu_labels_maxLines="1"
-            fab:menu_labels_padding="8dp"
-            fab:menu_labels_paddingBottom="4dp"
-            fab:menu_labels_paddingLeft="8dp"
-            fab:menu_labels_paddingRight="8dp"
-            fab:menu_labels_paddingTop="4dp"
-            fab:menu_labels_position="left"
-            fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
-            fab:menu_labels_showShadow="true"
-            fab:menu_labels_singleLine="true"
-            fab:menu_labels_style="@style/YourCustomLabelsStyle"
-            fab:menu_labels_textColor="#FFFFFF"
-            fab:menu_labels_textSize="14sp"
-            fab:menu_openDirection="up"
-            fab:menu_shadowColor="#66000000"
-            fab:menu_shadowRadius="4dp"
-            fab:menu_shadowXOffset="1dp"
-            fab:menu_shadowYOffset="3dp"
-            fab:menu_showShadow="true">
-
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/button_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_save"
-                fab:fab_label="Menu item 1"
-                fab:fab_size="mini" />
-
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/button_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_revert"
-                fab:fab_label="Menu item 2"
-                fab:fab_size="mini" />
-
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/button_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_delete"
-                fab:fab_label="Menu item 3"
-                fab:fab_size="mini" />
-
-        </com.github.clans.fab.FloatingActionMenu>
+        <ImageButton
+            android:id="@+id/btn_add_time"
+            android:layout_width="@dimen/width_image_plus"
+            android:layout_height="@dimen/height_spinner"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_add_black_18dp" />
     </LinearLayout>
 
 
-</ScrollView>
+    <AutoCompleteTextView
+        android:id="@+id/name_lesson"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear1"
+        android:layout_marginBottom="@dimen/margin20"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:singleLine="true"
+        android:hint="@string/name_lesson" />
+
+
+    <AutoCompleteTextView
+        android:id="@+id/fio_teacher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_lesson"
+        android:layout_marginBottom="@dimen/margin20"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:singleLine="true"
+        android:hint="@string/fio_teacher" />
+
+    <AutoCompleteTextView
+        android:id="@+id/number_auditory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fio_teacher"
+        android:layout_marginBottom="@dimen/margin20"
+        android:singleLine="true"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:hint="@string/number_auditory" />
+
+    <TextView
+        android:id="@+id/title_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/number_auditory"
+        android:layout_marginBottom="@dimen/margin5"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin16"
+        android:text="@string/type_lesson"
+        android:textSize="@dimen/title_size"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_type"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin16"
+        android:paddingRight="@dimen/margin16">
+
+        <Spinner
+            android:id="@+id/type_lesson"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_spinner"
+            android:layout_marginRight="@dimen/margin16"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btn_add_type_lesson"
+            android:layout_width="@dimen/width_image_plus"
+            android:layout_height="@dimen/height_spinner"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_add_black_18dp" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/title_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear2"
+        android:layout_marginBottom="@dimen/margin5"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin16"
+        android:text="@string/type_week"
+        android:textSize="@dimen/title_size"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/type_week"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_spinner"
+        android:layout_below="@id/title_week"
+        android:layout_margin="@dimen/margin16"
+        android:entries="@array/type_week_list"
+
+        />
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/menu1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="@dimen/fab_margin"
+        android:paddingBottom="@dimen/fab_margin"
+        android:paddingLeft="@dimen/fab_margin"
+        fab:menu_labels_style="@style/MenuLabelsStyle"
+        fab:menu_colorNormal="#5C6BC0"
+        fab:menu_colorPressed="#7986CB"
+        fab:menu_colorRipple="#3949AB"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="true"
+        fab:menu_backgroundColor="#ccffffff">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_save"
+            fab:fab_size="mini"
+            fab:fab_label = "asdasdasdas"
+            style="@style/MenuButtonsSmall"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_revert"
+            style="@style/MenuButtonsSmall"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_delete"
+            fab:fab_size="mini"
+            style="@style/MenuButtonsSmall" />
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+</RelativeLayout>
+

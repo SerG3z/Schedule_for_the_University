@@ -38,14 +38,14 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     @Override
     public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         BaseHolder holder;
-        if (viewType == TYPE_NORMAL) {
+//        if (viewType == TYPE_NORMAL) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_lesson, parent, false);
             holder = new PeriodHolder(view, myClickListener);
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empty_lesson, parent, false);
-            holder = new EmptyObjectHolder(view, myClickListener);
-        }
+//        } else {
+//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empty_lesson, parent, false);
+//            holder = new EmptyObjectHolder(view, myClickListener);
+//        }
         return holder;
     }
 

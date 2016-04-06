@@ -10,12 +10,14 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.sample.drawer.R;
 import com.sample.drawer.database.Classroom;
@@ -29,6 +31,7 @@ import com.sample.drawer.database.ScheduleDBHelper;
 import com.sample.drawer.database.Subject;
 import com.sample.drawer.database.Teacher;
 import com.sample.drawer.database.dao.DayDAO;
+import com.sample.drawer.database.dao.DayPeriodDAO;
 import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
 import com.sample.drawer.fragments.schedule.AddTimeDialogFragment;
 import com.sample.drawer.fragments.schedule.AddValueDialogFragment;
@@ -66,6 +69,8 @@ public class NewLessonActivity extends ActionBarActivity {
     FragmentManager fragmentManager;
     @Bind(R.id.button_delete)
     FloatingActionButton buttonDelete;
+    @Bind(R.id.menu1)
+    FloatingActionMenu menu1;
 
     private List<Subject> lessonList;
     private List<Teacher> teacherList;
@@ -100,7 +105,6 @@ public class NewLessonActivity extends ActionBarActivity {
         ButterKnife.bind(this);
         loadLists();
 
-
         lessonID = getIntent().getIntExtra(ARG_LESSON_ID, 0);
         dayOfWeek = getIntent().getIntExtra(ARG_DAY_OF_WEEK, 0);
         if (lessonID == 0) {
@@ -109,6 +113,7 @@ public class NewLessonActivity extends ActionBarActivity {
         lessonIndex = auditoryIndex = teacherIndex = -1;
         final int nameThreshold = 2, numThreshold = 1;
         fioTeacher.setThreshold(nameThreshold);
+
         fioTeacher.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -171,6 +176,7 @@ public class NewLessonActivity extends ActionBarActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
     }
 
     @Override
@@ -179,7 +185,7 @@ public class NewLessonActivity extends ActionBarActivity {
         ButterKnife.unbind(this);
     }
 
-    /*
+
     @OnClick(R.id.button_cancel)
     public void onClickButtonCancel(){
         this.finish();
@@ -215,7 +221,7 @@ public class NewLessonActivity extends ActionBarActivity {
             }
         });
     }
-    */
+
 
     public void removeLesson(List<DayPeriod> dayPeriods) {
         for (DayPeriod dp : dayPeriods) {

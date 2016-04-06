@@ -15,5 +15,10 @@
     <dimen name="text_size_time">28dp</dimen>
     <dimen name="text_size_for_type_name">24dp</dimen>
 
+    <!-- add new record-->
+    <dimen name="height_spinner">40dp</dimen>
+    <dimen name="width_image_plus">80dp</dimen>
+    <dimen name="title_size">16dp</dimen>
+
 
 </resources>
