@@ -20,5 +20,9 @@
     <dimen name="width_image_plus">80dp</dimen>
     <dimen name="title_size">16dp</dimen>
 
+    <!-- item lesson-->
+    <dimen name="text_size_item_lesson">16dp</dimen>
+    <dimen name="margin_left_nextto_time">15dp</dimen>
+
 
 </resources>
