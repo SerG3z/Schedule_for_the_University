@@ -22,7 +22,11 @@
 
     <!-- item lesson-->
     <dimen name="text_size_item_lesson">16dp</dimen>
+    <dimen name="text_size_item_lesson_auditory">12dp</dimen>
     <dimen name="margin_left_nextto_time">15dp</dimen>
+    <dimen name="margin_nextto_auditory">40dp</dimen>
 
-
+    <!--item task show info-->
+    <dimen name="text_size_title">18dp</dimen>
+    <dimen name="text_size_show_info">16dp</dimen>
 </resources>

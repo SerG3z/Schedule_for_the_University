@@ -18,27 +18,37 @@
             android:id="@+id/task_item_deadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding25"
             android:text="day"
-            />
+            android:textColor="@color/md_black_1000"
+            android:textSize="@dimen/text_size_item_lesson"
+            android:layout_marginLeft="@dimen/margin5"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:id="@+id/task_item_lesson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin30"
+            android:layout_marginLeft="@dimen/margin10"
+            android:maxLines="4"
             android:layout_toRightOf="@id/task_item_deadline"
-            android:text="lesson"/>
+            android:layout_marginTop="@dimen/margin5"
+            android:textColor="@color/md_black_1000"
+            android:textSize="@dimen/text_size_item_lesson"
+            android:textStyle="bold"
+
+            android:text="dfklgjdgjdfkjgkldfjgkdfgkdfhkdfhgjkdfgkjdfghkgdgdfgdfgdfgdldfhjgdfkghjdfg dflghkjdfhgkdfh gkhd fkghkd"/>
 
         <TextView
             android:id="@+id/task_item_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/task_item_lesson"
-            android:layout_marginLeft="@dimen/margin30"
-            android:layout_marginTop="@dimen/margin30"
+            android:layout_marginLeft="@dimen/margin10"
+            android:layout_marginTop="@dimen/margin10"
             android:layout_toRightOf="@id/task_item_deadline"
+            android:textSize="@dimen/text_size_item_lesson"
             android:singleLine="true"
+            android:textColor="@color/md_black_1000"
             android:text="information"
             />
 

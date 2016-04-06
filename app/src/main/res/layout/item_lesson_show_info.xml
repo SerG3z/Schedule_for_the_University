@@ -40,6 +40,7 @@
                 android:layout_marginTop="@dimen/margin16"
                 android:text="@string/time_lesson"
                 android:textSize="@dimen/text_size_time"
+                android:textColor="@android:color/white"
                 />
 
             <TextView
@@ -51,17 +52,19 @@
                 android:layout_marginTop="@dimen/margin16"
                 android:text="@string/type_lesson"
                 android:textSize="@dimen/text_size_for_type_name"
+                android:textColor="@android:color/black"
                 />
 
             <TextView
                 android:id="@+id/name_lesson"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/type_lesson"
+                android:layout_below="@+id/type_lesson"
                 android:layout_marginLeft="@dimen/margin16"
                 android:layout_marginTop="@dimen/margin16"
                 android:text="@string/lesson"
                 android:textSize="@dimen/text_size_for_type_name"
+                android:textColor="@android:color/black"
                 />
 
             <TextView
@@ -89,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_name_teacher"
-                android:layout_below="@id/number_auditory"
+                android:layout_below="@+id/number_auditory"
                 android:layout_marginLeft="@dimen/margin16"
                 android:layout_marginTop="@dimen/margin16"
                 />

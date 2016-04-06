@@ -26,6 +26,7 @@
             android:id="@+id/name_lesson"
             android:lineSpacingMultiplier="3"
             android:hint="@string/name_lesson"
+            android:singleLine="true"
             android:layout_marginTop="@dimen/margin16" />
 
         <CheckBox

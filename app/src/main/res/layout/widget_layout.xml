@@ -3,7 +3,7 @@
     android:id="@+id/widget_recycler"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@android:color/darker_gray"
+    android:background="@color/vk_white"
     android:layout_height="match_parent">
 </ListView>
 
