@@ -9,8 +9,11 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -29,6 +32,7 @@ import com.sample.drawer.database.dao.DayDAO;
 import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
 import com.sample.drawer.fragments.DateDialog;
 import com.sample.drawer.fragments.schedule.AddValueDialogFragment;
+import com.sample.drawer.utils.TimeHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -62,7 +66,7 @@ public class NewTaskActivity extends AppCompatActivity {
     @Bind(R.id.toolbar_add_new_task)
     Toolbar toolbar;
     @Bind(R.id.name_lesson)
-    Spinner nameLesson;
+    AutoCompleteTextView nameLesson;
     @Bind(R.id.set_deadline_cb)
     CheckBox setDeadline;
     DateDialog newFragment;
@@ -71,6 +75,7 @@ public class NewTaskActivity extends AppCompatActivity {
     private Calendar date;
     private String lessonName;
     private boolean created;
+    private int lessonIndex;
 
     public static Intent newIntent(Context context, int taskID, String lesson, String deadline, String info) {
         Intent intent = new Intent(context, NewTaskActivity.class);
@@ -83,29 +88,59 @@ public class NewTaskActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        Log.v("DBG", "activity created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_new_task_show);
         ButterKnife.bind(this);
+
+        date = Calendar.getInstance();
+        date = new GregorianCalendar(date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH),date.get(Calendar.DATE));
 
         initializationIntent(getIntent());
 
         setSupportActionBar(toolbar);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        date = Calendar.getInstance();
-        date = new GregorianCalendar(date.get(Calendar.YEAR),
-                date.get(Calendar.MONTH), date.get(Calendar.DATE));
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        date = Calendar.getInstance();
+//        date = new GregorianCalendar(date.get(Calendar.YEAR),
+//                date.get(Calendar.MONTH), date.get(Calendar.DATE));
+//        loadLessons();
+//        created = false;
         loadLessons();
         created = false;
+        setDeadline.setChecked(false);
+        lessonIndex = -1;
+        final int nameThreshold = 2;
+        nameLesson.setThreshold(nameThreshold);
+        nameLesson.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lessonIndex = -1;
+                for (int i=0; i<lessonList.size(); i++){
+                    if (lessonList.get(i).toString().compareTo(s.toString()) == 0) {
+                        lessonIndex = i;
+                        break;
+                    }
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
 
     }
+
 
     private void initializationIntent(Intent intent) {
         if (intent != null) {
             addTaskDeadline.setText(intent.getStringExtra(DEADLINE_INTENT_KEY));
             addTaskInfo.setText(intent.getStringExtra(INFO_INTENT_KEY));
+            String d = intent.getStringExtra(DEADLINE_INTENT_KEY);
+            if (d != null){
+                date = TimeHelper.dateFromString(d);
+            }
             lessonName = intent.getStringExtra(LESSON_INTENT_KEY);
             taskID = intent.getIntExtra(TASK_ID_INTENT_KEY, 0);
         }
@@ -118,8 +153,20 @@ public class NewTaskActivity extends AppCompatActivity {
             @Override
             public void onDateSet(final DatePicker datePicker, final int year, final int monthOfYear, final int dayOfMonth) {
                 String[] mounth = getResources().getStringArray(R.array.mount_list);
-                addTaskDeadline.setText(getString(R.string.format_date, dayOfMonth, mounth[monthOfYear], year));
-                date = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+//                addTaskDeadline.setText(getString(R.string.format_date, dayOfMonth, mounth[monthOfYear], year));
+//                date = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+                if ((new GregorianCalendar(year,monthOfYear,dayOfMonth)).compareTo(Calendar.getInstance()) < 0)
+                {
+                    Toast.makeText(getBaseContext(),
+                            R.string.no_task_in_the_past,
+                            Toast.LENGTH_SHORT).show();
+                    setDeadline.setChecked(false);
+                }
+                else{
+                    date = new GregorianCalendar(year,monthOfYear,dayOfMonth);
+                    addTaskDeadline.setText(getString(R.string.format_date, dayOfMonth, mounth[monthOfYear], year));
+                    setDeadline.setChecked(true);
+                }
             }
         });
         newFragment.show(getFragmentManager(), DATAPICKER_KEY);
@@ -137,21 +184,20 @@ public class NewTaskActivity extends AppCompatActivity {
             public void onLoadFinished(Loader<List<Subject>> loader, List<Subject> data) {
                 if (data != null) {
                     lessonList = data;
-                    int selected = -1, i = 0;
                     List<String> lessonNames = new ArrayList<String>();
                     for (Subject s : data) {
                         lessonNames.add(s.toString());
-                        if (lessonName != null && s.getSubject().compareTo(lessonName) == 0) {
-                            selected = i;
-                        }
-                        i++;
+//                        if (lessonName != null && s.getSubject().compareTo(lessonName) == 0) {
+//                            selected = i;
+//                        }
+//                        i++;
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(),
                             android.R.layout.simple_spinner_dropdown_item, lessonNames);
                     nameLesson.setAdapter(adapter);
-                    if (selected != -1) {
-                        nameLesson.setSelection(selected, true);
-                    }
+//                    if (selected != -1) {
+//                        nameLesson.setSelection(selected, true);
+//                    }
                 }
             }
 
@@ -191,8 +237,20 @@ public class NewTaskActivity extends AppCompatActivity {
                         }
                     }
                 }
-                Task task = new Task(addTaskInfo.getText().toString(), day,
-                        lessonList.get(nameLesson.getSelectedItemPosition()));
+//                Task task = new Task(addTaskInfo.getText().toString(), day,
+//                        lessonList.get(nameLesson.getSelectedItemPosition()));
+                Subject subject;
+                if (lessonIndex < 0) {
+                    subject = new Subject(nameLesson.getText().toString());
+                    try {
+                        HelperFactory.getHelper().getSubjectDAO().create(subject);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    subject = lessonList.get(lessonIndex);
+                }
+                Task task = new Task(addTaskInfo.getText().toString(), day, subject);
                 if (taskID == 0 && !created) { // добавление
                     try {
                         created = true;
@@ -208,6 +266,7 @@ public class NewTaskActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                setResult(RESULT_OK, new Intent());
                 finish();
             }
 
@@ -218,12 +277,12 @@ public class NewTaskActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.btn_add_name_lesson)
-    public void addLesson() {
-        DialogFragment newFragment = AddValueDialogFragment.
-                newInstance(getString(R.string.name_lesson));
-        newFragment.show(getFragmentManager(), TAG_LESSON_ADD_DIALOG);
-    }
+//    @OnClick(R.id.btn_add_name_lesson)
+//    public void addLesson() {
+//        DialogFragment newFragment = AddValueDialogFragment.
+//                newInstance(getString(R.string.name_lesson));
+//        newFragment.show(getFragmentManager(), TAG_LESSON_ADD_DIALOG);
+//    }
 
     @Override
     protected void onDestroy() {

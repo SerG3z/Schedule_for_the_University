@@ -102,12 +102,12 @@
 
 
     <string name="format_date" formatted="false">%d %s %d</string>
-
-    <string name="title_title">Title Title Title Title Title</string>
-    <string name="title_time">time time time time time</string>
-    <string name="title_text">text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</string>
-
     <string name="text_set">Задать...</string>
+    <string name="title_title">Title Title Title Title Title</string>
+    <string name="completed">Задача была отечена как выполненная и удалена.</string>
+    <string name="title_time">time time time time time</string>
+    <string name="no_task_in_the_past">Устанавливать срок выполнения в прошлом бессмысленно.</string>
+    <string name="title_text">text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</string>
 
 
 </resources>

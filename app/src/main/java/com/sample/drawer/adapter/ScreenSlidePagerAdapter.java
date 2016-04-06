@@ -5,44 +5,38 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import com.sample.drawer.fragments.schedule.ItemDayFragment;
 import com.sample.drawer.database.HelperFactory;
 
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by admin on 3/23/2016.
  */
 public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implements ViewPager.OnPageChangeListener {
 
-    private static final String LOG_TAG = "ViewPagerLoop";
     private static final int NUM_PAGES = 366;
-    //TODO: загружать по 14 вкладок - плохая идея. текущая реализация viewPager'a глючная
-    ItemDayFragment[] days;
+
     private ViewPager viewPager;
-    private long weeksCount;
-    private int currentCycle;
-    private int maxCycle;
+    private int semBegin;
 
     public ScreenSlidePagerAdapter(FragmentManager fragmentManager, ViewPager pager) {
         super(fragmentManager);
-//        viewPager = pager;
-//        currentCycle = 5;
-//        try {
-//            weeksCount = HelperFactory.getHelper().getWeekDAO().countOf();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        maxCycle = ((int) weeksCount + 1) / 2;
-//        days = new ItemDayFragment[getCount()];
-//        initDays();
+        viewPager = pager;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ItemDayFragment.newInstance(position);
-
+        return ItemDayFragment.newInstance(position - semBegin + 1);
     }
 
     @Override
@@ -56,30 +50,21 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
 
     @Override
     public void onPageSelected(int position) {
-//        if (position == 0) {
-//            Log.d(LOG_TAG, "Swiped before first page, looping and resetting to last page.");
-//            viewPager.setCurrentItem(NUM_PAGES, false);
-//            currentCycle = (maxCycle + currentCycle - 2) % maxCycle + 1;
-//            initDays();
-//        } else if (position == NUM_PAGES + 1) {
-//            Log.d(LOG_TAG, "Swiped beyond last page, looping and resetting to first page.");
-//            viewPager.setCurrentItem(1, false);
-//            currentCycle = currentCycle % maxCycle + 1;
-//            initDays();
-//
-//        }
-//        Log.d(LOG_TAG, "PageSelector " + position);
+
+    }
+
+    public void setSemBegin(Date semesterBegin){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(semesterBegin);
+        semBegin = calendar.get(Calendar.DAY_OF_YEAR);
+        if (viewPager != null){
+            viewPager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        }
     }
 
     @Override
     public void onPageScrollStateChanged(final int state) {
     }
 //
-//    void initDays() {
-//        days[0] = ItemDayFragment.newInstance(((maxCycle + currentCycle - 2) % maxCycle + 1) * (NUM_PAGES + 1));
-//        for (int i = 1; i <= NUM_PAGES; i++) {
-//            days[i] = ItemDayFragment.newInstance((currentCycle - 1) * NUM_PAGES + i);
-//        }
-//        days[NUM_PAGES + 1] = ItemDayFragment.newInstance((currentCycle % maxCycle + 1) * NUM_PAGES + 1);
-//    }
+
 }

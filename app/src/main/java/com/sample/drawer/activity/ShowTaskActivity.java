@@ -4,12 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sample.drawer.R;
+import com.sample.drawer.database.HelperFactory;
+
+import java.sql.SQLException;
 
 /**
  * Created by admin on 3/26/2016.
@@ -24,8 +30,10 @@ public class ShowTaskActivity extends AppCompatActivity {
     private static final String LESSON_INTENT_KEY = "lesson";
     private static final String INFO_INTENT_KEY = "info";
     private static final String TASK_ID_INTENT_KEY = "task_id";
+    public static final int REQUEST_CODE = 1;
 
     private int taskID;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -41,9 +49,10 @@ public class ShowTaskActivity extends AppCompatActivity {
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
-
         installIntent(getIntent());
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -60,9 +69,17 @@ public class ShowTaskActivity extends AppCompatActivity {
                         lesson.getText().toString(),
                         deadline.getText().toString(),
                         info.getText().toString());
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_CODE);
                 return true;
             case R.id.complete_task_toolbar:
+                try {
+                    HelperFactory.getHelper().getTaskDAO().deleteById(taskID);
+                    Toast.makeText(getBaseContext(), R.string.completed,
+                            Toast.LENGTH_LONG).show();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                finish();
                 return true;
 
             default:
@@ -84,5 +101,13 @@ public class ShowTaskActivity extends AppCompatActivity {
         lesson.setText(intent.getStringExtra(LESSON_INTENT_KEY));
         info.setText(intent.getStringExtra(INFO_INTENT_KEY));
         taskID = intent.getIntExtra(TASK_ID_INTENT_KEY,0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK){
+            finish();
+        }
     }
 }

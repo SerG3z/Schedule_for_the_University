@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,9 +29,7 @@ import com.sample.drawer.database.ScheduleDBHelper;
 import com.sample.drawer.database.Subject;
 import com.sample.drawer.database.Teacher;
 import com.sample.drawer.database.dao.DayDAO;
-import com.sample.drawer.database.dao.DayPeriodDAO;
 import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
-
 import com.sample.drawer.fragments.schedule.AddTimeDialogFragment;
 import com.sample.drawer.fragments.schedule.AddValueDialogFragment;
 
@@ -54,19 +54,19 @@ public class NewLessonActivity extends ActionBarActivity {
     @Bind(R.id.time_lesson)
     Spinner time;
     @Bind(R.id.fio_teacher)
-    Spinner fioTeacher;
+    AutoCompleteTextView fioTeacher;
     @Bind(R.id.name_lesson)
-    Spinner nameLesson;
+    AutoCompleteTextView nameLesson;
     @Bind(R.id.number_auditory)
-    Spinner numberAuditory;
+    AutoCompleteTextView numberAuditory;
     @Bind(R.id.type_lesson)
     Spinner typeLesson;
     @Bind(R.id.type_week)
     Spinner typeWeek;
+    FragmentManager fragmentManager;
     @Bind(R.id.button_delete)
     FloatingActionButton buttonDelete;
 
-    FragmentManager fragmentManager;
     private List<Subject> lessonList;
     private List<Teacher> teacherList;
     private List<PeriodTime> timeList;
@@ -75,6 +75,7 @@ public class NewLessonActivity extends ActionBarActivity {
 
     private int lessonID;
     private int dayOfWeek;
+    private int lessonIndex, auditoryIndex, teacherIndex;
 
 
     //добавление пары для дня недели
@@ -102,9 +103,74 @@ public class NewLessonActivity extends ActionBarActivity {
 
         lessonID = getIntent().getIntExtra(ARG_LESSON_ID, 0);
         dayOfWeek = getIntent().getIntExtra(ARG_DAY_OF_WEEK, 0);
-        if (lessonID == 0){
+        if (lessonID == 0) {
             buttonDelete.setEnabled(false);
         }
+        lessonIndex = auditoryIndex = teacherIndex = -1;
+        final int nameThreshold = 2, numThreshold = 1;
+        fioTeacher.setThreshold(nameThreshold);
+        fioTeacher.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                teacherIndex = -1;
+                for (int i = 0; i < teacherList.size(); i++) {
+                    if (teacherList.get(i).toString().compareTo(s.toString()) == 0) {
+                        teacherIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        numberAuditory.setThreshold(numThreshold);
+        numberAuditory.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                auditoryIndex = -1;
+                for (int i = 0; i < auditoryList.size(); i++) {
+                    if (auditoryList.get(i).toString().compareTo(s.toString()) == 0) {
+                        auditoryIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        nameLesson.setThreshold(nameThreshold);
+        nameLesson.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lessonIndex = -1;
+                for (int i = 0; i < lessonList.size(); i++) {
+                    if (lessonList.get(i).toString().compareTo(s.toString()) == 0) {
+                        lessonIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     @Override
@@ -113,6 +179,7 @@ public class NewLessonActivity extends ActionBarActivity {
         ButterKnife.unbind(this);
     }
 
+    /*
     @OnClick(R.id.button_cancel)
     public void onClickButtonCancel(){
         this.finish();
@@ -148,6 +215,7 @@ public class NewLessonActivity extends ActionBarActivity {
             }
         });
     }
+    */
 
     public void removeLesson(List<DayPeriod> dayPeriods) {
         for (DayPeriod dp : dayPeriods) {
@@ -169,20 +237,32 @@ public class NewLessonActivity extends ActionBarActivity {
         ScheduleDBHelper helper = HelperFactory.getHelper();
         int id = 0;
         try {
-            if (lessonList.isEmpty()){
-                Toast.makeText(this, R.string.toast_choose_subject,  Toast.LENGTH_SHORT).show();
-                return;
+            Subject subject;
+            if (lessonIndex < 0) {
+                subject = new Subject(nameLesson.getText().toString());
+                HelperFactory.getHelper().getSubjectDAO().create(subject);
+            } else {
+                subject = lessonList.get(lessonIndex);
             }
-            final Subject subject = lessonList.get(nameLesson.getSelectedItemPosition());
-
-            final Teacher teacher = teacherList.isEmpty() ? null :
-                    teacherList.get(fioTeacher.getSelectedItemPosition());
+            Teacher teacher;
+            if (teacherIndex < 0) {
+                teacher = new Teacher(fioTeacher.getText().toString());
+                HelperFactory.getHelper().getTeacherDAO().create(teacher);
+            } else {
+                teacher = teacherList.get(teacherIndex);
+            }
+            Classroom classroom;
+            if (auditoryIndex < 0) {
+                classroom = new Classroom(numberAuditory.getText().toString());
+                HelperFactory.getHelper().getClassroomDAO().create(classroom);
+            } else {
+                classroom = auditoryList.get(auditoryIndex);
+            }
             final PeriodType periodType = typeLessonList.isEmpty() ? null :
                     typeLessonList.get(typeLesson.getSelectedItemPosition());
-            final Classroom classroom = auditoryList.isEmpty() ? null :
-                    auditoryList.get(numberAuditory.getSelectedItemPosition());
-            if (timeList.isEmpty()){
-                Toast.makeText(this, R.string.toast_choose_time,  Toast.LENGTH_SHORT).show();
+
+            if (timeList.isEmpty()) {
+                Toast.makeText(this, R.string.toast_choose_time, Toast.LENGTH_SHORT).show();
                 return;
             }
             final PeriodTime periodTime = timeList.get(time.getSelectedItemPosition());
@@ -201,7 +281,7 @@ public class NewLessonActivity extends ActionBarActivity {
                     .teacher(teacher).type(periodType).сlassroom(classroom).build();
 
             //добавление
-            if (lessonID == 0){
+            if (lessonID == 0) {
                 helper.getPeriodDAO().create(period);
                 id = period.getId();
                 addLessonToSchedule(period);
@@ -314,21 +394,6 @@ public class NewLessonActivity extends ActionBarActivity {
         getLoaderManager().initLoader(ListLoader.LOADER_LESSON_TYPES, null, new ListLoader());
     }
 
-    @OnClick(R.id.btn_add_fio_teacher)
-    void showAddTeacherDialog() {
-        showAddDialog(getString(R.string.fio_teacher));
-    }
-
-    @OnClick(R.id.btn_add_name_lesson)
-    void showAddLessonDialog() {
-        showAddDialog(getString(R.string.name_lesson));
-    }
-
-    @OnClick(R.id.btn_add_number_auditory)
-    void showAddAuditoryDialog() {
-        showAddDialog(getString(R.string.number_auditory));
-    }
-
     @OnClick(R.id.btn_add_type_lesson)
     void showAddLessonTypeDialog() {
         showAddDialog(getString(R.string.type_lesson));
@@ -383,7 +448,7 @@ public class NewLessonActivity extends ActionBarActivity {
                 return;
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(),
-                    android.R.layout.simple_spinner_dropdown_item, (List<String>) data);
+                    android.R.layout.simple_dropdown_item_1line, (List<String>) data);
             switch (loader.getId()) {
                 case LOADER_LESSONS:
                     lessonList = (List<Subject>) data;

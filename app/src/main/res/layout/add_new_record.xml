@@ -16,17 +16,16 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin5"
             android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginRight="@dimen/margin16"
             android:layout_marginTop="@dimen/margin16"
-            android:text="@string/time_lesson"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_marginRight="@dimen/margin16" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/margin16"
-            android:paddingRight="@dimen/margin16">
+            android:paddingRight="@dimen/margin16"
+            android:layout_marginBottom="@dimen/margin20">
 
             <Spinner
                 android:id="@+id/time_lesson"
@@ -47,123 +46,41 @@
         </LinearLayout>
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin5"
-            android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginRight="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
-            android:text="@string/name_lesson"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-
-        <LinearLayout
+        <AutoCompleteTextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/margin16"
-            android:paddingRight="@dimen/margin16">
-
-            <Spinner
-                android:id="@+id/name_lesson"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin16"
-                android:layout_weight="1"
-                android:spinnerMode="dropdown" />
-
-            <ImageButton
-                android:id="@+id/btn_add_name_lesson"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_add_black_48dp" />
-        </LinearLayout>
-
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin5"
+            android:id="@+id/name_lesson"
+            android:layout_marginBottom="@dimen/margin20"
             android:layout_marginLeft="@dimen/margin16"
             android:layout_marginRight="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
-            android:text="@string/fio_teacher"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:hint="@string/name_lesson" />
 
-        <LinearLayout
+
+        <AutoCompleteTextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/margin16"
-            android:paddingRight="@dimen/margin16">
-
-            <Spinner
-                android:id="@+id/fio_teacher"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin16"
-                android:layout_weight="1"
-                android:spinnerMode="dropdown" />
-
-            <ImageButton
-                android:id="@+id/btn_add_fio_teacher"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_add_black_48dp" />
-        </LinearLayout>
-
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin5"
+            android:id="@+id/fio_teacher"
+            android:layout_marginBottom="@dimen/margin20"
             android:layout_marginLeft="@dimen/margin16"
             android:layout_marginRight="@dimen/margin16"
-            android:layout_marginTop="@dimen/margin16"
-            android:text="@string/number_auditory"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:hint="@string/fio_teacher" />
 
-        <LinearLayout
+        <AutoCompleteTextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/margin16"
-            android:paddingRight="@dimen/margin16">
-
-            <Spinner
-                android:id="@+id/number_auditory"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin16"
-                android:layout_weight="1"
-                android:spinnerMode="dropdown" />
-
-            <ImageButton
-                android:id="@+id/btn_add_number_auditory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_add_black_48dp" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:id="@+id/number_auditory"
+            android:layout_marginBottom="@dimen/margin20"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:hint="@string/number_auditory" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin5"
             android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginRight="@dimen/margin16"
             android:layout_marginTop="@dimen/margin16"
-            android:text="@string/type_lesson"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_marginRight="@dimen/margin16" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -195,10 +112,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin5"
             android:layout_marginLeft="@dimen/margin16"
-            android:layout_marginRight="@dimen/margin16"
             android:layout_marginTop="@dimen/margin16"
-            android:text="@string/type_week"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_marginRight="@dimen/margin16" />
 
         <Spinner
             android:id="@+id/type_week"
@@ -207,12 +122,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin16"
             android:entries="@array/type_week_list" />
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </FrameLayout>
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/menu"
@@ -291,4 +200,3 @@
 
 
 </ScrollView>
-
