@@ -1,6 +1,8 @@
 package com.sample.drawer.database;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.sample.drawer.R;
 import com.sample.drawer.database.Classroom;
@@ -46,33 +48,21 @@ public class ScheduleInitializer {
         }
     }
 
-    public static void insertDefaultData(Resources res){
+    public static void insertDefaultData(Context context){
+        Resources res = context.getResources();
         ScheduleDBHelper helper = HelperFactory.getHelper();
         try {
-            String empty = "";
-            helper.getPeriodTypeDAO().create(new PeriodType(empty));
+            helper.getPeriodTypeDAO().create(new PeriodType(""));
             String[] lessonTypes = res.getStringArray(R.array.type_lesson_list);
             for (String s : lessonTypes){
                 helper.getPeriodTypeDAO().create(new PeriodType(s));
             }
-
-            helper.getSubjectDAO().create(new Subject("Предмет 1"));
-            helper.getSubjectDAO().create(new Subject("Предмет 2"));
-
-            helper.getClassroomDAO().create(new Classroom(empty));
-            helper.getClassroomDAO().create(new Classroom("Аудитория 1"));
-            helper.getClassroomDAO().create(new Classroom("Аудитория 2"));
 
             String[] lessonTimes= res.getStringArray(R.array.type_lesson_time);
             for (String begin : lessonTimes){
                 String end = TimeHelper.addDeltaTimeMinutes(begin, res.getInteger(R.integer.default_lesson_duration));
                 helper.getPeriodTimeDAO().create(new PeriodTime(begin,end));
             }
-
-            helper.getTeacherDAO().create(new Teacher(empty));
-            helper.getTeacherDAO().create(new Teacher("Препод 1"));
-            helper.getTeacherDAO().create(new Teacher("Препод 2"));
-
 
         } catch (SQLException e) {
             e.printStackTrace();

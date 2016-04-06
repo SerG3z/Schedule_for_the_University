@@ -1,6 +1,7 @@
 package com.sample.drawer;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.facebook.stetho.Stetho;
 import com.sample.drawer.database.HelperFactory;
@@ -18,9 +19,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //TODO: не забыть убрать
-        deleteDatabase("schedule.db");
-
+        //deleteDatabase("schedule.db");
         // Create an InitializerBuilder
         Stetho.InitializerBuilder initializerBuilder =
                 Stetho.newInitializerBuilder(this);
@@ -42,13 +41,6 @@ public class MyApplication extends Application {
         Stetho.initialize(initializer);
 
         HelperFactory.setHelper(getApplicationContext());
-
-        try {
-            ScheduleInitializer.initializeSchedule(new GregorianCalendar(2016,1,8), true, 17, new int[]{7, 14});
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        ScheduleInitializer.insertDefaultData(getResources());
 
         VKSdk.initialize(this);
     }

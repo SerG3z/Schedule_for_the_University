@@ -70,7 +70,7 @@ public class ScheduleViewPagerFragment extends Fragment {
                 viewPager.setPageTransformer(true, new ReaderViewPagerTransformer(ReaderViewPagerTransformer.TransformType.FLOW));
                 viewPager.addOnPageChangeListener(slidePagerAdapter);
                 Calendar calendar = Calendar.getInstance();
-                viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_YEAR), false);
+                viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_YEAR), true);
             }
 
             @Override
