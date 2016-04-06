@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.wasdclub.android"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0.0"
@@ -36,6 +36,8 @@ dependencies {
     compile 'com.vk:androidsdk:+'
     compile 'com.squareup.picasso:picasso:+'
     compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile 'com.github.pwittchen:infinitescroll:0.0.1'
+
 
 }
 
