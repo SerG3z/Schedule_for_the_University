@@ -9,8 +9,11 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -66,7 +69,7 @@ public class NewTaskActivity extends AppCompatActivity {
     @Bind(R.id.toolbar_add_new_task)
     Toolbar toolbar;
     @Bind(R.id.name_lesson)
-    Spinner nameLesson;
+    AutoCompleteTextView nameLesson;
     @Bind(R.id.set_deadline_cb)
     CheckBox setDeadline;
 
@@ -76,6 +79,7 @@ public class NewTaskActivity extends AppCompatActivity {
     private Calendar date;
     private String lessonName;
     private boolean created;
+    private int lessonIndex;
 
 
     @Override
@@ -96,6 +100,26 @@ public class NewTaskActivity extends AppCompatActivity {
         loadLessons();
         created = false;
         setDeadline.setChecked(false);
+        lessonIndex = -1;
+        final int nameThreshold = 2;
+        nameLesson.setThreshold(nameThreshold);
+        nameLesson.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lessonIndex = -1;
+                for (int i=0; i<lessonList.size(); i++){
+                    if (lessonList.get(i).toString().compareTo(s.toString()) == 0) {
+                        lessonIndex = i;
+                        break;
+                    }
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
     }
 
     public static Intent newIntent(Context context,int taskID, String lesson, String deadline, String info) {
@@ -156,21 +180,13 @@ public class NewTaskActivity extends AppCompatActivity {
             public void onLoadFinished(Loader<List<Subject>> loader, List<Subject> data) {
                 if (data != null) {
                     lessonList = data;
-                    int selected = -1, i = 0;
                     List<String> lessonNames = new ArrayList<String>();
                     for (Subject s : data ) {
                         lessonNames.add(s.toString());
-                        if (lessonName != null && s.getSubject().compareTo(lessonName) == 0){
-                            selected = i;
-                        }
-                        i++;
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(),
                             android.R.layout.simple_spinner_dropdown_item, lessonNames);
                     nameLesson.setAdapter(adapter);
-                    if (selected != -1){
-                        nameLesson.setSelection(selected,true);
-                    }
                 }
             }
 
@@ -187,7 +203,7 @@ public class NewTaskActivity extends AppCompatActivity {
             public Loader<List<Day>> onCreateLoader(int id, Bundle args) {
                 DayDAO dao = HelperFactory.getHelper().getDayDAO();
                 try {
-                    return new OrmLitePreparedQueryLoader<>(getBaseContext(),dao,
+                    return new OrmLitePreparedQueryLoader<>(getBaseContext(), dao,
                             dao.getDayByDate(date.getTime()));
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -198,11 +214,11 @@ public class NewTaskActivity extends AppCompatActivity {
             @Override
             public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
                 Day day = null;
-                if (setDeadline.isChecked()){
+                if (setDeadline.isChecked()) {
                     if (data != null && data.size() > 0) {
                         day = data.get(0);
                     } else {
-                        day = new Day(date.getTime(),date.get(Calendar.DAY_OF_WEEK));
+                        day = new Day(date.getTime(), date.get(Calendar.DAY_OF_WEEK));
                         try {
                             HelperFactory.getHelper().getDayDAO().create(day);
                         } catch (SQLException e) {
@@ -210,17 +226,26 @@ public class NewTaskActivity extends AppCompatActivity {
                         }
                     }
                 }
-                Task task = new Task(addTaskInfo.getText().toString(), day,
-                        lessonList.get(nameLesson.getSelectedItemPosition()));
-                if (taskID == 0 && !created){ // добавление
+                Subject subject;
+                if (lessonIndex < 0) {
+                    subject = new Subject(nameLesson.getText().toString());
+                    try {
+                        HelperFactory.getHelper().getSubjectDAO().create(subject);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    subject = lessonList.get(lessonIndex);
+                }
+                Task task = new Task(addTaskInfo.getText().toString(), day, subject);
+                if (taskID == 0 && !created) { // добавление
                     try {
                         created = true;
                         HelperFactory.getHelper().getTaskDAO().create(task);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                }
-                else { //редактирование
+                } else { //редактирование
                     task.setId(taskID);
                     try {
                         HelperFactory.getHelper().getTaskDAO().update(task);
@@ -239,12 +264,6 @@ public class NewTaskActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.btn_add_name_lesson)
-    public void addLesson(){
-        DialogFragment newFragment = AddValueDialogFragment.
-                newInstance(getString(R.string.name_lesson));
-        newFragment.show(getFragmentManager(), TAG_LESSON_ADD_DIALOG);
-    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -9,9 +9,15 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ThemedSpinnerAdapter;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -42,6 +48,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 
 /**
  * Created by serg on 23.03.16.
@@ -49,9 +56,9 @@ import butterknife.OnClick;
 public class NewLessonActivity extends ActionBarActivity {
 
     @Bind(R.id.time_lesson) Spinner time;
-    @Bind(R.id.fio_teacher) Spinner fioTeacher;
-    @Bind(R.id.name_lesson) Spinner nameLesson;
-    @Bind(R.id.number_auditory) Spinner numberAuditory;
+    @Bind(R.id.fio_teacher) AutoCompleteTextView fioTeacher;
+    @Bind(R.id.name_lesson) AutoCompleteTextView nameLesson;
+    @Bind(R.id.number_auditory) AutoCompleteTextView numberAuditory;
     @Bind(R.id.type_lesson) Spinner typeLesson;
     @Bind(R.id.type_week) Spinner typeWeek;
     //@Bind(R.id.button_delete) Button deleteBtn;
@@ -71,6 +78,7 @@ public class NewLessonActivity extends ActionBarActivity {
 
     private int lessonID;
     private int dayOfWeek;
+    private int lessonIndex, auditoryIndex, teacherIndex;
 
 
     //добавление пары для дня недели
@@ -100,6 +108,63 @@ public class NewLessonActivity extends ActionBarActivity {
         if (lessonID == 0){
             //deleteBtn.setEnabled(false);
         }
+        lessonIndex = auditoryIndex = teacherIndex = -1;
+        final int nameThreshold =2, numThreshold = 1;
+        fioTeacher.setThreshold(nameThreshold);
+        fioTeacher.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                teacherIndex = -1;
+                for (int i = 0; i < teacherList.size(); i++) {
+                    if (teacherList.get(i).toString().compareTo(s.toString()) == 0) {
+                        teacherIndex = i;
+                        break;
+                    }
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        numberAuditory.setThreshold(numThreshold);
+        numberAuditory.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                auditoryIndex = -1;
+                for (int i = 0; i < auditoryList.size(); i++) {
+                    if (auditoryList.get(i).toString().compareTo(s.toString()) == 0) {
+                        auditoryIndex = i;
+                        break;
+                    }
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        nameLesson.setThreshold(nameThreshold);
+        nameLesson.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lessonIndex = -1;
+                for (int i=0; i<lessonList.size(); i++){
+                    if (lessonList.get(i).toString().compareTo(s.toString()) == 0) {
+                        lessonIndex = i;
+                        break;
+                    }
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     @Override
@@ -166,18 +231,30 @@ public class NewLessonActivity extends ActionBarActivity {
         ScheduleDBHelper helper = HelperFactory.getHelper();
         int id = 0;
         try {
-            if (lessonList.isEmpty()){
-                Toast.makeText(this, R.string.toast_choose_subject,  Toast.LENGTH_SHORT).show();
-                return;
+            Subject subject;
+            if ( lessonIndex < 0){
+                subject = new Subject(nameLesson.getText().toString());
+                HelperFactory.getHelper().getSubjectDAO().create(subject);
+            } else {
+               subject = lessonList.get(lessonIndex);
             }
-            final Subject subject = lessonList.get(nameLesson.getSelectedItemPosition());
-
-            final Teacher teacher = teacherList.isEmpty() ? null :
-                    teacherList.get(fioTeacher.getSelectedItemPosition());
+            Teacher teacher;
+            if (teacherIndex < 0){
+                teacher = new Teacher(fioTeacher.getText().toString());
+                HelperFactory.getHelper().getTeacherDAO().create(teacher);
+            } else {
+                teacher = teacherList.get(teacherIndex);
+            }
+            Classroom classroom;
+            if (auditoryIndex < 0){
+                classroom = new Classroom(numberAuditory.getText().toString());
+                HelperFactory.getHelper().getClassroomDAO().create(classroom);
+            } else {
+                classroom = auditoryList.get(auditoryIndex);
+            }
             final PeriodType periodType = typeLessonList.isEmpty() ? null :
                     typeLessonList.get(typeLesson.getSelectedItemPosition());
-            final Classroom classroom = auditoryList.isEmpty() ? null :
-                    auditoryList.get(numberAuditory.getSelectedItemPosition());
+
             if (timeList.isEmpty()){
                 Toast.makeText(this, R.string.toast_choose_time,  Toast.LENGTH_SHORT).show();
                 return;
@@ -349,7 +426,7 @@ public class NewLessonActivity extends ActionBarActivity {
                 return;
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(),
-                    android.R.layout.simple_spinner_dropdown_item, (List<String>) data);
+                    android.R.layout.simple_dropdown_item_1line, (List<String>) data);
             switch (loader.getId()) {
                 case LOADER_LESSONS:
                     lessonList = (List<Subject>) data;
@@ -379,19 +456,6 @@ public class NewLessonActivity extends ActionBarActivity {
         }
     }
 
-
-    @OnClick(R.id.btn_add_fio_teacher)
-    void showAddTeacherDialog(){
-        showAddDialog(getString(R.string.fio_teacher));
-    }
-    @OnClick(R.id.btn_add_name_lesson)
-    void showAddLessonDialog(){
-        showAddDialog(getString(R.string.name_lesson));
-    }
-    @OnClick(R.id.btn_add_number_auditory)
-    void showAddAuditoryDialog(){
-        showAddDialog(getString(R.string.number_auditory));
-    }
     @OnClick(R.id.btn_add_type_lesson)
     void showAddLessonTypeDialog(){
         showAddDialog(getString(R.string.type_lesson));

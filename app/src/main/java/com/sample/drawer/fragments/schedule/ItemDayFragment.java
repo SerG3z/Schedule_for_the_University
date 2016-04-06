@@ -1,12 +1,14 @@
 package com.sample.drawer.fragments.schedule;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +48,6 @@ public class ItemDayFragment extends Fragment {
     static final String KEY_DAY = "day";
     static final int LOADER_DAY = 1000;
     private int day;
-//    int backColor;
 
     public static ItemDayFragment newInstance(int page) {
         ItemDayFragment scheduleFragment = new ItemDayFragment();
@@ -95,6 +96,7 @@ public class ItemDayFragment extends Fragment {
         });
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,31 +127,38 @@ public class ItemDayFragment extends Fragment {
         //(() mAdapter).deleteItem(index);
 
         headerTextView.setText("");
-        setCalendarTextView();
         headerWeek.attachTo(recyclerView, true);
+        setCalendarTextView();
         return view;
     }
+
 
     private void setCalendarTextView() {
         Bundle bundle = new Bundle();
         bundle.putInt(ARGUMENT_DAY, day);
-        getActivity().getLoaderManager().initLoader(LOADER_DAY+day, bundle, new LoaderManager.LoaderCallbacks<List<Day>>() {
+        if (getActivity() == null){
+            return;
+        }
+        getActivity().getLoaderManager().initLoader(LOADER_DAY + day, bundle, new LoaderManager.LoaderCallbacks<List<Day>>() {
             @Override
             public Loader<List<Day>> onCreateLoader(int id, Bundle args) {
                 int dayID = args.getInt(ARGUMENT_DAY);
-                return new OrmLiteQueryForIdLoader<Day,Integer>(getContext(),
-                        HelperFactory.getHelper().getDayDAO(),dayID);
+                return new OrmLiteQueryForIdLoader<Day, Integer>(getContext(),
+                        HelperFactory.getHelper().getDayDAO(), dayID);
             }
 
             @Override
             public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
-                if (!data.isEmpty() && data.get(0)!=null){
+                if (!data.isEmpty() && data.get(0) != null) {
                     Day d = data.get(0);
                     Calendar myCal = new GregorianCalendar();
                     myCal.setTime(d.getDate());
+                    if (!isAdded()){
+                        return;
+                    }
                     String[] daysOfWeek = getResources().getStringArray(R.array.day_week_list);
-                    String s = String.format("%02d.%02d, %s",myCal.get(Calendar.DAY_OF_MONTH),
-                            (myCal.get(Calendar.MONTH)+1), daysOfWeek[d.getDayOfWeek()-1]) ;
+                    String s = String.format("%02d.%02d, %s", myCal.get(Calendar.DAY_OF_MONTH),
+                            (myCal.get(Calendar.MONTH) + 1), daysOfWeek[d.getDayOfWeek() - 1]);
                     headerTextView.setText(s);
                 }
             }
