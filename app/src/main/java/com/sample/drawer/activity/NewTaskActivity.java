@@ -59,6 +59,9 @@ public class NewTaskActivity extends AppCompatActivity {
     private static final String TAG_LESSON_ADD_DIALOG = "add_lesson_dialog";
     private static final int LOADER_LESSONS = 1;
     private static final int LOADER_DAY = 2;
+
+    private List<Subject> lessonList;
+
     @Bind(R.id.add_task_info)
     EditText addTaskInfo;
     @Bind(R.id.add_task_deadline)
@@ -69,22 +72,15 @@ public class NewTaskActivity extends AppCompatActivity {
     AutoCompleteTextView nameLesson;
     @Bind(R.id.set_deadline_cb)
     CheckBox setDeadline;
+
     DateDialog newFragment;
-    private List<Subject> lessonList;
+
     private int taskID;
     private Calendar date;
     private String lessonName;
     private boolean created;
     private int lessonIndex;
 
-    public static Intent newIntent(Context context, int taskID, String lesson, String deadline, String info) {
-        Intent intent = new Intent(context, NewTaskActivity.class);
-        intent.putExtra(LESSON_INTENT_KEY, lesson);
-        intent.putExtra(DEADLINE_INTENT_KEY, deadline);
-        intent.putExtra(INFO_INTENT_KEY, info);
-        intent.putExtra(TASK_ID_INTENT_KEY, taskID);
-        return intent;
-    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -101,12 +97,6 @@ public class NewTaskActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        date = Calendar.getInstance();
-//        date = new GregorianCalendar(date.get(Calendar.YEAR),
-//                date.get(Calendar.MONTH), date.get(Calendar.DATE));
-//        loadLessons();
-//        created = false;
         loadLessons();
         created = false;
         setDeadline.setChecked(false);
@@ -132,6 +122,14 @@ public class NewTaskActivity extends AppCompatActivity {
 
     }
 
+    public static Intent newIntent(Context context,int taskID, String lesson, String deadline, String info) {
+        Intent intent = new Intent(context, NewTaskActivity.class);
+        intent.putExtra(LESSON_INTENT_KEY, lesson);
+        intent.putExtra(DEADLINE_INTENT_KEY, deadline);
+        intent.putExtra(INFO_INTENT_KEY, info);
+        intent.putExtra(TASK_ID_INTENT_KEY, taskID);
+        return intent;
+    }
 
     private void initializationIntent(Intent intent) {
         if (intent != null) {
@@ -142,7 +140,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 date = TimeHelper.dateFromString(d);
             }
             lessonName = intent.getStringExtra(LESSON_INTENT_KEY);
-            taskID = intent.getIntExtra(TASK_ID_INTENT_KEY, 0);
+            taskID = intent.getIntExtra(TASK_ID_INTENT_KEY,0);
         }
     }
 
@@ -153,8 +151,6 @@ public class NewTaskActivity extends AppCompatActivity {
             @Override
             public void onDateSet(final DatePicker datePicker, final int year, final int monthOfYear, final int dayOfMonth) {
                 String[] mounth = getResources().getStringArray(R.array.mount_list);
-//                addTaskDeadline.setText(getString(R.string.format_date, dayOfMonth, mounth[monthOfYear], year));
-//                date = new GregorianCalendar(year, monthOfYear, dayOfMonth);
                 if ((new GregorianCalendar(year,monthOfYear,dayOfMonth)).compareTo(Calendar.getInstance()) < 0)
                 {
                     Toast.makeText(getBaseContext(),
@@ -172,7 +168,7 @@ public class NewTaskActivity extends AppCompatActivity {
         newFragment.show(getFragmentManager(), DATAPICKER_KEY);
     }
 
-    private void loadLessons() {
+    private void loadLessons(){
         getLoaderManager().initLoader(LOADER_LESSONS, null, new LoaderManager.LoaderCallbacks<List<Subject>>() {
             @Override
             public Loader<List<Subject>> onCreateLoader(int id, Bundle args) {
@@ -185,19 +181,12 @@ public class NewTaskActivity extends AppCompatActivity {
                 if (data != null) {
                     lessonList = data;
                     List<String> lessonNames = new ArrayList<String>();
-                    for (Subject s : data) {
+                    for (Subject s : data ) {
                         lessonNames.add(s.toString());
-//                        if (lessonName != null && s.getSubject().compareTo(lessonName) == 0) {
-//                            selected = i;
-//                        }
-//                        i++;
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(),
                             android.R.layout.simple_spinner_dropdown_item, lessonNames);
                     nameLesson.setAdapter(adapter);
-//                    if (selected != -1) {
-//                        nameLesson.setSelection(selected, true);
-//                    }
                 }
             }
 
@@ -237,8 +226,6 @@ public class NewTaskActivity extends AppCompatActivity {
                         }
                     }
                 }
-//                Task task = new Task(addTaskInfo.getText().toString(), day,
-//                        lessonList.get(nameLesson.getSelectedItemPosition()));
                 Subject subject;
                 if (lessonIndex < 0) {
                     subject = new Subject(nameLesson.getText().toString());
@@ -276,13 +263,6 @@ public class NewTaskActivity extends AppCompatActivity {
             }
         });
     }
-
-//    @OnClick(R.id.btn_add_name_lesson)
-//    public void addLesson() {
-//        DialogFragment newFragment = AddValueDialogFragment.
-//                newInstance(getString(R.string.name_lesson));
-//        newFragment.show(getFragmentManager(), TAG_LESSON_ADD_DIALOG);
-//    }
 
     @Override
     protected void onDestroy() {

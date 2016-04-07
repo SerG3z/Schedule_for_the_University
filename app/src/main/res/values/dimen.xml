@@ -29,4 +29,5 @@
     <!--item task show info-->
     <dimen name="text_size_title">18dp</dimen>
     <dimen name="text_size_show_info">16dp</dimen>
+
 </resources>

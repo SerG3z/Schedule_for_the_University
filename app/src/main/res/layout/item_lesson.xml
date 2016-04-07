@@ -62,5 +62,4 @@
         android:textSize="@dimen/text_size_item_lesson_auditory"
         android:textStyle="bold" />
 
-
 </RelativeLayout>

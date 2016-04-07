@@ -10,14 +10,13 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
+
 import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.sample.drawer.R;
 import com.sample.drawer.database.Classroom;
@@ -33,6 +32,7 @@ import com.sample.drawer.database.Teacher;
 import com.sample.drawer.database.dao.DayDAO;
 import com.sample.drawer.database.dao.DayPeriodDAO;
 import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
+import com.sample.drawer.database.loader.OrmLiteQueryForIdLoader;
 import com.sample.drawer.fragments.schedule.AddTimeDialogFragment;
 import com.sample.drawer.fragments.schedule.AddValueDialogFragment;
 
@@ -53,7 +53,8 @@ public class NewLessonActivity extends ActionBarActivity {
     public static final String TAG_DIALOG = "dialog";
     public static final int LOADER_ADD_LESSON = 10;
     public static final int LOADER_EDIT_LESSON = 11;
-    public static final int LOADER_DELETE_LESSON = 11;
+    public static final int LOADER_DELETE_LESSON = 12;
+    public static final int LOADER_LOAD_LESSON = 13;
     @Bind(R.id.time_lesson)
     Spinner time;
     @Bind(R.id.fio_teacher)
@@ -66,12 +67,9 @@ public class NewLessonActivity extends ActionBarActivity {
     Spinner typeLesson;
     @Bind(R.id.type_week)
     Spinner typeWeek;
-    FragmentManager fragmentManager;
     @Bind(R.id.button_delete)
     FloatingActionButton buttonDelete;
-    @Bind(R.id.menu1)
-    FloatingActionMenu menu1;
-
+    FragmentManager fragmentManager;
     private List<Subject> lessonList;
     private List<Teacher> teacherList;
     private List<PeriodTime> timeList;
@@ -104,16 +102,17 @@ public class NewLessonActivity extends ActionBarActivity {
         setContentView(R.layout.add_new_record);
         ButterKnife.bind(this);
         loadLists();
-
         lessonID = getIntent().getIntExtra(ARG_LESSON_ID, 0);
         dayOfWeek = getIntent().getIntExtra(ARG_DAY_OF_WEEK, 0);
-        if (lessonID == 0) {
+        if (lessonID != 0) {
+            loadPeriod();
+        } else {
             buttonDelete.setEnabled(false);
         }
+
         lessonIndex = auditoryIndex = teacherIndex = -1;
         final int nameThreshold = 2, numThreshold = 1;
         fioTeacher.setThreshold(nameThreshold);
-
         fioTeacher.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -176,7 +175,6 @@ public class NewLessonActivity extends ActionBarActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-
     }
 
     @Override
@@ -391,6 +389,44 @@ public class NewLessonActivity extends ActionBarActivity {
         }
     }
 
+
+    private void loadPeriod() {
+        getLoaderManager().initLoader(LOADER_LOAD_LESSON, null, new LoaderManager.LoaderCallbacks<List<Period>>() {
+            @Override
+            public Loader<List<Period>> onCreateLoader(int id, Bundle args) {
+                return new OrmLiteQueryForIdLoader<>(getBaseContext(),
+                        HelperFactory.getHelper().getPeriodDAO(), lessonID);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
+                if (data != null && !data.isEmpty()) {
+                    Period period = data.get(0);
+                    if (period == null || timeList == null || typeLessonList == null){
+                        return;
+                    }
+                    for (int i = 0; i < timeList.size(); i++) {
+                        if (period.getTime().compareTo(timeList.get(i)) == 0) {
+                            time.setSelection(i, true);
+                        }
+                    }
+                    nameLesson.setText(period.getSubject().toString());
+                    fioTeacher.setText(period.getTeacher().toString());
+                    numberAuditory.setText(period.getClassroom().toString());
+                    for (int i = 0; i < typeLessonList.size(); i++) {
+                        if (period.getType().toString().compareTo(typeLessonList.get(i).toString()) == 0) {
+                            typeLesson.setSelection(i, true);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<List<Period>> loader) {
+
+            }
+        });
+    }
 
     private void loadLists() {
         getLoaderManager().initLoader(ListLoader.LOADER_LESSONS, null, new ListLoader());

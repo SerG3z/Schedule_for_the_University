@@ -1,3 +1,4 @@
+
 package com.sample.drawer.adapter;
 
 import android.support.v7.widget.RecyclerView;
@@ -51,6 +52,9 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
     @Override
     public void onBindViewHolder(BaseHolder holder, int position) {
+        if (!(periodList.get(position) instanceof Period)){
+            return;
+        }
         Period period = periodList.get(position);
         if (period == null){
             return;
@@ -129,7 +133,9 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
         @Override
         public void onClick(View view) {
-            clickListener.onItemClick(getPosition(), view);
+            if (clickListener != null){
+                clickListener.onItemClick(getPosition(), view);
+            }
         }
     }
 

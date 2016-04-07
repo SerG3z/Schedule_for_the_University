@@ -1,6 +1,7 @@
 package com.sample.drawer.database;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -19,6 +20,7 @@ import com.sample.drawer.database.dao.TeacherDAO;
 import com.sample.drawer.database.dao.WeekDAO;
 
 import java.sql.SQLException;
+import java.util.GregorianCalendar;
 
 /**
  * Schedule data base open helper
@@ -41,8 +43,11 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
     private WeekDAO weekDAO = null;
     private DayPeriodDAO dayPeriodDAO = null;
 
+    private Context context;
+
     public ScheduleDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     public ClassroomDAO getClassroomDAO() {
@@ -168,6 +173,9 @@ public class ScheduleDBHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Period.class);
             TableUtils.createTable(connectionSource, Task.class);
             TableUtils.createTable(connectionSource, DayPeriod.class);
+
+            ScheduleInitializer.initializeSchedule(new GregorianCalendar(2016, 1, 8), true, 17, new int[]{7, 14});
+            ScheduleInitializer.insertDefaultData(context);
 
         } catch (SQLException e) {
             Log.e(TAG, "error creating DB " + DATABASE_NAME);

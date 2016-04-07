@@ -27,5 +27,18 @@
     <color name="my_divider">#B6B6B6</color>
     <color name="colorFAB">#1A237E</color>
 
+    <!--&lt;!&ndash; 500 &ndash;&gt;-->
+    <!--<color name="primary">#F44336</color>-->
+    <!--<color name="primary_dynamic">#F44336</color>-->
+    <!--&lt;!&ndash; 700 &ndash;&gt;-->
+    <!--<color name="primary_dark">#D32F2F</color>-->
+    <!--&lt;!&ndash; A200/A400/A700 &ndash;&gt;-->
+    <!--<color name="accent">#00C853</color>-->
+    <!--&lt;!&ndash; 50 light / 900 dark &ndash;&gt;-->
+    <!--<color name="window_background">#FFEBEE</color>-->
+    <!--&lt;!&ndash; 300 &ndash;&gt;-->
+    <!--<color name="lolli_btn">#E57373</color>-->
+    <!--<color name="color_white">#FFFFFF</color>-->
+
 
 </resources>

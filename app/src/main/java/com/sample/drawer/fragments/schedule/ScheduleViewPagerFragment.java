@@ -1,12 +1,12 @@
 package com.sample.drawer.fragments.schedule;
 
+import android.support.v4.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,13 +44,6 @@ public class ScheduleViewPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_screen_slide, null);
-//        final ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
-//        final ScreenSlidePagerAdapter slidePagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), viewPager);
-//        viewPager.setAdapter(slidePagerAdapter);
-//        viewPager.setPageTransformer(true, new ReaderViewPagerTransformer(ReaderViewPagerTransformer.TransformType.FLOW));
-//        viewPager.addOnPageChangeListener(slidePagerAdapter);
-//        viewPager.setCurrentItem(75, false);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.info_schedule);
         viewPager = (ViewPager) view.findViewById(R.id.pager);
         slidePagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), viewPager);
         findSemesterBegin();
@@ -78,7 +71,7 @@ public class ScheduleViewPagerFragment extends Fragment {
                 viewPager.setPageTransformer(true, new ReaderViewPagerTransformer(ReaderViewPagerTransformer.TransformType.FLOW));
                 viewPager.addOnPageChangeListener(slidePagerAdapter);
                 Calendar calendar = Calendar.getInstance();
-                viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_YEAR), false);
+                viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_YEAR), true);
             }
 
             @Override

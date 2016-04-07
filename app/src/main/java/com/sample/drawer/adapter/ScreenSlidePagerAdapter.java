@@ -23,10 +23,16 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
 
     private ViewPager viewPager;
     private int semBegin;
+    int daysInSemester;
 
     public ScreenSlidePagerAdapter(FragmentManager fragmentManager, ViewPager pager) {
         super(fragmentManager);
         viewPager = pager;
+        try {
+            daysInSemester = (int)HelperFactory.getHelper().getDayDAO().countOf();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -36,7 +42,7 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
 
     @Override
     public Fragment getItem(int position) {
-        return ItemDayFragment.newInstance(position - semBegin + 1);
+        return ItemDayFragment.newInstance((daysInSemester+(position - semBegin + 1))%daysInSemester);
     }
 
     @Override
@@ -58,7 +64,7 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter implement
         calendar.setTime(semesterBegin);
         semBegin = calendar.get(Calendar.DAY_OF_YEAR);
         if (viewPager != null){
-            viewPager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+            viewPager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_YEAR),true);
         }
     }
 

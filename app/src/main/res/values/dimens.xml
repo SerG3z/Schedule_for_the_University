@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="menu_fab_size">74dp</dimen>
+    <dimen name="margin_for_fab">100dp</dimen>
 </resources>
