@@ -70,8 +70,9 @@
         <item>17:25</item>
     </string-array>
 
-    <!-- button edit_schedule-->
+    <!-- button toolbar -->
     <string name="edit_schedule">Изменить расписание</string>
+    <string name="calendar">Выберите дату</string>
 
     <!-- cardView item task show info-->
     <string name="lesson">Предмет</string>
