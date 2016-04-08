@@ -6,7 +6,7 @@
         android:title="@string/edit_schedule"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/edit_schedule_calendar_toolbar"
+        android:id="@+id/schedule_calendar_toolbar"
         android:title="@string/calendar"
         android:icon="@android:drawable/ic_menu_today"
         app:showAsAction="always" />

@@ -134,7 +134,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
 
     public interface ScheduleClickListener {
-        public void onItemClick(int position, View v);
+        void onItemClick(int position, View v);
     }
 
     public abstract class BaseHolder extends RecyclerView.ViewHolder {

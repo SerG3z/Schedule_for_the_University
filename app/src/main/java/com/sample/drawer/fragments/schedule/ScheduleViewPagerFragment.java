@@ -1,5 +1,6 @@
 package com.sample.drawer.fragments.schedule;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
@@ -12,9 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLitePreparedQueryLoader;
 import com.sample.drawer.R;
+import com.sample.drawer.activity.MainActivity;
 import com.sample.drawer.adapter.ScreenSlidePagerAdapter;
 import com.sample.drawer.database.Day;
 import com.sample.drawer.database.HelperFactory;
@@ -30,6 +33,7 @@ import java.util.List;
 public class ScheduleViewPagerFragment extends Fragment {
 
     private static final int LOADER_SEMESTER_BEGIN = 1;
+    private static Activity activity;
     private ScreenSlidePagerAdapter slidePagerAdapter;
     private ViewPager viewPager;
 
@@ -44,6 +48,7 @@ public class ScheduleViewPagerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        activity = getActivity();
         View view = inflater.inflate(R.layout.activity_screen_slide, null);
         viewPager = (ViewPager) view.findViewById(R.id.pager);
         slidePagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), viewPager);
@@ -61,12 +66,12 @@ public class ScheduleViewPagerFragment extends Fragment {
         getActivity().getLoaderManager().initLoader(LOADER_SEMESTER_BEGIN, null, new LoaderManager.LoaderCallbacks<List<Day>>() {
             @Override
             public Loader<List<Day>> onCreateLoader(int id, Bundle args) {
-                return new OrmLiteQueryForIdLoader<>(getContext(),HelperFactory.getHelper().getDayDAO(), 1);
+                return new OrmLiteQueryForIdLoader<>(getContext(), HelperFactory.getHelper().getDayDAO(), 1);
             }
 
             @Override
             public void onLoadFinished(Loader<List<Day>> loader, List<Day> data) {
-                if (data != null && data.size() > 0){
+                if (data != null && data.size() > 0) {
                     slidePagerAdapter.setSemBegin(data.get(0).getDate());
                 }
                 viewPager.setAdapter(slidePagerAdapter);

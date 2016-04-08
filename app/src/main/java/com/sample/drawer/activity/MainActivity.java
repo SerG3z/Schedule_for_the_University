@@ -1,6 +1,7 @@
 package com.sample.drawer.activity;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -10,12 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.sample.drawer.R;
+import com.sample.drawer.fragments.DateDialog;
 import com.sample.drawer.fragments.schedule.ScheduleViewPagerFragment;
 import com.sample.drawer.utils.Utils;
 import com.vk.sdk.VKSdk;
@@ -31,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     private AccountHeader.Result headerResult = null;
+    private static final String DATAPICKER_KEY = "datePicker";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,11 +114,22 @@ public class MainActivity extends ActionBarActivity {
                 Intent intent = new Intent(this, AddNewSchedule.class);
                 startActivity(intent);
                 return true;
+            case R.id.schedule_calendar_toolbar:
+                DateDialog dateDialog = new DateDialog();
+                dateDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(final DatePicker datePicker, final int year, final int monthOfYear, final int dayOfMonth) {
+                        Toast.makeText(getApplicationContext(), "ты нажал на календарь !", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dateDialog.show(getFragmentManager(), DATAPICKER_KEY);
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     @Override
     protected void onDestroy() {
