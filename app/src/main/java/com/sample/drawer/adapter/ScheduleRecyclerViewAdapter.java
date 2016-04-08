@@ -1,6 +1,8 @@
 
 package com.sample.drawer.adapter;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,9 +29,11 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     private static final int TYPE_EMPTY = 1;
     private final ArrayList<Period> periodList = new ArrayList<>();
     private ScheduleClickListener myClickListener;
+    private Context context;
 
-    public ScheduleRecyclerViewAdapter(List<Period> myDataset) {
+    public ScheduleRecyclerViewAdapter(List<Period> myDataset, Context context) {
         periodList.addAll(myDataset);
+        this.context = context;
     }
 
     public void setOnItemClickListener(ScheduleClickListener myClickListener) {
@@ -61,12 +65,38 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         }
         if (getItemViewType(position) == TYPE_NORMAL) {
             ((PeriodHolder) holder).time.setText(period.getTime().toString());
-            ((PeriodHolder) holder).typeLesson.setText(period.getType().toString());
+
+            final String typeLesson = String.valueOf(period.getType());
+            ((PeriodHolder) holder).typeLesson.setText(typeLesson);
+
+            setColorTextViewTypeLesson(((PeriodHolder) holder), typeLesson);
+
             ((PeriodHolder) holder).nameLesson.setText(period.getSubject().toString());
             ((PeriodHolder) holder).fioTeacher.setText(period.getTeacher().toString());
             ((PeriodHolder) holder).numberAuditory.setText(period.getClassroom().toString());
         } else {
             ((EmptyObjectHolder) holder).time.setText(period.getTime().toString());
+        }
+    }
+
+    private void setColorTextViewTypeLesson(PeriodHolder holder, String typeLesson) {
+        String[] typeLessonArray = context.getResources().getStringArray(R.array.type_lesson_list);
+        if (typeLesson.equals(typeLessonArray[0])){
+            holder.typeLesson.setBackgroundColor(context.getResources().getColor(R.color.type_lesson_lecture));
+        } else {
+            if (typeLesson.equals(typeLessonArray[1])){
+                holder.typeLesson.setBackgroundColor(context.getResources().getColor(R.color.type_lesson_practice));
+            } else {
+                if (typeLesson.equals(typeLessonArray[2])){
+                    holder.typeLesson.setBackgroundColor(context.getResources().getColor(R.color.type_lesson_laboratory));
+                } else {
+                    if (typeLesson.equals(typeLessonArray[3])){
+                        holder.typeLesson.setBackgroundColor(context.getResources().getColor(R.color.type_lesson_exam));
+                    } else {
+                        holder.typeLesson.setBackgroundColor(context.getResources().getColor(R.color.type_lesson_default));
+                    }
+                }
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 package com.sample.drawer.activity;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,16 +27,13 @@ import com.sample.drawer.database.Task;
 import com.sample.drawer.database.dao.DayDAO;
 import com.sample.drawer.database.loader.OrmLiteQueryForAllOrderByLoader;
 import com.sample.drawer.fragments.DateDialog;
-import com.sample.drawer.fragments.schedule.AddValueDialogFragment;
 import com.sample.drawer.utils.TimeHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -105,19 +98,23 @@ public class NewTaskActivity extends AppCompatActivity {
         nameLesson.setThreshold(nameThreshold);
         nameLesson.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 lessonIndex = -1;
-                for (int i=0; i<lessonList.size(); i++){
+                for (int i = 0; i < lessonList.size(); i++) {
                     if (lessonList.get(i).toString().compareTo(s.toString()) == 0) {
                         lessonIndex = i;
                         break;
                     }
                 }
             }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
     }

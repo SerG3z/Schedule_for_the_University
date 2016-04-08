@@ -27,6 +27,15 @@
     <color name="my_divider">#B6B6B6</color>
     <color name="colorFAB">#1A237E</color>
 
+    <!-- type lesson -->
+    <color name="type_lesson_default">#4CAF50</color>
+    <color name="type_lesson_laboratory">#009688</color>
+    <color name="type_lesson_lecture">#3F51B5</color>
+    <color name="type_lesson_practice">#795548</color>
+    <color name="type_lesson_exam">#F44336</color>
+
+
+
     <!--&lt;!&ndash; 500 &ndash;&gt;-->
     <!--<color name="primary">#F44336</color>-->
     <!--<color name="primary_dynamic">#F44336</color>-->

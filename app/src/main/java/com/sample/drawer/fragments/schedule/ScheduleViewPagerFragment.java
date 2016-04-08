@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class ScheduleViewPagerFragment extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.pager);
         slidePagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), viewPager);
         findSemesterBegin();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.info_schedule);
         return view;
     }
 
