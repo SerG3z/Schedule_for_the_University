@@ -68,7 +68,7 @@ public class AddNewSchedule extends AppCompatActivity {
                 new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
 
-        mAdapter = new ScheduleRecyclerViewAdapter(new ArrayList<Period>());
+        mAdapter = new ScheduleRecyclerViewAdapter(new ArrayList<Period>(), getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
 
         // Code to Add an item with default animation

@@ -88,7 +88,7 @@ public class ItemDayFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<List<Period>> loader, List<Period> data) {
-                RecyclerView.Adapter mAdapter = new ScheduleRecyclerViewAdapter(data);
+                RecyclerView.Adapter mAdapter = new ScheduleRecyclerViewAdapter(data, getContext());
                 recyclerView.setAdapter(mAdapter);
             }
             @Override
